@@ -1,0 +1,78 @@
+.time-setup:focus { outline: none; }
+
+.readout--live {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(207, 255, 245, 0.5);
+}
+
+.side-readout b {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.card-label {
+  position: absolute;
+  color: #6f6a6a;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: 0.06em;
+}
+.card-value {
+  position: absolute;
+  color: #cfd6dc;
+  font-size: 24px;
+  line-height: 33px;
+  white-space: nowrap;
+}
+
+.card-note {
+  position: absolute;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4.1px);
+  color: #8a8585;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: 1.3px;
+  white-space: pre;
+}
+.card-note--status {
+  color: #ae6666;
+  text-align: center;
+  animation: tw-blink 1.6s steps(1) infinite;
+}
+.card-note--status.is-ready {
+  color: #7fffd4;
+  animation: none;
+  text-shadow: 0 0 8px rgba(127, 255, 212, 0.5);
+}
+
+.time-setup__go {
+  padding: 5.8px 19px 12.4px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 79px;
+  letter-spacing: -1.12px;
+}
+.time-setup__go:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.time-setup__go:not(:disabled) {
+  animation: go-ready 1.8s ease-in-out infinite;
+}
+@keyframes go-ready {
+  50% { box-shadow: var(--shadow-glass), 0 0 26px rgba(255, 255, 255, 0.35); }
+}
+
+.time-setup__back {
+  padding: 5.8px 19px 12.4px;
+  background: rgba(18, 18, 18, 0.2);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 56px;
+  letter-spacing: -0.8px;
+  text-transform: uppercase;
+}

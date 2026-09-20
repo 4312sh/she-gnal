@@ -1,0 +1,179 @@
+:root {
+  /* Design tokens (from Figma) */
+  --color-bg: #1c1a1f;
+  --color-line: #ffffff;
+  --color-text-muted: #939393;
+  --color-pill-bg: rgba(79, 79, 79, 0.2);
+  --color-pill-bg-hover: rgba(79, 79, 79, 0.4);
+  --color-panel-bg: rgba(82, 81, 81, 0.2);
+  --color-panel-bg-dark: rgba(31, 31, 31, 0.2);
+  --color-woman: rgba(196, 134, 178, 0.2);
+  --color-woman-active: rgba(255, 3, 184, 0.2);
+  --color-man: rgba(41, 132, 202, 0.2);
+  --color-man-active: rgba(3, 140, 255, 0.2); /* Figma에 없는 상태 — woman 선택 상태를 참고해 임의 지정 */
+  --color-option-dim: rgba(53, 53, 53, 0.2);
+
+  --shadow-panel: 0 4px 7px 0 rgba(255, 255, 255, 0.25);
+  /* Figma "Glass" effect approximation */
+  --shadow-glass: inset 1px 1px 0 rgba(255, 255, 255, 0.22), inset -1px -1px 0 rgba(255, 255, 255, 0.08);
+
+  --font-mono: 'Victor Mono', ui-monospace, monospace;
+  /* Platelet(Emigre)은 웹폰트로 포함하지 않았어요. 설치되어 있으면 사용, 없으면 Victor Mono Light */
+  --font-display: 'Platelet', 'Platelet-Thin', 'Platelet Thin', var(--font-mono);
+
+  --ease-camera: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #000;
+  color: var(--color-line);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+/* Shared: glass pill (Figma "Frame 7/8", "Frame 5") */
+.pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5.8px 19.057px 12.429px;
+  border: 0;
+  border-radius: 165.714px;
+  background: var(--color-pill-bg);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(4px);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 39.771px;
+  letter-spacing: -0.6px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+}
+
+button.pill {
+  cursor: pointer;
+}
+
+button.pill:hover,
+button.pill:focus-visible {
+  background: var(--color-pill-bg-hover);
+  color: var(--color-line);
+  outline: none;
+}
+
+/* Shared: frosted panel (Figma "Rectangle 7/11") */
+.panel {
+  position: absolute;
+  border-radius: 32px;
+  background: var(--color-panel-bg);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(9.5px);
+}
+
+/* Stage-positioned decorative image */
+.layer {
+  position: absolute;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 14-segment display font for the time-setup console (npm: dseg, SIL OFL) */
+@font-face {
+  font-family: 'DSEG14 Classic';
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+  src: url('dseg/fonts/DSEG14-Classic/DSEG14Classic-Bold.woff2') format('woff2');
+}
+
+.grid-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* full-frame 1920×1080 artwork exported from Figma */
+.art {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* artwork whose SVG extends past the frame (dome ground) so tall/wide monitors stay filled */
+.art--bleed {
+  left: -800px;
+  width: 3520px;
+  height: 2300px;
+}
+
+.abs {
+  position: absolute;
+}
+
+/* Figma terminal panel (background 1–3, 접속중 1–3): diamond gradient #3c4e41 → #000 at 70%, 1px #cbcbcb border */
+.term-panel {
+  position: absolute;
+  left: 80px;
+  top: 50px;
+  width: 1760px;
+  height: 980px;
+  overflow: hidden;
+  border: 1px solid #cbcbcb;
+  border-radius: 16px;
+  background: var(--color-bg);
+  backdrop-filter: blur(4.85px);
+}
+.term-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  background:
+    linear-gradient(to top left, #3c4e41, #000) 0 0 / 50% 50% no-repeat,
+    linear-gradient(to top right, #3c4e41, #000) 100% 0 / 50% 50% no-repeat,
+    linear-gradient(to bottom left, #3c4e41, #000) 0 100% / 50% 50% no-repeat,
+    linear-gradient(to bottom right, #3c4e41, #000) 100% 100% / 50% 50% no-repeat;
+}

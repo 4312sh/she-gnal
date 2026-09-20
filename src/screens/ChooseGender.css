@@ -1,0 +1,90 @@
+.choose-gender {
+  position: absolute;
+  inset: 0;
+}
+
+.choose-gender__line {
+  left: 945.77px;
+  top: 0;
+  width: 28px;
+  height: 300px;
+}
+
+.choose-gender__panel {
+  left: 660px;
+  top: 324px;
+  width: 600px;
+  height: 400px;
+}
+
+.choose-gender__heading {
+  position: absolute;
+  top: 388px;
+  left: calc(50% + 1px);
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  white-space: nowrap;
+}
+
+.choose-gender__option {
+  position: absolute;
+  left: 728px;
+  width: 464px;
+  height: 82px;
+}
+.choose-gender__option--woman { background: var(--color-woman); }
+.choose-gender__option--man   { background: var(--color-man); }
+
+button.choose-gender__option--woman:hover,
+button.choose-gender__option--woman:focus-visible,
+.choose-gender__option--woman.is-active { background: var(--color-woman-active); }
+button.choose-gender__option--man:hover,
+button.choose-gender__option--man:focus-visible,
+.choose-gender__option--man.is-active   { background: var(--color-man-active); }
+
+.choose-gender__option.is-dimmed,
+button.choose-gender__option.is-dimmed:hover {
+  background: var(--color-option-dim);
+}
+.has-selection .choose-gender__option { pointer-events: none; }
+
+/* Figma 743:32940 orbit (305×228 at 807, 809) + 11px bleed */
+.choose-gender__orbit {
+  position: absolute;
+  left: 796px;
+  top: 798px;
+  width: 328px;
+  height: 250px;
+}
+.choose-gender__orbit img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease;
+}
+.choose-gender__orbit-idle {
+  animation: orbit-float 5s ease-in-out infinite;
+}
+.choose-gender__orbit-selected {
+  opacity: 0;
+  transform-origin: 163px 122px;
+}
+.has-selection .choose-gender__orbit-idle { opacity: 0; }
+.has-selection .choose-gender__orbit-selected {
+  opacity: 1;
+  animation: orbit-tune 1.4s var(--ease-camera) both;
+}
+
+@keyframes orbit-float {
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes orbit-tune {
+  from { transform: rotate(-35deg) scale(0.9); }
+  to { transform: rotate(0deg) scale(1); }
+}

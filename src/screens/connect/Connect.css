@@ -1,0 +1,66 @@
+.terminal {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  text-align: left;
+  isolation: isolate;
+}
+.terminal:focus-visible { outline: none; }
+
+/* ── symbol parts ── */
+.bg-art {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* axes + centre ring: open out from the centre */
+.bg-art--axes {
+  animation: axes-open 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both;
+}
+@keyframes axes-open {
+  from { clip-path: inset(50% 50% 50% 50%); opacity: 0; }
+  30%  { opacity: 1; }
+  to   { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+/* rings: fly in toward their orbit, then drift */
+.bg-art--ring {
+  transform-origin: var(--cx, 960px) var(--cy, 540px);
+  animation:
+    ring-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0.5s) both,
+    ring-drift 4.8s ease-in-out calc(var(--delay, 0.5s) + 1.4s) infinite alternate;
+}
+@keyframes ring-in {
+  from { opacity: 0; transform: translate(var(--from-x, 0), var(--from-y, 0)) scale(0.4); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes ring-drift {
+  to { transform: translate(var(--drift-x, 0), var(--drift-y, 0)); }
+}
+
+/* ── text ── */
+.connect-log     { left: 159px; top: 132px; }
+.connect-wave    { left: 159px; top: 901px; }
+.connect-lost    { left: 159px; top: 833px; }
+.connect-signal  { left: 159px; top: 901px; }
+
+.signal-lost {
+  animation: glitch-shift 2.6s steps(1) infinite;
+}
+@keyframes glitch-shift {
+  0%, 100% { transform: none; opacity: 1; }
+  92% { transform: translateX(3px); opacity: 0.6; }
+  94% { transform: translateX(-4px); opacity: 1; }
+  96% { transform: none; opacity: 0.4; }
+}
+
+.receiving__dots {
+  animation: tw-blink 1.2s steps(1) infinite;
+}

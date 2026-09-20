@@ -1,0 +1,25 @@
+.ascii-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 6px 10px;
+  overflow: hidden;
+  pointer-events: none;
+  background: rgba(3, 4, 4, 0.55);
+  color: #b9f5cf;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  line-height: 29px;
+  letter-spacing: 0;
+  white-space: pre;
+  text-shadow: 0 0 6px rgba(120, 230, 160, 0.55);
+  animation: ascii-burst 1s steps(12) forwards;
+}
+
+@keyframes ascii-burst {
+  0%   { opacity: 0; clip-path: inset(48% 0 48% 0); }
+  15%  { opacity: 1; clip-path: inset(0 0 0 0); }
+  55%  { opacity: 0.9; }
+  100% { opacity: 0; clip-path: inset(0 0 0 0); }
+}

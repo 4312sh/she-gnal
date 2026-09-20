@@ -1,0 +1,75 @@
+.time-ready {
+  cursor: progress;
+}
+
+.time-ready__gauge {
+  position: absolute;
+  left: 121px;
+  top: 850px;
+  width: 1678px;
+  height: 201px;
+}
+.time-ready__gauge svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ticks start dim and light up one by one (delay set per tick in TimeReady.tsx) */
+.gauge-tick {
+  opacity: 0.12;
+  animation: tick-on 0.35s ease-out forwards;
+}
+@keyframes tick-on {
+  0%   { opacity: 0.12; filter: none; }
+  45%  { opacity: 1; filter: drop-shadow(0 0 8px rgba(207, 255, 245, 0.9)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 3px rgba(207, 255, 245, 0.5)); }
+}
+
+.gauge-arc {
+  transform-box: fill-box;
+  transform-origin: 0 100%;
+  animation: arc-fill 1.8s cubic-bezier(0.45, 0, 0.3, 1) 0.5s both;
+}
+.gauge-arc--right { animation-delay: 2s; animation-duration: 1.7s; }
+@keyframes arc-fill {
+  from { transform: scaleX(0); opacity: 0.2; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+.gauge-needle {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: needle 3.2s cubic-bezier(0.3, 0, 0.2, 1) 0.5s both;
+}
+@keyframes needle {
+  0%   { transform: rotate(-58deg); }
+  70%  { transform: rotate(6deg); }
+  85%  { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.time-ready__bar {
+  justify-content: flex-start;
+  padding: 0 14px;
+  background: rgba(252, 252, 252, 0.2);
+}
+
+.time-ready__status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 114px;
+  margin: 0;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 56px;
+  letter-spacing: -0.8px;
+  white-space: pre;
+}
+.time-ready__pct {
+  margin-left: 18px;
+  font-size: 24px;
+  font-weight: 300;
+  color: #cfe9e2;
+}

@@ -1,0 +1,132 @@
+.enter-name {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+}
+
+.enter-name__lines {
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+}
+
+/* "enter name - 2": bracket frame + downward line, drawn after submit */
+.enter-name__expand {
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1544px;
+  opacity: 0;
+  clip-path: inset(0 50% 100% 50%);
+  transition: opacity 0.4s ease, clip-path 0.9s var(--ease-camera);
+}
+.is-submitted .enter-name__expand {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+.enter-name__panel {
+  left: 660px;
+  top: 388px;
+  width: 600px;
+  height: 400px;
+}
+
+.enter-name__heading {
+  position: absolute;
+  top: 451px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.enter-name__field {
+  position: absolute;
+  left: 700px;
+  width: 517px;
+  height: 58.229px;
+  outline: none;
+  color: var(--color-line);
+  text-transform: none;
+}
+.enter-name__field::placeholder {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  opacity: 1;
+}
+.enter-name__field:focus {
+  background: var(--color-pill-bg-hover);
+}
+.enter-name__field--name { top: 587px; }
+.enter-name__field--age  { top: 664px; }
+
+.enter-name__sphere {
+  position: absolute;
+  left: 884.09px;
+  top: 878px;
+  width: 151.813px;
+  height: 152px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.enter-name__sphere img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  transition: opacity 0.6s ease, transform 0.9s var(--ease-camera);
+}
+.enter-name__sphere-small {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: sphere-spin 24s linear infinite;
+}
+/* 273.7px sphere centred where Figma places it (823.5, 889.6) */
+.enter-name__sphere-large {
+  left: -60.64px;
+  top: 11.64px;
+  width: 274px;
+  height: 274px;
+  opacity: 0;
+  transform: scale(0.55);
+}
+.enter-name__sphere:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+.enter-name__sphere:not(:disabled):hover,
+.enter-name__sphere:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.35));
+}
+
+.is-submitted .enter-name__sphere { opacity: 1; }
+.is-submitted .enter-name__sphere-small { opacity: 0; transform: scale(1.8); }
+.is-submitted .enter-name__sphere-large { opacity: 1; transform: scale(1); }
+
+@keyframes sphere-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* "enter name - 2": the form settles 31px lower inside the bracket frame */
+.enter-name__panel,
+.enter-name__heading,
+.enter-name__field {
+  transition: translate 0.9s var(--ease-camera), background-color 0.2s ease;
+}
+.is-submitted .enter-name__panel,
+.is-submitted .enter-name__heading,
+.is-submitted .enter-name__field {
+  translate: 0 31px;
+}

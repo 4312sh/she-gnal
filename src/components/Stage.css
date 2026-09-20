@@ -1,0 +1,17 @@
+.stage-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  transition: background-color 0.3s ease;
+}
+.stage-viewport--black {
+  background: #030304;
+}
+
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+}

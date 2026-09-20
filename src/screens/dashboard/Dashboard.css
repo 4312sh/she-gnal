@@ -1,0 +1,198 @@
+/* Shared console styles — Figma "main dashboard" family (1920×1080 px) */
+.dash {
+  position: absolute;
+  inset: 0;
+  font-family: var(--font-mono);
+  color: #fff;
+}
+
+/* glass pill (GLASS effect ≈ inset highlights) */
+.dash-pill {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 165.714px;
+  background: rgba(79, 79, 79, 0.2);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(4px);
+  color: #939393;
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: -0.48px;
+  line-height: 34px;
+  white-space: nowrap;
+}
+button.dash-pill { cursor: pointer; transition: background-color 0.2s, color 0.2s; }
+button.dash-pill:hover:not(:disabled),
+button.dash-pill:focus-visible { background: rgba(79, 79, 79, 0.45); color: #fff; outline: none; }
+
+/* outlined tag: TOTAL SIGNAL / LAST SIGNAL / unlockedMemories */
+.dash-tag {
+  position: absolute;
+  padding: 4px 10px;
+  border: 1px solid #adadad;
+  border-radius: 8px;
+  color: #939393;
+  font-size: 24px;
+  letter-spacing: -0.48px;
+  line-height: 34px;
+  white-space: nowrap;
+}
+
+.dash-value {
+  position: absolute;
+  margin: 0;
+  color: #ba4b74;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 34px;
+  white-space: pre;
+}
+.dash-value .light { font-weight: 300; }
+.dash-value .small { font-size: 18px; }
+
+/* glass label box: MONTH / DAY … */
+.dash-label {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px solid #c2c2c2;
+  background: rgba(252, 252, 252, 0.2);
+  backdrop-filter: blur(9.7px);
+  font-size: 24px;
+  line-height: 34px;
+  letter-spacing: 0.19em;
+  text-indent: 0.19em;
+}
+.dash-label--r8 { border-radius: 8px; }
+.dash-label--small { font-size: 16px; line-height: 23px; letter-spacing: 0; text-indent: 0; color: #cbcbcb; }
+
+/* 14-segment display */
+.seg {
+  position: absolute;
+  height: 104px;
+  padding: 0;
+  border: 3px solid #97a2a0;
+  border-radius: 8px;
+  background: #000;
+  cursor: text;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.seg.is-focused {
+  border-color: #e6ecea;
+  box-shadow: 0 0 0 1px rgba(255, 23, 23, 0.35), 0 0 18px rgba(255, 23, 23, 0.25);
+}
+.seg__ghost,
+.seg__value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'DSEG14 Classic', var(--font-mono);
+  font-weight: 700;
+  font-size: 64px;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  line-height: 1;
+  white-space: pre;
+  pointer-events: none;
+}
+.seg__ghost { color: #4a0000; }
+.seg__value { color: #ff1717; text-shadow: 0 0 10px rgba(255, 23, 23, 0.45); }
+.seg.is-focused .seg__value::after {
+  content: '';
+}
+.seg__caret {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  width: 36px;
+  height: 4px;
+  translate: -50% 0;
+  background: #ff1717;
+  animation: tw-blink 1s steps(1) infinite;
+}
+
+/* AM / PM */
+.ampm {
+  position: absolute;
+  width: 68px;
+  height: 45px;
+  padding: 0;
+  border: 1px solid #c2c2c2;
+  background: rgba(95, 95, 95, 0.2);
+  backdrop-filter: blur(9.7px);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.19em;
+  text-indent: 0.19em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.ampm.is-on { background: rgba(220, 37, 37, 0.2); }
+.ampm:focus-visible { outline: 1px solid #fff; }
+.ampm:disabled { cursor: default; }
+
+/* level gauges (right of the top console) */
+.level {
+  position: absolute;
+  width: 45px;
+  height: 208px;
+  overflow: hidden;
+  border: 1px solid #c2c2c2;
+  border-radius: 8px;
+  background: rgba(252, 252, 252, 0.2);
+  backdrop-filter: blur(9.7px);
+}
+.level__fill {
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 1px solid #c2c2c2;
+  border-radius: 8px;
+  transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.level--pink .level__fill { background: rgba(220, 37, 110, 0.28); }
+.level--blue .level__fill { background: rgba(0, 95, 211, 0.3); }
+.level--grey .level__fill { background: rgba(252, 252, 252, 0.2); }
+
+/* readouts inside the top console */
+.readout {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c2c2c2;
+  border-radius: 8px;
+  background: rgba(252, 252, 252, 0.1);
+  backdrop-filter: blur(9.7px);
+  color: #cbcbcb;
+  font-size: 16px;
+  line-height: 23px;
+  white-space: pre;
+}
+
+.side-readout {
+  position: absolute;
+  color: #cfe9e2;
+  font-size: 16px;
+  line-height: 23px;
+  white-space: pre;
+  text-align: center;
+}
+
+.planet-pulse {
+  animation: planet-pulse 4s ease-in-out infinite;
+  transform-origin: 958px 333px;
+}
+@keyframes planet-pulse {
+  50% { filter: brightness(1.25); }
+}

@@ -1,0 +1,123 @@
+/* All coordinates are Figma px on the 1920×1080 stage (Figma 743:26273). */
+.opening-title {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.opening-title:focus-visible {
+  outline: none;
+}
+
+/* ── 1. Corner brackets: drawn outward from each elbow (0.2s – 1.5s) ── */
+.opening-title__corner {
+  width: 162.969px;
+  height: 162.969px;
+  animation: corner-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.opening-title__corner--tl { left: 75.27px;   top: 56.27px;  --from: inset(0 100% 100% 0); animation-delay: 0.2s; }
+.opening-title__corner--tr { left: 1681.27px; top: 56.27px;  --from: inset(0 0 100% 100%); animation-delay: 0.35s; }
+.opening-title__corner--br { left: 1681.27px; top: 857.27px; --from: inset(100% 0 0 100%); animation-delay: 0.5s; }
+.opening-title__corner--bl { left: 75.27px;   top: 857.27px; --from: inset(100% 100% 0 0); animation-delay: 0.65s; }
+
+@keyframes corner-draw {
+  from { clip-path: var(--from); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ── 2. Signature symbol: spins around the vertical axis (1.4s – 3.8s) ── */
+.opening-title__symbol-wrap {
+  position: absolute;
+  left: 485px;
+  top: 106px;
+  width: 950.748px;
+  height: 577px;
+  perspective: 1800px;
+  pointer-events: none;
+}
+.opening-title__symbol {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  animation: symbol-spin 2.4s cubic-bezier(0.22, 1, 0.36, 1) 1.4s both;
+}
+
+@keyframes symbol-spin {
+  0%   { opacity: 0; transform: rotateY(-540deg) scale(0.86); filter: blur(4px); }
+  25%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: rotateY(0deg) scale(1); filter: blur(0); }
+}
+
+/* ── 3a. Logo: opens from the centre dash (3.5s – 4.3s) ── */
+.opening-title__logo {
+  left: 818.9px;
+  top: 766.7px;
+  width: 282.8px;
+  height: 48.4px;
+  animation: logo-open 0.9s cubic-bezier(0.65, 0, 0.35, 1) 3.5s both;
+}
+
+/* starts as the "—" between she / gnal, stretches into a scan line, then opens */
+@keyframes logo-open {
+  0%   { clip-path: inset(60% 48% 34% 36%); opacity: 0; }
+  15%  { clip-path: inset(60% 48% 34% 36%); opacity: 1; }
+  55%  { clip-path: inset(60% 0 34% 0); opacity: 1; }
+  100% { clip-path: inset(-10% -2% -10% -2%); opacity: 1; }
+}
+
+/* ── 3b. Prompt: fades up, then breathes (4.1s – ) ── */
+.opening-title__prompt {
+  position: absolute;
+  top: 916px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 5.8px 19.057px 12.429px;
+  border-radius: 165.714px;
+  background: var(--color-pill-bg);
+  box-shadow: var(--shadow-glass);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  animation:
+    prompt-in 0.7s ease-out 4.1s both,
+    prompt-breathe 2.8s ease-in-out 5s infinite;
+}
+
+@keyframes prompt-in {
+  from { opacity: 0; transform: translateY(14px); filter: blur(3px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes prompt-breathe {
+  50% { opacity: 0.55; }
+}
+
+.is-intro-done:hover .opening-title__prompt,
+.is-intro-done:focus-visible .opening-title__prompt {
+  color: var(--color-line);
+  background: var(--color-pill-bg-hover);
+  animation: none;
+}
+
+/* Skip: jump every intro animation to its final frame */
+.is-intro-done .opening-title__corner,
+.is-intro-done .opening-title__symbol,
+.is-intro-done .opening-title__logo {
+  animation: none;
+}
+.is-intro-done .opening-title__prompt {
+  animation: prompt-breathe 2.8s ease-in-out 0.8s infinite;
+}

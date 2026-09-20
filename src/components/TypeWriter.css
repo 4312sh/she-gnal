@@ -1,0 +1,37 @@
+.typewriter {
+  position: absolute;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 34px;
+  color: var(--color-line);
+  white-space: pre;
+}
+
+.typewriter__line {
+  position: relative;
+  min-height: 34px;
+}
+
+.typewriter__ghost {
+  visibility: hidden;
+}
+
+.typewriter__glitch {
+  display: inline-block;
+  color: rgba(160, 220, 180, 0.85);
+  text-shadow: 0 0 6px rgba(120, 220, 160, 0.6);
+}
+
+.typewriter__cursor {
+  position: absolute;
+  display: inline-block;
+  margin-left: 2px;
+  color: rgba(200, 255, 215, 0.9);
+  animation: tw-blink 0.9s steps(1) infinite;
+}
+
+@keyframes tw-blink {
+  50% { opacity: 0; }
+}

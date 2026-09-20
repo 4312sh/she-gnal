@@ -1,0 +1,30 @@
+.main-dash__name {
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* invisible hit area over the dome (Figma Vector 697:10120) with a breathing glow */
+.main-dash__dome {
+  position: absolute;
+  left: 507px;
+  top: 541px;
+  width: 906px;
+  height: 396px;
+  padding: 0;
+  border: 0;
+  border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
+  background: radial-gradient(ellipse at 50% 70%, rgba(255, 90, 110, 0.18), transparent 65%);
+  cursor: pointer;
+  animation: dome-breathe 3.2s ease-in-out infinite;
+  transition: filter 0.3s;
+}
+.main-dash__dome:hover,
+.main-dash__dome:focus-visible {
+  outline: none;
+  filter: brightness(1.8);
+  background: radial-gradient(ellipse at 50% 70%, rgba(255, 90, 110, 0.32), transparent 68%);
+}
+@keyframes dome-breathe {
+  50% { opacity: 0.45; }
+}

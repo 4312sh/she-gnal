@@ -1,0 +1,52 @@
+.signal {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+.signal:focus-visible { outline: none; }
+
+
+.sig-log         { left: 159px;  top: 132px; }
+.sig-wave        { left: 159px;  top: 356px; }
+.sig-lost        { left: 159px;  top: 478px; }
+.sig-progress    { left: 1247px; top: 878px; }
+.sig-destination { left: 229px;  top: 696px; }
+.sig-receiving   { left: 229px;  top: 899px; }
+
+.tunnel__rect {
+  position: absolute;
+  border: var(--w) solid #585858;
+  opacity: 0;
+  animation:
+    tunnel-in 0.5s ease-out var(--d) forwards,
+    tunnel-pulse 2.4s ease-in-out calc(var(--d) + 0.5s) infinite;
+}
+@keyframes tunnel-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes tunnel-pulse {
+  50% { opacity: 0.55; }
+}
+
+.planet {
+  position: absolute;
+  left: 80px;
+  top: 50px;
+  width: 1760px;
+  height: 980px;
+  max-width: none;
+  pointer-events: none;
+  animation: planet-in 2.2s cubic-bezier(0.22, 1, 0.36, 1) both, planet-breathe 6s ease-in-out 2.2s infinite;
+}
+@keyframes planet-in {
+  from { opacity: 0; transform: scale(1.12); filter: blur(6px); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+@keyframes planet-breathe {
+  50% { transform: scale(1.015); opacity: 0.85; }
+}
