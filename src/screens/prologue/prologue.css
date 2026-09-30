@@ -1,0 +1,563 @@
+/* =========================================================================
+   Chapter 0. Prologue — 오프닝 ~ 0.2번
+   좌표는 전부 Figma 1920×1080 아트보드 기준 (Stage가 비율 유지로 스케일)
+   ========================================================================= */
+
+:root {
+  /* 프롤로그 팔레트 */
+  --pr-bg: #2a2722;
+  --pr-panel: rgba(32, 32, 32, 0.9);
+  --pr-panel-solid: #202020;
+  --pr-frame: #d5d2cd;
+  --pr-text: #ffffff;
+  --pr-text-dim: #8f8f8f;
+  --pr-btn-border: #786d60;
+  --pr-btn-bg: rgba(54, 54, 54, 0.8);
+  --pr-btn-text: #c3c3c3;
+  --pr-sepia: #4e4835;
+
+  /* 명조 계열. SM KMyungJo / SM JMyungJo Std 는 상용 폰트라 미포함.
+     Nanum Myeongjo(Google Fonts)로 대체 표시한다. */
+  --pr-font-myungjo: 'SM JMyungJo Std', 'SM KMyungJo Std', 'Nanum Myeongjo',
+    'Noto Serif KR', serif;
+  --pr-font-serif-black: 'Noto Serif KR', 'Nanum Myeongjo', serif;
+  --pr-font-mono: 'Victor Mono', ui-monospace, monospace;
+}
+
+/* 모든 프롤로그 화면의 공통 루트 --------------------------------------- */
+.pr-screen {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--pr-bg);
+  user-select: none;
+}
+
+/* =========================================================================
+   배경 스택 (856:71 / 856:76 / 856:94 / 856:797 공통)
+   image 28 을 -90° 회전해 깔고 그 위에 보정 레이어를 얹는다.
+   ========================================================================= */
+
+.pr-bg-plate {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 내보낸 PNG 가 이미 가로 방향이고 opacity 0.7 도 구워져 있어
+   Figma 의 -90° 회전과 opacity 는 코드에서 걸지 않는다. */
+.pr-bg-plate__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 856:73 / 856:96 / 856:799 — hue 블렌드 한기(寒氣) 레이어 */
+.pr-grade-hue {
+  position: absolute;
+  left: 3px;
+  top: -87px;
+  width: 1918px;
+  height: 1357px;
+  mix-blend-mode: hue;
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 16, 27, 0.56) 6.25%,
+    #1a0d0d 75%
+  );
+  pointer-events: none;
+}
+
+/* 856:78 / 856:97 / 856:800 — exclusion 블렌드 바랜 종이 레이어 */
+.pr-grade-exclusion {
+  position: absolute;
+  mix-blend-mode: exclusion;
+  background: linear-gradient(
+    to bottom,
+    rgba(148, 170, 192, 0.39) 6.25%,
+    rgba(72, 46, 46, 0.7) 75%
+  );
+  pointer-events: none;
+}
+
+/* 856:79 — 타이틀 카드 화면의 세피아 multiply */
+.pr-grade-sepia {
+  position: absolute;
+  left: -4px;
+  top: -65px;
+  width: 1927px;
+  height: 1363px;
+  background: var(--pr-sepia);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* 856:69 / 856:74 / 856:98 / 856:801 — 하단 비네트 */
+.pr-vignette {
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    rgba(217, 217, 217, 0) 0.2%,
+    rgba(118, 115, 115, 0.35) 24.9%,
+    rgba(18, 12, 12, 0.7) 75.9%
+  );
+  pointer-events: none;
+}
+
+/* =========================================================================
+   856:68 — 프롤로그 오프닝 (튜닝 로그)
+   ========================================================================= */
+
+.pr-opening {
+  background: var(--pr-bg);
+}
+
+.pr-opening__vignette {
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 900px;
+}
+
+.pr-opening__log {
+  position: absolute;
+  left: calc(50% + 3px);
+  top: calc(50% - 100px);
+  transform: translateX(-50%);
+  width: 550px;
+  margin: 0;
+  font-family: var(--pr-font-mono);
+  font-weight: 300;
+  font-size: 24px;
+  line-height: normal;
+  text-align: center;
+  color: var(--pr-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pr-opening__log-line {
+  margin: 0;
+  min-height: 1em;
+  opacity: 0;
+  animation: pr-log-in 0.42s steps(6, end) forwards;
+}
+
+@keyframes pr-log-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* 신호가 약하다는 인상을 주는 미세 깜빡임 */
+.pr-opening__log--live {
+  animation: pr-signal-flicker 3.6s steps(24, end) infinite;
+}
+
+@keyframes pr-signal-flicker {
+  0%,
+  92%,
+  100% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.55;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.72;
+  }
+  97% {
+    opacity: 1;
+  }
+}
+
+/* =========================================================================
+   856:71 — 오프닝 인용구
+   ========================================================================= */
+
+.pr-quote__plate {
+  left: 49px;
+  top: -32px;
+  width: 1826px;
+  height: 1322px;
+}
+
+
+.pr-quote__vignette {
+  left: -2px;
+  bottom: -134px;
+  width: 1923px;
+  height: 642px;
+}
+
+.pr-quote__text {
+  position: absolute;
+  left: calc(70.83% - 388px);
+  top: 801px;
+  margin: 0;
+  font-family: var(--pr-font-myungjo);
+  font-size: 40px;
+  line-height: 61px;
+  letter-spacing: -0.8px;
+  color: var(--pr-text);
+  white-space: nowrap;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
+}
+
+.pr-quote__line {
+  margin: 0;
+  opacity: 0;
+  animation: pr-fade-up 1.1s ease-out forwards;
+}
+
+@keyframes pr-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =========================================================================
+   856:76 — 프롤로그 시작 (챕터 타이틀 카드)
+   ========================================================================= */
+
+.pr-title {
+  background: #ffffff;
+}
+
+.pr-title__plate {
+  left: -4px;
+  top: -26px;
+  width: 1928px;
+  height: 1397px;
+}
+
+
+.pr-title__grade-exclusion {
+  left: -53px;
+  top: -83px;
+  width: 2025px;
+  height: 1433px;
+}
+
+/* 856:80 — 안내문 액자 */
+/* 856:80 — 손그림 액자 (notice-frame.svg, 원본 520x310)
+   SVG 내부 어두운 판이 (37.65, 28) 에서 시작하고 Figma 절대좌표가
+   (739, 558) 이라 좌상단을 (701.35, 530) 에 맞춘다. */
+.pr-notice-frame {
+  position: absolute;
+  left: 701.35px;
+  top: 530px;
+  width: 520px;
+  height: 310px;
+}
+
+.pr-title__card-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--pr-font-myungjo);
+  font-size: 24px;
+  line-height: 48px;
+  letter-spacing: -0.48px;
+  text-align: center;
+  color: var(--pr-text);
+  white-space: nowrap;
+}
+
+.pr-title__card-text--1 {
+  top: 640px;
+}
+.pr-title__card-text--2 {
+  top: 688px;
+}
+
+/* 타이틀 카드 진입 연출 */
+.pr-title__reveal {
+  opacity: 0;
+  animation: pr-fade-in 0.9s ease-out forwards;
+}
+
+@keyframes pr-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================================================
+   챕터 배지 (856:83 / 856:99 / 856:802) — 장식 배너 + 라벨
+   크기만 다르고 비율은 동일해서 --pr-badge-w 하나로 스케일한다.
+   ========================================================================= */
+
+.pr-badge {
+  position: absolute;
+  width: var(--pr-badge-w);
+  /* 원본 704.992 × 306.078 → 0.43416 */
+  height: calc(var(--pr-badge-w) * 0.43416);
+}
+
+/* SVG 원본 707x309 vs 프레임 704.992x306.078 */
+.pr-badge__art {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: -0.59%;
+  width: 100.285%;
+  height: 100.955%;
+}
+
+.pr-badge__label {
+  position: absolute;
+  left: 52%;
+  top: 45.7%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-family: var(--pr-font-myungjo);
+  /* 28.559 / 704.992 = 0.04051 */
+  font-size: calc(var(--pr-badge-w) * 0.04051);
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--pr-text);
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   856:94 / 856:797 — 도착 화면
+   ========================================================================= */
+
+.pr-arrival__plate {
+  left: 81px;
+  top: 0;
+  width: 1762px;
+  height: 1277px;
+}
+
+
+.pr-arrival__grade-exclusion {
+  left: 4px;
+  top: -49px;
+  width: 1916px;
+  height: 1216px;
+}
+
+.pr-arrival__vignette {
+  left: 0;
+  bottom: -37px;
+  width: 1920px;
+  height: 575px;
+}
+
+/* 856:99 — 챕터 배지 */
+.pr-arrival__badge {
+  left: 112px;
+  top: 31px;
+  --pr-badge-w: 390px;
+}
+
+/* 856:108 — 상단 내레이션 바 */
+.pr-arrival__header {
+  position: absolute;
+  left: calc(33.33% + 11px);
+  top: 82px;
+  width: 1040px;
+  height: 66px;
+  box-sizing: border-box;
+  background: var(--pr-panel);
+  border: 12px solid var(--pr-frame);
+  border-radius: 13px;
+}
+
+.pr-arrival__header-text {
+  position: absolute;
+  left: calc(62.5% - 28px);
+  top: 91px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--pr-font-myungjo);
+  font-size: 24px;
+  line-height: 48px;
+  letter-spacing: -0.48px;
+  text-align: center;
+  color: var(--pr-text);
+  white-space: nowrap;
+}
+
+/* 856:109 — 하단 2줄 대사창 */
+.pr-arrival__log {
+  position: absolute;
+  left: calc(8.33% + 69px);
+  top: 830px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--pr-font-myungjo);
+  line-height: normal;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+}
+
+.pr-arrival__log-prev,
+.pr-arrival__log-curr {
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* 직전 줄 — 856:110 */
+.pr-arrival__log-prev {
+  font-size: 24px;
+  letter-spacing: -0.48px;
+  color: var(--pr-text-dim);
+  min-height: 34px;
+}
+
+/* 현재 줄 — 856:111 / 856:812 */
+.pr-arrival__log-curr {
+  font-size: 32px;
+  letter-spacing: -0.64px;
+  color: var(--pr-text);
+  min-height: 45px;
+}
+
+.pr-arrival__log-curr--enter {
+  animation: pr-line-in 0.35s ease-out;
+}
+
+@keyframes pr-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 타이핑 커서 */
+.pr-caret {
+  display: inline-block;
+  width: 0.5em;
+  margin-left: 0.08em;
+  animation: pr-caret-blink 1s steps(2, end) infinite;
+}
+
+@keyframes pr-caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 클릭해서 다음 줄로 — 우하단 안내 */
+.pr-arrival__hint {
+  position: absolute;
+  right: 72px;
+  bottom: 48px;
+  margin: 0;
+  font-family: var(--pr-font-mono);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  animation: pr-hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pr-hint-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* 856:813 — 들어간다 버튼 */
+.pr-enter-btn {
+  position: absolute;
+  left: calc(50% - 0.28px);
+  top: 898px;
+  transform: translateX(-50%);
+  width: 257.435px;
+  height: 77.858px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 5.023px solid var(--pr-btn-border);
+  border-radius: 5.023px;
+  background: var(--pr-btn-bg);
+  backdrop-filter: blur(2.512px);
+  -webkit-backdrop-filter: blur(2.512px);
+  box-shadow: inset 0 5.023px 12.558px 12.558px rgba(0, 0, 0, 0.5);
+  font-family: var(--pr-font-serif-black);
+  font-weight: 900;
+  font-size: 25.116px;
+  line-height: 40.311px;
+  letter-spacing: -0.5023px;
+  color: var(--pr-btn-text);
+  cursor: pointer;
+  opacity: 0;
+  animation: pr-fade-up 0.5s ease-out 0.15s forwards;
+  transition: color 0.18s ease, border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.pr-enter-btn:hover,
+.pr-enter-btn:focus-visible {
+  color: #f0ede8;
+  border-color: var(--pr-frame);
+  background: rgba(70, 70, 70, 0.86);
+  outline: none;
+}
+
+.pr-enter-btn:active {
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* 클릭으로 진행되는 화면 전체 히트 영역 */
+.pr-advance-layer {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pr-opening__log-line,
+  .pr-quote__line,
+  .pr-title__reveal,
+  .pr-enter-btn,
+  .pr-arrival__log-curr--enter {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    opacity: 1 !important;
+  }
+  .pr-opening__log--live,
+  .pr-arrival__hint,
+  .pr-caret {
+    animation: none !important;
+  }
+}

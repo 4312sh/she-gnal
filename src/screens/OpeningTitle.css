@@ -31,28 +31,15 @@
   to   { clip-path: inset(0 0 0 0); }
 }
 
-/* ── 2. Signature symbol: spins around the vertical axis (1.4s – 3.8s) ── */
-.opening-title__symbol-wrap {
-  position: absolute;
-  left: 485px;
-  top: 106px;
-  width: 950.748px;
-  height: 577px;
-  perspective: 1800px;
-  pointer-events: none;
-}
-.opening-title__symbol {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  transform-origin: 50% 50%;
-  animation: symbol-spin 2.4s cubic-bezier(0.22, 1, 0.36, 1) 1.4s both;
+/* ── 2. Gyro symbol: fades in, then keeps tumbling until the first click (1.4s – ) ──
+   위치·링 스타일은 components/GyroSymbol.css */
+.opening-title__gyro {
+  animation: gyro-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.4s both;
 }
 
-@keyframes symbol-spin {
-  0%   { opacity: 0; transform: rotateY(-540deg) scale(0.86); filter: blur(4px); }
-  25%  { opacity: 1; filter: blur(0); }
-  100% { opacity: 1; transform: rotateY(0deg) scale(1); filter: blur(0); }
+@keyframes gyro-in {
+  from { opacity: 0; transform: scale(0.86); filter: blur(4px); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
 }
 
 /* ── 3a. Logo: opens from the centre dash (3.5s – 4.3s) ── */
@@ -105,8 +92,13 @@
   50% { opacity: 0.55; }
 }
 
-.is-intro-done:hover .opening-title__prompt,
-.is-intro-done:focus-visible .opening-title__prompt {
+/* 고정 중에는 클릭이 안 먹으므로 기본 커서 */
+.opening-title.is-locked:not(.is-settled) {
+  cursor: default;
+}
+
+.is-settled:hover .opening-title__prompt,
+.is-settled:focus-visible .opening-title__prompt {
   color: var(--color-line);
   background: var(--color-pill-bg-hover);
   animation: none;
@@ -114,7 +106,7 @@
 
 /* Skip: jump every intro animation to its final frame */
 .is-intro-done .opening-title__corner,
-.is-intro-done .opening-title__symbol,
+.is-intro-done .opening-title__gyro,
 .is-intro-done .opening-title__logo {
   animation: none;
 }

@@ -12,21 +12,15 @@ import { MainDashboard } from './screens/dashboard/MainDashboard'
 import { TimeSetup } from './screens/dashboard/TimeSetup'
 import { TimeReady } from './screens/dashboard/TimeReady'
 import { Signal1, Signal2, Signal3 } from './screens/signal/SignalScreens'
-import PrologueFlow, { type ChatStage, type PrologueStep } from './screens/prologue/PrologueFlow'
+import PrologueFlow from './screens/prologue/PrologueFlow'
 import { formatNow, nearestEra, type TargetTime } from './game/eras'
 import { loadPlayer, savePlayer } from './game/storage'
 import type { Player, ScreenId } from './game/types'
 
-// 개발용: ?screen=prologue&at=chat.identity 처럼 세부 단계를 지정한다
-const params = new URLSearchParams(window.location.search)
-const at = params.get('at') ?? ''
-const prologueStep = (at.split('.')[0] || undefined) as PrologueStep | undefined
-const prologueChatStage = (at.split('.')[1] || undefined) as ChatStage | undefined
-
 function App() {
   // 개발용: 주소 뒤에 ?screen=dashboard 처럼 붙이면 해당 화면부터 시작
   const [nav, setNav] = useState<{ screen: ScreenId; kind: TransitionKind }>(() => ({
-    screen: (params.get('screen') as ScreenId) || 'title',
+    screen: (new URLSearchParams(window.location.search).get('screen') as ScreenId) || 'title',
     kind: 'slide',
   }))
   const go = useCallback((screen: ScreenId, kind: TransitionKind = 'slide') => setNav({ screen, kind }), [])
@@ -129,8 +123,6 @@ function App() {
       case 'prologue':
         return (
           <PrologueFlow
-            startAt={prologueStep}
-            chatStartAt={prologueChatStage}
             // 챕터 1 화면이 아직 없어 대시보드로 돌려둔다
             onComplete={() => go('dashboard', 'crt')}
             onExit={() => go('dashboard', 'fade')}

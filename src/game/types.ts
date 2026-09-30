@@ -30,3 +30,5 @@ export type ScreenId =
   | 'signal1'
   | 'signal2'
   | 'signal3'
+  | 'prologue'
+	

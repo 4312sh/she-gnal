@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { GyroSymbol } from '../components/GyroSymbol'
 import symbol from '../assets/title/symbol.svg'
 import logo from '../assets/title/logo.svg'
 import cornerTL from '../assets/title/corner-tl.svg'
@@ -18,12 +19,15 @@ const INTRO_MS = 4800
 /**
  * Figma: "opening - title" (743:26273)
  * Intro: 1) corner brackets draw out from their elbows
- *        2) signature symbol spins around its vertical axis
+ *        2) gyro symbol fades in and keeps tumbling (웹2.mov 느낌)
  *        3) logo opens from the centre dash, then the prompt fades up
- * Clicking during the intro skips to the end; the next click starts the game.
+ * 1st click : 인트로를 끝내고 심볼을 Figma 정지 포즈로 고정 (약 1.9초)
+ * 2nd click : 고정이 끝난 뒤 게임 시작. 고정 중 클릭은 무시
  */
 export function OpeningTitle({ onStart }: Props) {
   const [introDone, setIntroDone] = useState(false)
+  const [locked, setLocked] = useState(false)
+  const [settled, setSettled] = useState(false)
 
   useEffect(() => {
     const t = window.setTimeout(() => setIntroDone(true), INTRO_MS)
@@ -31,19 +35,26 @@ export function OpeningTitle({ onStart }: Props) {
   }, [])
 
   const handleClick = () => {
-    if (!introDone) {
+    if (!locked) {
       setIntroDone(true)
+      setLocked(true)
       return
     }
-    onStart?.()
+    if (settled) onStart?.()
   }
+
+  const stateClass = [
+    introDone && 'is-intro-done',
+    locked && 'is-locked',
+    settled && 'is-settled',
+  ].filter(Boolean).join(' ')
 
   return (
     <button
       type="button"
-      className={`opening-title${introDone ? ' is-intro-done' : ''}`}
+      className={`opening-title ${stateClass}`}
       onClick={handleClick}
-      aria-label={introDone ? 'She-gNAL 시작하기' : '인트로 건너뛰기'}
+      aria-label={settled ? 'She-gNAL 시작하기' : '신호 고정하기'}
       data-node-id="743:26273"
     >
       <img className="layer opening-title__corner opening-title__corner--tl" src={cornerTL} alt="" />
@@ -51,9 +62,9 @@ export function OpeningTitle({ onStart }: Props) {
       <img className="layer opening-title__corner opening-title__corner--bl" src={cornerBL} alt="" />
       <img className="layer opening-title__corner opening-title__corner--br" src={cornerBR} alt="" />
 
-      <span className="opening-title__symbol-wrap">
-        <img className="layer opening-title__symbol" src={symbol} alt="" />
-      </span>
+      <GyroSymbol className="opening-title__gyro" locked={locked} onSettled={() => setSettled(true)}>
+        <img src={symbol} alt="" draggable={false} />
+      </GyroSymbol>
       <img className="layer opening-title__logo" src={logo} alt="She-gNAL" />
 
       <span className="opening-title__prompt">sign at that time</span>
