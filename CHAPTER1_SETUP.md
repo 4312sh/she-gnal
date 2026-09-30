@@ -19,18 +19,27 @@
 
 좌하단 `CH1 · 단계 · LIVE / FALLBACK` 은 개발 모드에서만 보인다.
 
-## 그림 넣기 (Figma → PNG 2x)
+## 그림 · 테두리
 
-넣기만 하면 코드 수정 없이 바뀐다. 없으면 프롤로그 그림이 자리를 채운다.
+받은 원본을 화면 크기에 맞게 줄여 넣었다.
 
-| 파일 | Figma 레이어 |
-|---|---|
-| `src/assets/chapter1/room-sketch.png` | 929:5256 "image 30" (하숙방 스케치) |
-| `src/assets/chapter1/her-1914.png` | 929:5282 "챕터 1" (열여덟 살 그녀) |
-| `src/assets/character/portrait-1914.png` | 936:6419 "챕터 2" (해금된 초상) |
-| `src/assets/character/portrait-1914-locked.png` | 936:6264 "챕터 2" (잠긴 초상) |
+| 파일 | 원본 | 쓰는 곳 |
+|---|---|---|
+| `src/assets/chapter1/room-sketch.webp` | 책상_의자.png | 챕터 1 배경 (blur 4.44px · 70% 는 CSS) |
+| `src/assets/chapter1/her-1914.png` | 1913-1919_혜석_1.png | 챕터 1 인물 · 캐릭터 화면 초상 (잠기면 실루엣) |
+| `src/assets/figures/her-1920.png` 외 | 1920-1927 / 1928-1935 / 1939- · 이젤.png | 다음 챕터용으로 보관 (아직 안 씀) |
+| `src/assets/ui/header-bar.svg` | 타이틀_바.svg | 채팅 상단 바 (프롤로그도 같이 바뀜) |
+| `src/assets/ui/tab.svg` · `tab-dim.svg` | 박스_3.svg | 캐릭터 탭 (활성 / 비활성) |
+| `src/assets/ui/record-slot.svg` | 박스_4.svg | 채팅 기록 칸 |
+| `src/assets/ui/tuning-box.svg` | 박스_5.svg | 접속 정보 판 |
+| `src/assets/ui/section-bar.svg` | 박스_6.svg | 대시보드 · 스토리 헤더 |
+| `src/assets/ui/square.svg` | 박스_7.svg | 헤더 옆 작은 네모 |
+| `src/assets/ui/story-row*.svg` | 챕터_박스.svg | 스토리 칸 (기본 / 선택 / 잠김 — 색만 바꾼 변형) |
+| `src/assets/ui/dashboard-box*.svg` | 박스_2.svg | 대시보드 판 (기본 / 스토리 선택 시 황토색) |
+| `src/assets/character/portrait-frame.svg` | 박스_1.svg | 초상 액자 |
 
-그림 파일을 넣은 뒤에는 `npm run dev` 를 한 번 껐다 켠다.
+제목.svg · 과거_설명.svg 는 이미 쓰고 있는 배너 · 액자(`prologue/chapter-banner.svg`, `notice-frame.svg`)와 같은 부품이라 그대로 두었다.
+늘려 쓰는 SVG 에는 `preserveAspectRatio="none"` 을 넣었다 (칸 높이가 달라도 폭이 줄지 않게).
 
 ## 파일
 

@@ -4,12 +4,10 @@ import herPortrait from '../../assets/prologue/her-portrait.png';
 /**
  * 챕터 1 전용 그림 두 장
  *
- *   room-sketch.png   929:5256 "image 30"  하숙방 스케치 (회전 · blur · 70% 불투명도가 구워진 채 내보낸 것)
- *   her-1914.png      929:5282 "챕터 1"    열여덟 살 그녀 (레이어 크기 451×1270 그대로 내보낸 것)
+ *   room-sketch.webp  929:5256 "image 30"  하숙방 스케치 (책상 · 의자). blur · 불투명도는 CSS 로 건다
+ *   her-1914.png      929:5282 "챕터 1"    열여덟 살 그녀 (1913-1919 단독 그림, 투명 배경)
  *
- * figma.com 에셋을 작업 환경에서 받을 수 없어서, 파일이 아직 없으면
- * 프롤로그 그림(응접실 · 1935년 그녀)으로 자리를 채운다.
- * `src/assets/chapter1/` 에 위 이름으로 넣기만 하면 코드 수정 없이 바뀐다.
+ * 파일이 없으면 프롤로그 그림(응접실 · 1935년 그녀)으로 자리를 채운다.
  */
 
 const optional = import.meta.glob('../../assets/chapter1/*.{png,webp,jpg}', {
@@ -22,7 +20,7 @@ function pick(file: string): string | undefined {
   return hit?.[1];
 }
 
-const roomSketch = pick('room-sketch.png') ?? pick('room-sketch.webp');
+const roomSketch = pick('room-sketch.webp') ?? pick('room-sketch.png');
 const her1914 = pick('her-1914.png') ?? pick('her-1914.webp');
 
 /** 929:5256 + 929:5257 — 배경 스케치 + exclusion 보정 */
@@ -55,3 +53,6 @@ export function Ch1Figure({ entering = false }: { entering?: boolean }) {
     </div>
   );
 }
+
+/** 캐릭터 화면 초상에서도 같은 그림을 잘라 쓴다 */
+export const her1914Art = her1914;

@@ -115,16 +115,15 @@
 
 /* ---- 상단 바 (856:191~194) ------------------------------------------- */
 
+/* 손그림 바 (타이틀_바.svg, 1047×76). Figma 박스 1040×66 에 테두리가 넘쳐 있어
+   가운데를 맞추면 좌상단이 (-3.5, -5) 만큼 밀린다. */
 .pr-parlor__header {
   position: absolute;
-  left: calc(25% + 74px);
-  top: 82px;
-  width: 1040px;
-  height: 66px;
-  box-sizing: border-box;
-  background: var(--pr-panel);
-  border: 12px solid var(--pr-frame);
-  border-radius: 13px;
+  left: calc(25% + 70.5px);
+  top: 77px;
+  width: 1047px;
+  height: 76px;
+  background: url('../../assets/ui/header-bar.svg') center / 100% 100% no-repeat;
 }
 
 .pr-parlor__header-text {

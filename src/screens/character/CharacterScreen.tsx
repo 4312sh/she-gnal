@@ -3,7 +3,9 @@ import { useMemo, useState } from 'react';
 import parlorInterior from '../../assets/prologue/parlor-interior.webp';
 import herPortrait from '../../assets/prologue/her-portrait.png';
 import portraitFrame from '../../assets/character/portrait-frame.svg';
-import dashboardFrame from '../../assets/character/dashboard-frame.svg';
+import dashboardBox from '../../assets/ui/dashboard-box.svg';
+import dashboardBoxStory from '../../assets/ui/dashboard-box-story.svg';
+import { her1914Art } from '../chapter1/Ch1Scene';
 import { ChapterBadge } from '../prologue/PrologueParts';
 import '../prologue/prologue.css';
 import './character.css';
@@ -29,17 +31,10 @@ import {
  * 채팅 진입은 초상 카드(좌상단)다. 잠겨 있을 때 "1914 대화 시 해금" 이라고 쓰인 그 칸.
  * 스토리 목록에서 도쿄 유학길을 두 번 눌러도 들어간다.
  *
- * 초상 두 장(잠김 / 해금)은 Figma 에서 내보내 `src/assets/character/` 에 넣으면 바뀐다.
- * 없으면 프롤로그 인물 그림을 잘라 자리를 채운다.
+ * 초상은 채팅 화면과 같은 열여덟 살 그녀 그림을 잘라 쓴다 (Figma 도 같은 시트를 자른다).
+ * 잠겨 있을 때는 같은 그림을 검은 실루엣으로 눌러 보여 준다.
+ * 테두리 · 칸 · 버튼은 손그림 SVG(src/assets/ui) 를 깔고 글자만 코드로 얹는다.
  */
-
-const optional = import.meta.glob('../../assets/character/*.{png,webp,jpg}', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>;
-const pick = (f: string) => Object.entries(optional).find(([p]) => p.endsWith(`/${f}`))?.[1];
-const portraitOpen = pick('portrait-1914.png');
-const portraitLocked = pick('portrait-1914-locked.png');
 
 type Props = {
   ch1?: Chapter1Save;
@@ -112,10 +107,8 @@ export function CharacterScreen({ ch1, lastPlayedAt, onEnterChapter1, onBack }: 
       >
         <img className="ch-portrait__frame" src={portraitFrame} alt="" />
         <span className={`ch-portrait__art${unlocked ? ' is-open' : ''}`}>
-          {unlocked && portraitOpen ? (
-            <img src={portraitOpen} alt="" />
-          ) : !unlocked && portraitLocked ? (
-            <img src={portraitLocked} alt="" />
+          {her1914Art ? (
+            <img className="ch-portrait__figure" src={her1914Art} alt="" />
           ) : (
             <img className="ch-portrait__fallback" src={herPortrait} alt="" />
           )}
@@ -167,9 +160,8 @@ export function CharacterScreen({ ch1, lastPlayedAt, onEnterChapter1, onBack }: 
       <div className="ch-head ch-head--story">스토리</div>
       <span className="ch-square ch-square--story" aria-hidden />
 
-      {/* 923:4450 / 936:6284 — 대시보드 */}
-      <div className={`ch-dash${entry ? ' ch-dash--story' : ''}`} aria-hidden />
-      <img className="ch-dash__frame" src={dashboardFrame} alt="" />
+      {/* 923:4450 / 936:6284 — 대시보드 (스토리를 고르면 안쪽 판이 황토색) */}
+      <img className="ch-dash__frame" src={entry ? dashboardBoxStory : dashboardBox} alt="" />
 
       {entry ? (
         <>
