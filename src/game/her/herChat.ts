@@ -80,3 +80,69 @@ export const FREE_TURN_CLOSERS = [
   '…그만합시다. 더 물으면 내가 대답할 말이 없소.',
   '됐소. 그 이야긴 여기까지 하지.',
 ] as const;
+
+/* ========================================================================
+ * 챕터 공용 호출 — 챕터마다 프롬프트·검사·폴백만 바꿔 끼운다
+ * ===================================================================== */
+
+type Check = { ok: true } | { ok: false; reason: string };
+
+export type AskOptions = {
+  system: string;
+  history: Turn[];
+  fallback: string;
+  clean: (text: string) => string;
+  validate: (text: string) => Check;
+  timeoutMs?: number;
+  maxTokens?: number;
+  /** 나가기 등으로 호출을 중간에 끊을 때 */
+  signal?: AbortSignal;
+};
+
+/**
+ * 프록시는 최근 12개만 넘기는데, 그 첫 턴이 assistant 면 API 가 400 을 낸다.
+ * 끝이 user 인 기록에서 최대 11개(홀수)를 잘라 항상 user 로 시작하게 만든다.
+ */
+export function trimHistory(history: Turn[], max = 11): Turn[] {
+  const tail = history.slice(-max);
+  return tail[0]?.role === 'assistant' ? tail.slice(1) : tail;
+}
+
+export async function askHerWith(opts: AskOptions): Promise<ChatResult> {
+  const ctrl = new AbortController();
+  const timer = window.setTimeout(() => ctrl.abort(), opts.timeoutMs ?? CHAT_CONFIG.timeoutMs);
+  const onOuterAbort = () => ctrl.abort();
+  opts.signal?.addEventListener('abort', onOuterAbort);
+
+  try {
+    const res = await fetch(CHAT_CONFIG.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: ctrl.signal,
+      body: JSON.stringify({
+        system: opts.system,
+        messages: trimHistory(opts.history),
+        maxTokens: opts.maxTokens ?? 220,
+      }),
+    });
+
+    if (!res.ok) return { text: opts.fallback, live: false, reason: `http:${res.status}` };
+
+    const data: { text?: string } = await res.json();
+    const cleaned = opts.clean(data.text ?? '');
+    const check = opts.validate(cleaned);
+
+    if (!check.ok) {
+      if (import.meta.env.DEV) console.warn('[herChat] 폴백:', check.reason, '|', cleaned);
+      return { text: opts.fallback, live: false, reason: check.reason };
+    }
+    return { text: cleaned, live: true };
+  } catch (e) {
+    const aborted = e instanceof DOMException && e.name === 'AbortError';
+    const reason = opts.signal?.aborted ? 'cancelled' : aborted ? 'timeout' : 'network';
+    return { text: opts.fallback, live: false, reason };
+  } finally {
+    window.clearTimeout(timer);
+    opts.signal?.removeEventListener('abort', onOuterAbort);
+  }
+}

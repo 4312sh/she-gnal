@@ -1,0 +1,202 @@
+/* =========================================================================
+   Chapter 1 · 도쿄 유학길
+   프롤로그와 같은 부품(.pr-*)을 그대로 쓰고, 좌표나 값이 다른 것만 여기 둔다.
+   좌표는 전부 Figma 1920×1080 아트보드 기준.
+   ========================================================================= */
+
+/* ---- 934:5514 — 타이틀 카드 도입 나레이션 (18px, 행간 1.5) ------------ */
+
+.ch1-title__intro {
+  position: absolute;
+  left: 50%;
+  top: 646px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--pr-font-myungjo);
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: -0.36px;
+  text-align: center;
+  color: var(--pr-text);
+  white-space: nowrap;
+}
+
+.ch1-title__intro p {
+  margin: 0;
+}
+
+/* ---- 929:5256 — 하숙방 스케치 배경 ------------------------------------
+   내보낸 PNG 에 회전(-90°) · blur 4.44px · 불투명도 70% 가 이미 들어 있어
+   노드 박스(-3.75, -228, 1929.876×1430.263) 에 그대로 깐다.            */
+
+.ch1-room {
+  position: absolute;
+  left: -3.75px;
+  top: -228px;
+  width: 1929.876px;
+  height: 1430.263px;
+  pointer-events: none;
+}
+
+.ch1-room img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 전용 그림이 없을 때 — 응접실 사진을 스케치처럼 흐리게 눌러 자리만 채운다 */
+.ch1-room--fallback img {
+  opacity: 0.7;
+  filter: grayscale(1) blur(4.442px) contrast(1.1);
+}
+
+/* 929:5257 — exclusion 보정 */
+.ch1-grade {
+  left: -95.63px;
+  top: -213.71px;
+  width: 2124.257px;
+  height: 1440.714px;
+}
+
+/* 929:5283 — 하단 비네트 (프롤로그보다 높고 진하다) */
+.ch1-vignette {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1933px;
+  height: 581px;
+  pointer-events: none;
+  background: linear-gradient(
+    179.93deg,
+    rgba(217, 217, 217, 0) 0.21%,
+    rgba(118, 115, 115, 0.35) 24.94%,
+    rgba(18, 12, 12, 0.7) 57.67%
+  );
+}
+
+/* ---- 929:5282 — 그녀 (451×1270 레이어를 그대로 내보낸 PNG) ------------ */
+
+.ch1-figure {
+  position: absolute;
+  left: calc(50% + 0.5px);
+  top: 200px;
+  transform: translateX(-50%);
+  width: 451px;
+  height: 1270px;
+  pointer-events: none;
+}
+
+.ch1-figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ch1-figure--enter {
+  animation: pr-figure-in 1.4s ease-out both;
+}
+
+/* ---- 929:5284 — 가운데 자막 (32px, 행간 48px) ------------------------ */
+
+.ch1-subtitle {
+  position: absolute;
+  left: calc(50% + 0.5px);
+  top: 862px;
+  transform: translateX(-50%);
+  margin: 0;
+  max-width: 1500px;
+  font-family: var(--pr-font-myungjo);
+  font-size: 32px;
+  line-height: 48px;
+  letter-spacing: -0.64px;
+  text-align: center;
+  color: var(--pr-text);
+  white-space: pre-line;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+/* 나레이션은 한 톤 낮춘다 */
+.ch1-subtitle--narr {
+  font-size: 26px;
+  color: #cfcac1;
+  font-style: italic;
+}
+
+/* ---- 929:5322 ~ 5326 — 채팅 로그 -------------------------------------
+   Figma 는 그녀 말풍선이 왼쪽(229px), 유저 답이 오른쪽(1667px 끝)이다.
+   LLM 답은 Figma 예시보다 길어서, 가운데 인물(735~1186px)을 가리지 않게
+   폭을 제한하고 로그 높이를 위로 늘렸다.                                  */
+
+.ch1-chatlog {
+  top: 250px;
+  height: 612px;
+}
+
+.ch1-bubble {
+  max-width: 460px;
+  line-height: 44px;
+}
+
+.ch1-reply {
+  max-width: 440px;
+  line-height: 44px;
+}
+
+.ch1-choice {
+  font-size: 20px;
+}
+
+/* ---- 해금 알림 ---------------------------------------------------------- */
+
+.ch1-toast {
+  position: absolute;
+  left: 152px;
+  top: 206px;
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 4px;
+  background: rgba(25, 25, 25, 0.8);
+  font-family: var(--pr-font-mono);
+  font-size: 16px;
+  color: #e9dcc3;
+  animation: ch1-toast 4.2s ease-out both;
+  pointer-events: none;
+}
+
+@keyframes ch1-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  10%,
+  80% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- 856:537 — 채팅 중단 확인 모달 --------------------------------------
+   프롤로그 종료 카드와 같은 부품. 핀(pill) 없이 문구 한 줄만 가운데.
+   z-index 를 주면 쌓임 맥락이 새로 생겨 세피아 wash 의 multiply 가
+   뒤 장면과 섞이지 않고 불투명한 판이 된다. DOM 순서(맨 끝)로만 위에 둔다. */
+
+.ch1-exit {
+  position: absolute;
+  inset: 0;
+}
+
+.ch1-exit__line {
+  top: 689px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch1-figure--enter,
+  .ch1-toast {
+    animation-duration: 0.01ms !important;
+  }
+}

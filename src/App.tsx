@@ -13,6 +13,9 @@ import { TimeSetup } from './screens/dashboard/TimeSetup'
 import { TimeReady } from './screens/dashboard/TimeReady'
 import { Signal1, Signal2, Signal3 } from './screens/signal/SignalScreens'
 import PrologueFlow, { type ChatStage, type PrologueStep } from './screens/prologue/PrologueFlow'
+import Chapter1Flow, { type Ch1Step } from './screens/chapter1/Chapter1Flow'
+import type { Ch1Start } from './screens/chapter1/Chapter1Chat'
+import { CharacterScreen } from './screens/character/CharacterScreen'
 import { formatNow, nearestEra, type TargetTime } from './game/eras'
 import { loadPlayer, savePlayer } from './game/storage'
 import type { Player, ScreenId } from './game/types'
@@ -22,6 +25,9 @@ const params = new URLSearchParams(window.location.search)
 const at = params.get('at') ?? ''
 const prologueStep = (at.split('.')[0] || undefined) as PrologueStep | undefined
 const prologueChatStage = (at.split('.')[1] || undefined) as ChatStage | undefined
+// 개발용: ?screen=chapter1&at=scene.chat 처럼 (tuning | title | scene) . (opening | chat | choice | after)
+const ch1Step = (at.split('.')[0] || undefined) as Ch1Step | undefined
+const ch1SceneAt = (at.split('.')[1] || undefined) as Ch1Start | undefined
 
 function App() {
   // 개발용: 주소 뒤에 ?screen=dashboard 처럼 붙이면 해당 화면부터 시작
@@ -131,9 +137,28 @@ function App() {
           <PrologueFlow
             startAt={prologueStep}
             chatStartAt={prologueChatStage}
-            // 챕터 1 화면이 아직 없어 대시보드로 돌려둔다
-            onComplete={() => go('dashboard', 'crt')}
+            onComplete={() => go('character', 'crt')}
             onExit={() => go('dashboard', 'fade')}
+          />
+        )
+      case 'character':
+        return (
+          <CharacterScreen
+            ch1={player.chapter1}
+            lastPlayedAt={player.lastPlayed?.at}
+            onEnterChapter1={() => go('chapter1', 'crt')}
+            onBack={() => go('dashboard', 'fade')}
+          />
+        )
+      case 'chapter1':
+        return (
+          <Chapter1Flow
+            playerName={player.name ?? ''}
+            save={player.chapter1}
+            onSave={(chapter1) => updatePlayer({ chapter1 })}
+            onExit={() => go('character', 'fade')}
+            startAt={nav.screen === params.get('screen') ? ch1Step : undefined}
+            sceneAt={nav.screen === params.get('screen') ? ch1SceneAt : undefined}
           />
         )
     }

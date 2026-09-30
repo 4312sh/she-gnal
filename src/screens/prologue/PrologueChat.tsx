@@ -43,7 +43,7 @@ import {
  * 서버가 없어도 흐름은 멈추지 않는다.
  */
 
-type Stage =
+export type Stage =
   | 'narration'
   | 'silhouette'
   | 'identity'

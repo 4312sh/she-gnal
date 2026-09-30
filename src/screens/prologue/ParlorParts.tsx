@@ -30,20 +30,27 @@ export function ParlorBackdrop({ deep = false }: { deep?: boolean }) {
 
 type ChromeProps = {
   header?: string;
+  /** 좌상단 배너 문구. 챕터마다 바꾼다 */
+  badge?: string;
   onTool1?: () => void;
   onTool2?: () => void;
+  tool1Label?: string;
+  tool2Label?: string;
 };
 
 export function ParlorChrome({
   header = PARLOR_HEADER,
+  badge = 'Chaptor 0. Prologue.',
   onTool1,
   onTool2,
+  tool1Label = '기록',
+  tool2Label = '설정',
 }: ChromeProps) {
   return (
     <>
       <ChapterBadge
         className="pr-arrival__badge"
-        label="Chaptor 0. Prologue."
+        label={badge}
         width={390}
       />
       <div className="pr-parlor__header" />
@@ -52,13 +59,13 @@ export function ParlorChrome({
         type="button"
         className="pr-parlor__tool pr-parlor__tool--1"
         onClick={onTool1}
-        aria-label="기록"
+        aria-label={tool1Label}
       />
       <button
         type="button"
         className="pr-parlor__tool pr-parlor__tool--2"
         onClick={onTool2}
-        aria-label="설정"
+        aria-label={tool2Label}
       />
     </>
   );

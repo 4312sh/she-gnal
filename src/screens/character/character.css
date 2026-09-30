@@ -1,0 +1,736 @@
+/* =========================================================================
+   캐릭터 · About her — Figma 923:4434 / 936:6268
+   좌표는 전부 Figma 1920×1080 아트보드 기준
+   ========================================================================= */
+
+.ch-screen {
+  --ch-frame: #d5d2cd;
+  --ch-ink: #202020;
+  --ch-tan: #a79b87;
+  --ch-khaki: #b2ab99;
+  --ch-btn-border: #786d60;
+  --ch-label-font: 'DOSMyungjo', var(--pr-font-myungjo);
+  --ch-title-font: 'AppleMyungjo', var(--pr-font-myungjo);
+}
+
+.ch-screen button {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---- 923:4435 ~ 4437 — 배경 ------------------------------------------- */
+
+.ch-bg {
+  position: absolute;
+  left: 0;
+  top: -120px;
+  width: 1920px;
+  height: 1358px;
+  pointer-events: none;
+}
+
+.ch-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch-desaturate {
+  position: absolute;
+  left: 9px;
+  top: -118px;
+  width: 1913px;
+  height: 1354px;
+  mix-blend-mode: saturation;
+  background: linear-gradient(to bottom, rgba(167, 167, 167, 0.69) 6.25%, rgba(255, 255, 255, 0.7) 75%);
+  pointer-events: none;
+}
+
+.ch-vignette {
+  position: absolute;
+  left: 5px;
+  bottom: -11px;
+  width: 1917px;
+  height: 1706px;
+  background: linear-gradient(
+    179.79deg,
+    rgba(217, 217, 217, 0) 0.21%,
+    rgba(118, 115, 115, 0.35) 20.21%,
+    rgba(18, 12, 12, 0.7) 70.76%
+  );
+  pointer-events: none;
+}
+
+/* ---- 923:4438 — 배너 (라벨만 24px) ------------------------------------- */
+
+.ch-banner .pr-badge__label {
+  left: 194px;
+  top: 74px;
+  transform: translateX(-50%);
+  font-family: var(--ch-title-font);
+  font-size: 24px;
+  letter-spacing: -0.48px;
+}
+
+/* 923:4449 */
+.ch-notch {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  transform: translateX(-50%);
+  width: 570px;
+  height: 26px;
+  border-radius: 0 0 32px 32px;
+  background: rgba(9, 8, 8, 0.6);
+}
+
+/* ---- 923:4546 — 탭 ------------------------------------------------------ */
+
+.ch-tabs {
+  position: absolute;
+  left: calc(54.17% - 49.5px);
+  top: 84px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 64px;
+}
+
+.ch-tab {
+  box-sizing: border-box;
+  width: 241px;
+  height: 78px;
+  border: 12px solid var(--ch-frame);
+  border-radius: 13px;
+  background: rgba(32, 32, 32, 0.35);
+  font-family: var(--ch-title-font) !important;
+  font-size: 24px !important;
+  letter-spacing: -0.48px;
+  color: #939393 !important;
+  cursor: default;
+}
+
+.ch-tab.is-active {
+  background: rgba(32, 32, 32, 0.9);
+  color: #ffffff !important;
+}
+
+/* 923:4448 — 우상단 네모 */
+.ch-corner {
+  position: absolute;
+  left: calc(91.67% - 18px);
+  top: 82px;
+  width: 75px;
+  height: 66px;
+  box-sizing: border-box;
+  padding: 0;
+  border: 12px solid var(--ch-frame);
+  border-radius: 13px;
+  background: rgba(32, 32, 32, 0.9);
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+.ch-corner:hover,
+.ch-corner:focus-visible {
+  background: rgba(70, 70, 70, 0.92);
+  outline: none;
+}
+
+/* ---- 923:4556 — 초상 카드 -------------------------------------------------
+   Exclude SVG 는 원본 423×384 이고 Figma 인셋(-0.46% / -0.56%)을 적용하면
+   좌상단이 (77.65, 259.27) 이다.                                           */
+
+.ch-portrait {
+  position: absolute;
+  left: 77.65px;
+  top: 259.27px;
+  width: 423px;
+  height: 384px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.ch-portrait__frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 423px;
+  height: 384px;
+  display: block;
+}
+
+/* 잠김 (923 — 160, 301) / 해금 (936 — 153, 306) — 254×267 */
+.ch-portrait__art {
+  position: absolute;
+  left: calc(160px - 77.65px);
+  top: calc(301px - 259.27px);
+  width: 254px;
+  height: 267px;
+  overflow: hidden;
+}
+
+.ch-portrait__art.is-open {
+  left: calc(153px - 77.65px);
+  top: calc(306px - 259.27px);
+}
+
+.ch-portrait__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+/* 내보낸 초상이 없을 때 — 프롤로그 인물 상반신을 잘라 쓴다 */
+.ch-portrait__art img.ch-portrait__fallback {
+  object-fit: cover;
+  object-position: 50% 0;
+  height: auto;
+  width: 120%;
+  margin-left: -10%;
+}
+
+.ch-portrait:not(.is-open) img.ch-portrait__fallback {
+  filter: grayscale(1) brightness(0.12) blur(1.5px);
+}
+
+/* 923:4559 — 캡션 */
+.ch-portrait__caption {
+  position: absolute;
+  left: calc(94px - 77.65px);
+  top: calc(573px - 259.27px);
+  width: 392px;
+  height: 49px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 9px 0 12px;
+  border: 4px solid var(--ch-btn-border);
+  border-radius: 4px;
+  background: rgba(25, 25, 25, 0.8);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-family: var(--pr-font-myungjo);
+  font-size: 16px;
+  line-height: 41px;
+  letter-spacing: -0.32px;
+  color: #626262;
+  white-space: nowrap;
+}
+
+.ch-portrait.is-open .ch-portrait__caption {
+  color: #fff6e6;
+}
+
+.ch-portrait__caption-hover {
+  display: none;
+  color: #e9dcc3;
+}
+
+.ch-portrait:hover .ch-portrait__caption-text,
+.ch-portrait:focus-visible .ch-portrait__caption-text {
+  display: none;
+}
+
+.ch-portrait:hover .ch-portrait__caption-hover,
+.ch-portrait:focus-visible .ch-portrait__caption-hover {
+  display: inline;
+}
+
+.ch-portrait:focus-visible {
+  outline: 2px solid var(--ch-frame);
+  outline-offset: 4px;
+}
+
+/* ---- 923:4526 — 채팅 기록 보기 ------------------------------------------- */
+
+.ch-records {
+  position: absolute;
+  left: 80px;
+  top: 656px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  background: var(--ch-khaki);
+}
+
+.ch-records__title {
+  box-sizing: border-box;
+  width: 412px;
+  height: 38px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #2b2121;
+  font-family: var(--ch-label-font);
+  font-size: 20px;
+  color: #e7e7e7;
+}
+
+.ch-records__slots {
+  box-sizing: border-box;
+  width: 412px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 14px;
+  border-radius: 6px;
+  background: var(--ch-ink);
+}
+
+.ch-records__slot {
+  box-sizing: border-box;
+  width: 81px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--ch-frame);
+  border-radius: 0 4px 0 0;
+  background: #686868;
+  font-family: var(--pr-font-mono);
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* ---- 923:4542 ~ 4545 — 접속 정보 ----------------------------------------- */
+
+.ch-tuning {
+  position: absolute;
+  left: 80px;
+  top: 813px;
+  width: 419px;
+  height: 172px;
+  box-sizing: border-box;
+  border: 8px solid var(--ch-khaki);
+  border-radius: 4px;
+  background: var(--ch-ink);
+}
+
+.ch-tuning p {
+  margin: 0;
+  white-space: pre;
+}
+
+.ch-tuning__title {
+  position: absolute;
+  /* 박스 테두리 8px 안쪽 기준 — Figma (287.5, 837) */
+  left: 199.5px;
+  top: 16px;
+  transform: translateX(-50%);
+  font-family: var(--pr-font-mono);
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.ch-tuning__keys {
+  position: absolute;
+  left: 23.06px;
+  top: 66px;
+  font-family: var(--pr-font-mono);
+  font-weight: 700;
+  font-size: 16px;
+  color: #896d6d;
+}
+
+.ch-tuning__values {
+  position: absolute;
+  right: 20.06px;
+  top: 66px;
+  font-family: var(--pr-font-mono);
+  font-weight: 300;
+  font-size: 16px;
+  text-align: right;
+  color: #ffffff;
+}
+
+/* ---- 923:4518 / 4521 — 섹션 헤더 ------------------------------------------ */
+
+.ch-head {
+  position: absolute;
+  box-sizing: border-box;
+  height: 40.293px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--ch-ink);
+  border-radius: 0 5.081px 0 0;
+  background: var(--ch-frame);
+  font-family: var(--pr-font-myungjo);
+  font-size: 16.937px;
+  letter-spacing: -0.3387px;
+  color: var(--ch-ink);
+}
+
+.ch-head--dash {
+  left: calc(33.33% + 44px);
+  top: 260.71px;
+  width: 631.633px;
+}
+
+.ch-head--story {
+  left: calc(75% - 16px);
+  top: 260px;
+  width: 349px;
+}
+
+/* 923:4524 / 4525 */
+.ch-square {
+  position: absolute;
+  top: 263px;
+  width: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  padding: 0;
+  border: 7.366px solid var(--ch-frame);
+  border-radius: 0 4.911px 0 0;
+  background: #686868;
+}
+
+.ch-square--dash {
+  left: calc(66.67% + 63px);
+  cursor: pointer;
+}
+
+.ch-square--dash:hover,
+.ch-square--dash:focus-visible {
+  background: #8a8a8a;
+  outline: none;
+}
+
+.ch-square--story {
+  left: calc(91.67% + 41px);
+}
+
+/* ---- 923:4450 / 936:6284 — 대시보드 판 ---------------------------------
+   안쪽 판(Rectangle 10) 위에 손그림 테두리(Rectangle 9 Stroke) 를 얹는다.
+   SVG 원본 715×646, Figma 인셋 -0.16% / -0.14% → (675, 339.97)         */
+
+.ch-dash {
+  position: absolute;
+  left: calc(33.33% + 61px);
+  top: 374px;
+  width: 661px;
+  height: 583px;
+  box-sizing: border-box;
+  border: 10px solid var(--ch-khaki);
+  border-radius: 24px;
+  background: var(--ch-ink);
+}
+
+.ch-dash--story {
+  background: var(--ch-tan);
+}
+
+.ch-dash__frame {
+  position: absolute;
+  left: 675px;
+  top: 339.97px;
+  width: 715px;
+  height: 646px;
+  display: block;
+  pointer-events: none;
+}
+
+/* ---- 923:4563 ~ 4572 — 스토리 항목 --------------------------------------- */
+
+.ch-entry__header,
+.ch-entry__poem,
+.ch-entry__btn {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  border: 2px solid var(--ch-btn-border);
+  border-radius: 4px;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.5);
+  font-family: var(--pr-font-myungjo);
+  letter-spacing: -0.32px;
+}
+
+.ch-entry__header {
+  left: calc(33.33% + 89px);
+  top: 405px;
+  width: 609px;
+  padding: 0 9px 0 12px;
+  background: rgba(217, 212, 203, 0.2);
+  font-size: 16px;
+  line-height: 41px;
+  text-align: center;
+  color: #1f1e1e;
+}
+
+.ch-entry__poem {
+  left: calc(33.33% + 89px);
+  top: 470px;
+  width: 392px;
+  height: 458px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 9px 0 12px;
+  background: rgba(255, 248, 238, 0.7);
+}
+
+.ch-entry__poem p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 41px;
+  letter-spacing: -0.4px;
+  color: #1f1e1e;
+  white-space: pre-wrap;
+  animation: ch-fade 0.35s ease-out both;
+}
+
+.ch-entry__btn {
+  left: calc(58.33% + 19px);
+  width: 199px;
+  height: 74px;
+  padding: 0 9px 0 12px;
+  background: rgba(168, 123, 45, 0.2);
+  font-size: 16px !important;
+  line-height: 41px;
+  color: #030303 !important;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+.ch-entry__btn:hover,
+.ch-entry__btn:focus-visible,
+.ch-entry__btn.is-active {
+  background: rgba(168, 123, 45, 0.42);
+  outline: none;
+}
+
+.ch-entry__btn--1 {
+  top: 470px;
+}
+.ch-entry__btn--2 {
+  top: 565px;
+}
+.ch-entry__btn--3 {
+  top: 665px;
+}
+
+@keyframes ch-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- 936:6287 ~ 6302 — 기본 대시보드 (프로필) ----------------------------- */
+
+.ch-profile {
+  margin: 0;
+}
+
+.ch-profile dt,
+.ch-profile dd {
+  position: absolute;
+  margin: 0;
+}
+
+.ch-profile__label {
+  left: calc(33.33% + 110px);
+  box-sizing: border-box;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 6px 20px;
+  border-radius: 8px;
+  background: #4f4f4f;
+  font-family: var(--ch-label-font);
+  font-size: 20px;
+  color: #e7e7e7;
+  white-space: nowrap;
+}
+
+.ch-profile__label--job {
+  top: 445.5px;
+}
+.ch-profile__label--marriage {
+  top: 520px;
+}
+.ch-profile__label--relation {
+  top: 594.5px;
+}
+.ch-profile__label--story {
+  top: 737px;
+}
+.ch-profile__label--last {
+  left: calc(33.33% + 109px);
+  top: 814px;
+}
+
+.ch-profile__value {
+  left: calc(41.67% + 121px);
+  width: 392px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 9px 0 12px;
+  border: 4px solid var(--ch-btn-border);
+  border-radius: 4px;
+  background: rgba(25, 25, 25, 0.8);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-family: var(--pr-font-myungjo);
+  font-size: 16px;
+  line-height: 41px;
+  letter-spacing: -0.32px;
+  color: #e7e7e7;
+  white-space: nowrap;
+}
+
+.ch-profile__value--job {
+  top: 440px;
+}
+.ch-profile__value--marriage {
+  top: 514px;
+}
+.ch-profile__value--relation {
+  top: 589px;
+}
+
+.ch-profile__mono {
+  right: calc(41.67% - 196px);
+  font-family: var(--pr-font-mono);
+  font-weight: 300;
+  font-size: 24px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.ch-profile__mono--story {
+  top: 741px;
+}
+.ch-profile__mono--last {
+  top: 818px;
+}
+
+/* ---- 923:4453 — 스토리 목록 ---------------------------------------------- */
+
+.ch-stories {
+  position: absolute;
+  left: calc(75% - 19px);
+  top: 349px;
+  width: 419px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 24px 24px 30px 21px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border: 6.775px solid var(--ch-frame);
+  border-radius: 4.96px;
+  background: rgba(39, 39, 39, 0.41);
+}
+
+.ch-story {
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+}
+
+.ch-story.is-selectable {
+  cursor: pointer;
+}
+
+.ch-story > span {
+  box-sizing: border-box;
+  height: 48.919px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 5.081px 0 0;
+  font-family: var(--pr-font-myungjo);
+  white-space: nowrap;
+}
+
+.ch-story.is-tall > span {
+  height: 57px;
+}
+
+.ch-story__year {
+  width: 120.989px;
+  border: 7.621px solid var(--ch-frame);
+  background: var(--ch-ink);
+  font-size: 16px;
+  letter-spacing: -0.32px;
+  color: #ffffff;
+}
+
+.ch-story__title {
+  width: 249.011px;
+  border: 4px solid var(--ch-ink);
+  background: var(--ch-frame);
+  font-size: 16.937px;
+  letter-spacing: -0.3387px;
+  color: var(--ch-ink);
+}
+
+/* 923:4463 — 선택된 칸 */
+.ch-story.is-selected .ch-story__year {
+  border-color: var(--ch-tan);
+  color: var(--ch-tan);
+}
+
+.ch-story.is-selected .ch-story__title {
+  background: var(--ch-tan);
+}
+
+.ch-story.is-selectable:not(.is-selected):hover .ch-story__title,
+.ch-story.is-selectable:focus-visible .ch-story__title {
+  background: #e6e2da;
+}
+
+.ch-story:focus-visible {
+  outline: 2px solid var(--ch-frame);
+  outline-offset: 2px;
+}
+
+/* 923:4491 — 잠긴 칸 */
+.ch-story.is-locked .ch-story__year {
+  border-color: #5b5b5b;
+  background: #1c1c1c;
+}
+
+.ch-story.is-locked .ch-story__title {
+  border-color: #1c1c1c;
+  background: #5b5b5b;
+  color: #1c1c1c;
+}
+
+.ch-story:disabled {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-entry__poem p {
+    animation: none;
+  }
+}

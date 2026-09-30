@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import PrologueArrival from './PrologueArrival';
-import PrologueChat from './PrologueChat';
+import PrologueChat, { type Stage as ChatStage } from './PrologueChat';
 import PrologueEnding from './PrologueEnding';
 import PrologueOpening from './PrologueOpening';
 import PrologueQuote from './PrologueQuote';
@@ -27,6 +27,8 @@ import './chapter0.css';
  * 대사·친밀도 규칙은 `chapter0Script.ts` 에 있고,
  * 그 내용은 나혜석_챕터0_프롤로그.md 를 그대로 옮긴 것이다.
  */
+
+export type { ChatStage };
 
 export type PrologueStep =
   | 'opening'
@@ -64,12 +66,15 @@ type Props = {
   onExit: () => void;
   /** 개발용 진입 지점 */
   startAt?: PrologueStep;
+  /** 개발용 — 응접실 채팅 안의 세부 단계 (?screen=prologue&at=chat.identity) */
+  chatStartAt?: ChatStage;
 };
 
 export default function PrologueFlow({
   onComplete,
   onExit,
   startAt = 'opening',
+  chatStartAt,
 }: Props) {
   const [step, setStep] = useState<PrologueStep>(startAt);
 
@@ -104,7 +109,7 @@ export default function PrologueFlow({
     case 'arrival':
       return <PrologueArrival onEnter={handleEnterAtelier} />;
     case 'chat':
-      return <PrologueChat onDone={() => next()} />;
+      return <PrologueChat startAt={chatStartAt} onDone={() => next()} />;
     case 'ending':
       return <PrologueEnding onContinue={onComplete} onExit={onExit} />;
   }
