@@ -102,27 +102,34 @@ function readBody(req) {
   });
 }
 
+/** /api/chat 요청 처리 (개발 서버 · 전시용 preview 서버 공용) */
+const chatMiddleware = async (req, res) => {
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    return res.end();
+  }
+  try {
+    const body = await readBody(req);
+    const out = await handleChat(body);
+    res.statusCode = out.status;
+    res.setHeader('content-type', 'application/json');
+    res.end(JSON.stringify(out.json));
+  } catch (e) {
+    res.statusCode = 400;
+    res.end(JSON.stringify({ error: String(e?.message ?? e) }));
+  }
+};
+
 /** Vite 플러그인 — vite.config.ts 의 plugins 에 넣는다 */
 export function chatProxyPlugin() {
   return {
     name: 'shegnal-chat-proxy',
     configureServer(server) {
-      server.middlewares.use('/api/chat', async (req, res) => {
-        if (req.method !== 'POST') {
-          res.statusCode = 405;
-          return res.end();
-        }
-        try {
-          const body = await readBody(req);
-          const out = await handleChat(body);
-          res.statusCode = out.status;
-          res.setHeader('content-type', 'application/json');
-          res.end(JSON.stringify(out.json));
-        } catch (e) {
-          res.statusCode = 400;
-          res.end(JSON.stringify({ error: String(e?.message ?? e) }));
-        }
-      });
+      server.middlewares.use('/api/chat', chatMiddleware);
+    },
+    // 전시용: 빌드 결과를 vite preview 로 띄울 때도 /api/chat 을 붙인다
+    configurePreviewServer(server) {
+      server.middlewares.use('/api/chat', chatMiddleware);
     },
   };
 }
