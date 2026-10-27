@@ -1,0 +1,632 @@
+/* =========================================================================
+   캐릭터 · About her — 이오 (미래)  Figma 1169:9679 / 9569 / 9630 / 10250
+   좌표는 전부 Figma 1920×1080 아트보드 기준
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: block;
+  src: url('../../assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
+.eo-screen,
+.eo-screen *,
+.eo-screen *::before,
+.eo-screen *::after {
+  box-sizing: border-box;
+}
+
+.eo-screen {
+  --eo-font-head: 'Exo 2', 'Exo', sans-serif;
+  --eo-font-label: 'Exo', sans-serif;
+  --eo-font-ko: 'Pretendard Variable', 'Pretendard', sans-serif;
+  --eo-font-mono: 'Victor Mono', ui-monospace, monospace;
+
+  --eo-blue: #0426f5;
+  --eo-blue-soft: #6c81ff;
+  --eo-glass: linear-gradient(90deg, rgba(200, 217, 243, 0.36) 50.962%, rgba(234, 234, 234, 0.36) 100%);
+
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  user-select: none;
+  background: #fff;
+  color: #202020;
+  font-family: var(--eo-font-label);
+}
+
+:where(.eo-screen) button {
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+:where(.eo-screen) button:disabled {
+  cursor: default;
+}
+
+:where(.eo-screen) :where(p, dl, dt, dd, ul, ol, li) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- 사진 자리 --------------------------------------------------------- */
+
+.eo-bg,
+.eo-strip,
+.eo-figure {
+  position: absolute;
+  pointer-events: none;
+}
+
+.eo-bg img,
+.eo-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 1169:9680 — 2003×1127, 가운데, blur 5 */
+.eo-bg {
+  left: -41px;
+  top: -24px;
+  width: 2003px;
+  height: 1127px;
+  filter: blur(5px);
+}
+
+.eo-bg.is-placeholder {
+  background:
+    radial-gradient(ellipse 70% 60% at 60% 45%, rgba(255, 255, 255, 0.55), transparent 70%),
+    linear-gradient(160deg, #c9eef7 0%, #a9e3f2 45%, #bfe9f5 100%);
+}
+
+/* 1169:9681 — 1994×347 상단 색 띠 */
+.eo-strip {
+  left: -16px;
+  top: -12px;
+  width: 1994px;
+  height: 347px;
+}
+
+.eo-strip.is-placeholder {
+  background:
+    linear-gradient(90deg, transparent 0 70%, rgba(255, 150, 120, 0.35) 76%, rgba(240, 225, 140, 0.35) 84%, transparent 92%)
+      0 0 / 100% 22px no-repeat,
+    linear-gradient(90deg, transparent 0 68%, rgba(220, 230, 130, 0.35) 74%, rgba(255, 170, 120, 0.35) 82%, transparent 90%)
+      0 80px / 100% 30px no-repeat,
+    linear-gradient(90deg, transparent 0 69%, rgba(90, 140, 230, 0.5) 72%, rgba(220, 230, 130, 0.5) 80%, rgba(255, 120, 90, 0.5) 88%, rgba(90, 140, 230, 0.5) 96%)
+      0 136px / 100% 20px no-repeat;
+}
+
+/* 1169:9700 — 557×1795, 둥근 모서리 278.5 */
+.eo-figure {
+  left: 676px;
+  top: 162px;
+  width: 557px;
+  height: 1795px;
+  border-radius: 278.5px;
+  overflow: hidden;
+}
+
+/* Figma 의 크롭 (444.53% × 103.4%, -171.84% / -3.4%) */
+.eo-figure img {
+  position: absolute;
+  left: -171.84%;
+  top: -3.4%;
+  width: 444.53%;
+  height: 103.4%;
+  max-width: none;
+}
+
+/* 렌더 루프 — 틀 맨 위에 붙여 실제 크기로 */
+.eo-figure img.eo-figure__motion {
+  left: 0;
+  top: 0;
+  width: 557px;
+  height: 918px;
+}
+
+.eo-figure.is-placeholder {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(220, 225, 240, 0.35));
+  outline: 1px dashed rgba(4, 38, 245, 0.25);
+  outline-offset: -1px;
+}
+
+/* ---- 상단 바 ------------------------------------------------------------ */
+
+/* 1170:10548 — Charactor */
+.eo-badge {
+  position: absolute;
+  left: 80px;
+  top: 38px;
+  width: 273px;
+  height: 73px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--eo-glass);
+  font-family: var(--eo-font-head);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.64px;
+  color: #fff;
+}
+
+/* 1170:10679 — 탭 띠 */
+.eo-tabs {
+  position: absolute;
+  left: 525px;
+  top: 38px;
+  width: 870px;
+  height: 53px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  border-radius: 8px;
+  background: var(--eo-glass);
+}
+
+.eo-screen .eo-tab {
+  width: 242px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 0 4px;
+  border-radius: 32px;
+  font-family: var(--eo-font-head);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.48px;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.eo-screen .eo-tab.is-active {
+  background: rgba(39, 61, 68, 0.2);
+}
+
+.eo-screen .eo-tab:not(:disabled):not(.is-active):hover {
+  background: rgba(39, 61, 68, 0.1);
+}
+
+.eo-screen .eo-tab:disabled {
+  opacity: 0.85;
+}
+
+/* 1170:10570 — X */
+.eo-screen .eo-close {
+  position: absolute;
+  left: 1787px;
+  top: 38px;
+  width: 53px;
+  height: 53px;
+}
+
+.eo-close svg {
+  display: block;
+}
+
+/* ---- 라벨 (STORY / DASHBOARD / SUMMARY / CHAT HISTORY) ----------------- */
+
+.eo-screen .eo-label {
+  position: absolute;
+  top: 237px;
+  transform: translateX(-50%);
+  padding: 0 24px;
+  background: #fff;
+  font-family: var(--eo-font-label);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--eo-blue);
+  white-space: nowrap;
+}
+
+.eo-screen .eo-label--blue {
+  background: var(--eo-blue);
+  color: #fff;
+}
+
+.eo-label--story {
+  left: 141px;
+}
+
+.eo-label--dashboard {
+  left: 960.5px;
+  top: 907px !important;
+}
+
+.eo-label--history {
+  left: 1735px;
+}
+
+.eo-label--summary {
+  left: 758.5px;
+}
+
+.eo-label--history-open {
+  left: 780px;
+}
+
+button.eo-label:hover {
+  filter: brightness(1.08);
+}
+
+/* 1170:10653 — v */
+.eo-screen .eo-chevron {
+  position: absolute;
+  top: 237px;
+  width: 36px;
+  height: 20px;
+}
+
+.eo-chevron svg {
+  display: block;
+}
+
+.eo-chevron--story {
+  left: 466px;
+}
+
+.eo-chevron--summary {
+  left: 1653px;
+}
+
+.eo-chevron--history {
+  left: 1804px;
+}
+
+/* ---- 1169:9595 — 스토리 목록 ------------------------------------------- */
+
+.eo-stories {
+  position: absolute;
+  left: 80px;
+  top: 302px;
+  width: 422px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.eo-screen .eo-story {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  background: rgba(0, 0, 0, 0.25);
+  font-family: var(--eo-font-ko);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #d0d0d0;
+  text-align: left;
+}
+
+.eo-screen .eo-story:not(.is-locked) {
+  background: rgba(255, 255, 255, 0.4);
+  color: #77879e;
+}
+
+.eo-screen .eo-story:not(.is-locked):hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ---- 1170:10656 — 마지막 접속 ------------------------------------------ */
+
+.eo-last__key,
+.eo-last__val {
+  position: absolute;
+  font-family: var(--eo-font-label);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.eo-last__key {
+  left: 80px;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.59);
+  color: var(--eo-blue-soft);
+  text-align: center;
+}
+
+.eo-last__key--story {
+  top: 673px;
+  width: 149px;
+}
+
+.eo-last__key--signal {
+  top: 716px;
+}
+
+.eo-last__val {
+  color: #959595;
+}
+
+.eo-last__val--story {
+  left: 253px;
+  top: 673px;
+}
+
+.eo-last__val--signal {
+  left: 279px;
+  top: 716px;
+}
+
+/* ---- 1169:10244 — 접속 정보 -------------------------------------------- */
+
+.eo-tuning {
+  font-size: 16px;
+  font-family: var(--eo-font-mono);
+  line-height: normal;
+}
+
+.eo-tuning__title {
+  position: absolute;
+  left: 256.5px;
+  top: 875px;
+  transform: translateX(-50%);
+  font-weight: 600;
+  color: #202020;
+  white-space: nowrap;
+}
+
+.eo-tuning__keys,
+.eo-tuning__values {
+  position: absolute;
+  top: 925px;
+}
+
+.eo-tuning__keys p,
+.eo-tuning__values p {
+  white-space: pre;
+}
+
+.eo-tuning__keys {
+  left: 80px;
+  font-weight: 700;
+  color: var(--eo-blue-soft);
+}
+
+.eo-tuning__values {
+  right: calc(1920px - 440px);
+  font-weight: 300;
+  color: #202020;
+  text-align: right;
+}
+
+/* ---- 칩 (PROLOGUE) ---------------------------------------------------- */
+
+.eo-chip {
+  position: absolute;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 4px;
+  background: var(--eo-blue);
+  font-family: var(--eo-font-ko);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.eo-chip--outline {
+  background: #dcdcdc;
+  border: 1px solid var(--eo-blue-soft);
+  color: var(--eo-blue);
+}
+
+/* ---- 1169:9630 — SUMMARY 창 -------------------------------------------- */
+
+.eo-summary {
+  position: absolute;
+  left: 675px;
+  top: 302px;
+  width: 1014px;
+  height: 443px;
+  border-left: 1px solid #8f8f8f;
+  border-top: 1px solid #8f8f8f;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+  animation: eo-in 0.25s ease-out;
+}
+
+/* 회색 카드 780×391 (창 기준 28, 27) */
+.eo-summary__card {
+  position: absolute;
+  left: 28px;
+  top: 27px;
+  width: 780px;
+  height: 391px;
+  border-radius: 4px;
+  background: rgba(184, 183, 183, 0.2);
+}
+
+.eo-summary__card .eo-chip {
+  left: 0;
+  top: 0;
+}
+
+.eo-summary__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 169px;
+  padding: 0 40px;
+  font-family: var(--eo-font-ko);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #3e3e3e;
+  text-align: center;
+}
+
+.eo-tags {
+  position: absolute;
+  left: 835px;
+  top: 27px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eo-tag {
+  width: 149px;
+  padding: 0 24px;
+  background: #fff;
+  font-family: var(--eo-font-ko);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--eo-blue-soft);
+  text-align: center;
+}
+
+/* ---- 1169:10250 — CHAT HISTORY 창 -------------------------------------- */
+
+.eo-history {
+  position: absolute;
+  left: 676px;
+  top: 302px;
+  width: 1164px;
+  height: 692px;
+  border-left: 1px solid #8f8f8f;
+  border-top: 1px solid #8f8f8f;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(23.55px);
+  animation: eo-in 0.25s ease-out;
+}
+
+/* 1170:10772 — 스토리 목록 242 (창 기준 23, 20) */
+.eo-history__list {
+  position: absolute;
+  left: 23px;
+  top: 20px;
+  width: 242px;
+}
+
+.eo-screen .eo-history__item {
+  display: block;
+  width: 100%;
+  padding: 0 20px;
+  background: rgba(0, 0, 0, 0.25);
+  font-family: var(--eo-font-ko);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #b9b9b9;
+  text-align: left;
+}
+
+.eo-screen .eo-history__item.is-active {
+  background: rgba(255, 255, 255, 0.4);
+  color: #77879e;
+}
+
+/* 1169:10286 — 오른쪽 854×645 (창 기준 296, 20) */
+.eo-history__log {
+  position: absolute;
+  left: 296px;
+  top: 20px;
+  width: 854px;
+  height: 645px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.eo-history__log .eo-chip {
+  left: 0;
+  top: 0;
+}
+
+.eo-log {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 88px;
+  bottom: 20px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eo-log::-webkit-scrollbar {
+  display: none;
+}
+
+.eo-line {
+  flex: none;
+  width: 335px;
+  padding: 12px 20px;
+  font-family: var(--eo-font-ko);
+  font-size: 16px;
+  line-height: 26px;
+}
+
+/* 1170:10651 — 이오의 말 (창 기준 31) */
+.eo-line--eio {
+  margin-left: 31px;
+  border-left: 2px solid #fff;
+  border-top: 2px solid #fff;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.48) 50.962%, rgba(234, 234, 234, 0) 100%);
+  font-weight: 600;
+  color: #2738a0;
+}
+
+/* 1170:10842 — 유저의 말 (창 기준 459) */
+.eo-line--user {
+  margin-left: 459px;
+  margin-top: 14px;
+  background: linear-gradient(90deg, rgba(200, 217, 243, 0.1) 50.962%, rgba(234, 234, 234, 0.1) 100%);
+  font-weight: 400;
+  color: #a8a8a8;
+}
+
+@keyframes eo-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eo-summary,
+  .eo-history {
+    animation: none;
+  }
+}
+
+/* 스토리 칩 — 누르면 대화로 */
+.eo-screen .eo-chip--enter {
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.eo-screen .eo-chip--enter:hover {
+  filter: brightness(1.2);
+}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { TypeWriter } from '../../components/TypeWriter'
 import { TerminalFrame } from './TerminalFrame'
+import { useSfxOnMount, useSfxWhen } from '../../game/useSfx'
 import bg1Axes from '../../assets/bg/bg1-axes.svg'
 import bg1RingA from '../../assets/bg/bg1-ring-a.svg'
 import bg1RingB from '../../assets/bg/bg1-ring-b.svg'
@@ -84,6 +85,9 @@ function useSequence(steps: number, holdMs: number, onNext?: () => void) {
 /** Figma: background 1 (743:37891) — boot log + signal detected */
 export function Background1({ onNext }: ScreenProps) {
   const seq = useSequence(2, 1000, onNext)
+  // 소나 → 신호 감지
+  useSfxOnMount('scan', 300)
+  useSfxWhen(seq.stage >= 2 || seq.skipped, 'lock')
   return (
     <TerminalFrame nodeId="743:37891" onClick={seq.onClick} label="시그널 접속 중 — 클릭하면 건너뛰기">
       <img className="bg-art bg-art--axes" src={bg1Axes} alt="" />
@@ -117,6 +121,9 @@ export function Background1({ onNext }: ScreenProps) {
 export function Background2({ onNext }: ScreenProps) {
   const seq = useSequence(1, 1200, onNext)
   const glitching = seq.stage >= 1 || seq.skipped
+  // 탐색 — 빨려 들어가다 신호가 흔들린다
+  useSfxOnMount('warp', 200)
+  useSfxWhen(glitching, 'glitch')
   return (
     <TerminalFrame nodeId="743:38494" onClick={seq.onClick} label="시그널 탐색 중 — 클릭하면 건너뛰기">
       <img className="bg-art bg-art--axes" src={bg2Axes} alt="" />
@@ -158,6 +165,9 @@ export function Background3({ onNext }: ScreenProps) {
   const seq = useSequence(1, 2600, onNext)
   const live = seq.stage >= 1 || seq.skipped
   const [shift, setShift] = useState(0)
+  // 그녀의 신호 — 도착하는 울림 → 심장 박동
+  useSfxOnMount('arrive', 250)
+  useSfxWhen(live, 'receive', 200)
 
   // once typed, the waveform keeps scrolling like a live signal meter
   useEffect(() => {

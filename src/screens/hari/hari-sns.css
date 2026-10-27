@@ -1,0 +1,327 @@
+/* =========================================================================
+   캐릭터 · SNS — 반하리 (현재)  Figma 1167:8614 / 1167:8663
+   좌표는 전부 Figma 1920×1080 아트보드 기준
+   ========================================================================= */
+
+.hr-sns {
+  --hr-font-name: 'Spoqa Han Sans Neo', var(--hr-font-ko);
+}
+
+/* ---- 1167:8614 — 프로필 카드 3장 ------------------------------------- */
+
+.hr-profile {
+  position: absolute;
+  top: 345px;
+  width: 422px;
+  height: 476px;
+}
+
+.hr-profile--1 {
+  left: 229px;
+}
+.hr-profile--2 {
+  left: 749px;
+}
+.hr-profile--3 {
+  left: 1269px;
+}
+
+.hr-screen .hr-profile__card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #a0a0a0;
+  border-radius: 40px;
+  background: #fff;
+  box-shadow:
+    11px 45px 21.4px 7px rgba(0, 0, 0, 0.36),
+    inset 10px 20px 24px -10px #f4f4f4;
+  text-align: left;
+  transition: transform 0.15s ease;
+}
+
+/* 게시물이 있는 카드만 눌림 (Figma 1167:8617 링크) */
+.hr-screen button.hr-profile__card:hover {
+  transform: translateY(-4px);
+}
+
+/* 프로필 원 — 카드 안 (96, 53) / 232 */
+.hr-profile__circle {
+  position: absolute;
+  left: 94px;
+  top: 51px;
+  width: 232px;
+  height: 232px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.hr-profile__circle img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* 일러스트가 오기 전: 실루엣 자리 */
+.hr-profile__circle.is-placeholder::before,
+.hr-profile__circle.is-placeholder::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.hr-profile__circle.is-placeholder::before {
+  top: 40px;
+  width: 86px;
+  height: 100px;
+  border-radius: 43px 43px 38px 38px;
+}
+
+.hr-profile__circle.is-placeholder::after {
+  top: 150px;
+  width: 170px;
+  height: 100px;
+  border-radius: 85px 85px 0 0;
+}
+
+/* 이름 — 가운데 x 기준. 점이 있으면 왼쪽으로 비켜 있음 (1167:8631) */
+.hr-profile__name {
+  position: absolute;
+  left: 210px;
+  top: 314px;
+  transform: translateX(-50%);
+  font-family: var(--hr-font-name);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  color: #000;
+  white-space: nowrap;
+}
+
+.hr-profile__name.has-dot {
+  left: 183.5px;
+}
+
+.hr-profile__dot {
+  position: absolute;
+  left: 243px;
+  top: 315px;
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+}
+
+/* Edit Profile 알약 (1167:8619) */
+.hr-profile__edit {
+  position: absolute;
+  left: 31px;
+  top: 385px;
+  width: 356px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000;
+  border-radius: 40px;
+  background: #fff;
+  font-family: var(--hr-font-head);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  white-space: nowrap;
+}
+
+/* ---- 1167:8663 — 반하리 게시물 ---------------------------------------- */
+
+/* 1169:9563 — 전신 일러스트 */
+.hr-sns__figure {
+  position: absolute;
+  left: 103px;
+  top: 116px;
+  width: 492px;
+  height: auto;
+  pointer-events: none;
+}
+
+/* 1169:9565 — 말풍선 */
+.hr-sns__speech {
+  position: absolute;
+  left: 115px;
+  top: 906px;
+  width: 507px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border: solid #000;
+  border-width: 1px 3px 3px 1px;
+  border-radius: 165.714px;
+  background: linear-gradient(180deg, #ffdbed 0%, #fff 74.038%);
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #444;
+  white-space: nowrap;
+}
+
+/* 1167:8669 — 게시물 창 (좌우 뒤집힌 판이라 inset x 반대) */
+.hr-sns__window {
+  position: absolute;
+  left: 822px;
+  top: 249px;
+  width: 948px;
+  height: 733px;
+  border: 1px solid #636363;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    11px 45px 21.4px 7px rgba(0, 0, 0, 0.36),
+    inset -10px 20px 24px -10px #f4f4f4;
+}
+
+/* 1169:9551 */
+.hr-sns__line {
+  position: absolute;
+  left: 823px;
+  top: 335px;
+  width: 946px;
+  height: 1px;
+  background: #fff;
+}
+
+.hr-head--sns {
+  left: 956px;
+  width: 216px;
+  padding: 5.8px 20px;
+}
+
+.hr-minus--sns {
+  left: 1712px;
+}
+
+/* 1167:8689 — 게시물 카드 */
+.hr-post {
+  position: absolute;
+  left: 848px;
+  top: 356px;
+  width: 544px;
+  height: 600px;
+  border-radius: 24px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.hr-post__handle,
+.hr-post__meta {
+  position: absolute;
+  top: 28px;
+  transform: translateX(-50%);
+  font-family: var(--hr-font-head);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.hr-post__handle {
+  left: 69.5px;
+  color: #000;
+}
+
+.hr-post__meta {
+  left: 448.8px;
+  color: #737373;
+}
+
+/* 1167:8693 — 사진 자리 */
+.hr-post__photo {
+  position: absolute;
+  left: 0;
+  top: 76px;
+  width: 544px;
+  height: 478px;
+  background: #d9d9d9;
+}
+
+/* 1167:8675 — 오른쪽 카드 */
+.hr-post-side {
+  position: absolute;
+  left: 1419px;
+  top: 356px;
+  width: 327px;
+  height: 337px;
+  border-radius: 24px;
+  background: #fff;
+}
+
+.hr-post-side__body {
+  position: absolute;
+  left: 23.2px;
+  top: 35px;
+  width: 280.6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 79px;
+}
+
+.hr-post-side__text {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+.hr-post-side__likes {
+  display: flex;
+  align-items: flex-start;
+  gap: 19px;
+  font-family: var(--hr-font-ko);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.48px;
+  color: #000;
+}
+
+.hr-post-side__likes img {
+  display: block;
+  flex: none;
+}
+
+.hr-post-side__caption {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--hr-font-ko);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #000;
+  white-space: nowrap;
+}
+
+.hr-post-side__tags {
+  display: flex;
+  gap: 4px;
+}
+
+.hr-post-side__tags li {
+  padding: 8px;
+  border: 1px solid #9f9f9f;
+  font-family: var(--hr-font-ko);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.32px;
+  color: #000;
+  white-space: nowrap;
+}

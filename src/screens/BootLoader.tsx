@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { TypeWriter } from '../components/TypeWriter'
 import './BootLoader.css'
+import { playSfx } from '../game/sfx'
 
 type Props = {
   onDone: () => void
@@ -30,6 +31,24 @@ export function BootLoader({ onDone }: Props) {
   useEffect(() => {
     doneRef.current = onDone
   })
+
+  // 전원이 들어오는 소리 → 다 올라오면 잠김
+  useEffect(() => {
+    let stop = () => {}
+    const t = window.setTimeout(() => {
+      stop = playSfx('boot')
+    }, 250)
+    return () => {
+      window.clearTimeout(t)
+      stop()
+    }
+  }, [])
+  const lockedRef = useRef(false)
+  useEffect(() => {
+    if (!typed || !loaded || lockedRef.current) return
+    lockedRef.current = true
+    playSfx('lock')
+  }, [typed, loaded])
 
   useEffect(() => {
     if (!typed || !loaded) return

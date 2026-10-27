@@ -12,48 +12,70 @@
 
 .choose-gender__panel {
   left: 660px;
-  top: 324px;
+  top: 340px;
   width: 600px;
   height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  padding: 64px 40px;
 }
 
 .choose-gender__heading {
-  position: absolute;
-  top: 388px;
-  left: calc(50% + 1px);
-  transform: translateX(-50%);
+  width: 531px;
   margin: 0;
   font-family: var(--font-mono);
   font-size: 32px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: normal;
   letter-spacing: -0.64px;
+  text-align: center;
   white-space: nowrap;
 }
 
+.choose-gender__options {
+  display: flex;
+  gap: 24px;
+  width: 531px;
+}
+
 .choose-gender__option {
-  position: absolute;
-  left: 728px;
-  width: 464px;
-  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 152px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 40px;
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(4px);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
-.choose-gender__option--woman { background: var(--color-woman); }
-.choose-gender__option--man   { background: var(--color-man); }
+.choose-gender__option--woman { width: 251px; background: var(--color-woman); }
+.choose-gender__option--man   { width: 256px; background: var(--color-man); }
 
-button.choose-gender__option--woman:hover,
-button.choose-gender__option--woman:focus-visible,
-.choose-gender__option--woman.is-active { background: var(--color-woman-active); }
-button.choose-gender__option--man:hover,
-button.choose-gender__option--man:focus-visible,
-.choose-gender__option--man.is-active   { background: var(--color-man-active); }
+/* "choose gender 2" (1463:7717): 고른 쪽만 진해지고 글자가 흰색, 다른 쪽은 그대로 */
+.choose-gender__option--woman:hover,
+.choose-gender__option--woman:focus-visible,
+.choose-gender__option--woman.is-active { background: var(--color-woman-active); color: #fff; outline: none; }
+.choose-gender__option--man:hover,
+.choose-gender__option--man:focus-visible,
+.choose-gender__option--man.is-active   { background: var(--color-man-active); color: #fff; outline: none; }
 
-.choose-gender__option.is-dimmed,
-button.choose-gender__option.is-dimmed:hover {
-  background: var(--color-option-dim);
-}
 .has-selection .choose-gender__option { pointer-events: none; }
 
-/* Figma 743:32940 orbit (305×228 at 807, 809) + 11px bleed */
+/* Figma 1463:7697 orbit (305×228 at 807, 809) + 11px bleed; selected = 1463:7717 */
 .choose-gender__orbit {
   position: absolute;
   left: 796px;

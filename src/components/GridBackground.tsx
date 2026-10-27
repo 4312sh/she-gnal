@@ -5,6 +5,8 @@
  * monitors stay covered and the lines stay aligned with the Figma frame.
  */
 const BLEED = 4000
+/** 점선 선명도 — 1 이 Figma 원래 값. 0.6 = 40% 더 희미하게 (2026-10-22 요청) */
+const GRID_OPACITY = 0.6
 
 export function GridBackground({ hidden = false }: { hidden?: boolean }) {
   return (
@@ -15,7 +17,7 @@ export function GridBackground({ hidden = false }: { hidden?: boolean }) {
       viewBox="0 0 1920 1080"
       overflow="visible"
       aria-hidden
-      style={{ opacity: hidden ? 0 : 1 }}
+      style={{ opacity: hidden ? 0 : GRID_OPACITY }}
     >
       <defs>
         <pattern id="grid-v" patternUnits="userSpaceOnUse" x={-142.03} y={0} width={84.672} height={10.88}>

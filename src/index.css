@@ -8,9 +8,9 @@
   --color-panel-bg: rgba(82, 81, 81, 0.2);
   --color-panel-bg-dark: rgba(31, 31, 31, 0.2);
   --color-woman: rgba(196, 134, 178, 0.2);
-  --color-woman-active: rgba(255, 3, 184, 0.2);
+  --color-woman-active: rgba(255, 0, 183, 0.4);
   --color-man: rgba(41, 132, 202, 0.2);
-  --color-man-active: rgba(3, 140, 255, 0.2); /* Figma에 없는 상태 — woman 선택 상태를 참고해 임의 지정 */
+  --color-man-active: rgba(3, 140, 255, 0.4); /* Figma에 없는 상태 — woman 선택 상태를 참고해 임의 지정 */
   --color-option-dim: rgba(53, 53, 53, 0.2);
 
   --shadow-panel: 0 4px 7px 0 rgba(255, 255, 255, 0.25);
@@ -176,4 +176,30 @@ button.pill:focus-visible {
     linear-gradient(to top right, #3c4e41, #000) 100% 0 / 50% 50% no-repeat,
     linear-gradient(to bottom left, #3c4e41, #000) 0 100% / 50% 50% no-repeat,
     linear-gradient(to bottom right, #3c4e41, #000) 100% 100% / 50% 50% no-repeat;
+}
+
+/* 부크크 명조 (Light 300 · Bold 700) · Besley 가변 — 캐릭터 화면과 챕터 채팅이 같이 쓴다 */
+@font-face {
+  font-family: 'BookkMyungjo';
+  src:
+    local('Bookk Myungjo Light'),
+    url('./assets/fonts/BookkMyungjo-Light.woff2') format('woff2');
+  font-weight: 300 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BookkMyungjo';
+  src:
+    local('Bookk Myungjo Bold'),
+    url('./assets/fonts/BookkMyungjo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Besley';
+  src: url('./assets/fonts/Besley-Variable.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
 }

@@ -169,7 +169,7 @@ export const CH1_UNLOCK = {
   trait: (t: string) => `「${t}」`,
 } as const;
 
-export const SUBMIT_LABEL = '답변하다';
+export const SUBMIT_LABEL = '답변하기'; // 1136:3498
 export const INPUT_MAX = 120;
 
 /**

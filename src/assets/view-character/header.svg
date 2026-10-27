@@ -1,0 +1,5 @@
+<svg width="1920" height="116" viewBox="0 -23 1920 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1912 -23C1916.4 -23 1920 -19 1920 -14.1V-5.7C1920 -5.4 1919.8 -5.2 1919.5 -5.2C1904.9 -5.2 1891 -1.7 1878.4 4.4C1823.7 31.1 1773.6 93 1713.8 93H206.2C146.4 93 96.3 31.1 41.6 4.4C29 -1.7 15.1 -5.2 0.5 -5.2C0.2 -5.2 0 -5.4 0 -5.7V-14.1C0 -19 3.6 -23 8 -23H1912Z" fill="url(#vc_header)" fill-opacity="0.2"/>
+<path d="M1919.5 -5.2C1904.9 -5.2 1891 -1.7 1878.4 4.4C1823.7 31.1 1773.6 93 1713.8 93H206.2C146.4 93 96.3 31.1 41.6 4.4C29 -1.7 15.1 -5.2 0.5 -5.2" stroke="white" stroke-opacity="0.35" stroke-width="1"/>
+<defs><linearGradient id="vc_header" x1="960" y1="-23" x2="960" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#787085"/><stop offset="0.6" stop-color="#1C1A1F"/></linearGradient></defs>
+</svg>

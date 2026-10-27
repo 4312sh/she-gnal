@@ -64,6 +64,8 @@ type Props = {
   onComplete: () => void;
   /** 나가기 — 메인 대시보드로 */
   onExit: () => void;
+  /** GO TO MAIN — 메인 대시보드 (없으면 onExit) */
+  onMain?: () => void;
   /** 개발용 진입 지점 */
   startAt?: PrologueStep;
   /** 개발용 — 응접실 채팅 안의 세부 단계 (?screen=prologue&at=chat.identity) */
@@ -73,6 +75,7 @@ type Props = {
 export default function PrologueFlow({
   onComplete,
   onExit,
+  onMain,
   startAt = 'opening',
   chatStartAt,
 }: Props) {
@@ -109,7 +112,7 @@ export default function PrologueFlow({
     case 'arrival':
       return <PrologueArrival onEnter={handleEnterAtelier} />;
     case 'chat':
-      return <PrologueChat startAt={chatStartAt} onDone={() => next()} />;
+      return <PrologueChat startAt={chatStartAt} onDone={() => next()} onExit={onExit} onMain={onMain} />;
     case 'ending':
       return <PrologueEnding onContinue={onComplete} onExit={onExit} />;
   }

@@ -1,0 +1,76 @@
+/* =========================================================================
+   하리 스토리 2020 · 2023 — 3차 디자인 (2026 대기실 hari-prologue.css 와 같은 판)
+   배경 · 색 막은 hari-chat.css (.hr-bg · .ht-veil · is-tone-*), 글줄 · 입력 · 선택지는 hp-*.
+   ========================================================================= */
+
+/* 상반신 — 화면 가운데, 아래로 살짝 넘친다 (2026 하리와 같은 키 858) */
+.hs-figure {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 225.5px;
+  height: 858px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hs-figure {
+  transition: opacity 0.9s ease-in-out;
+}
+
+/* 공간이동 중 흐려진다 */
+.hs-figure.is-fading {
+  opacity: 0;
+}
+
+.hs-figure img {
+  display: block;
+  height: 100%;
+  width: auto;
+  animation: hs-in 0.6s ease-out both;
+}
+
+@keyframes hs-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* 연습실(주황) · 방송국(분홍) — 아래 그라데이션도 색을 맞춘다 */
+.hs-screen.is-tone-trainee .hp-floor {
+  background: linear-gradient(179.99deg, rgba(110, 40, 10, 0.04) 38.21%, rgba(170, 60, 10, 0.24) 65.119%);
+}
+
+/* 채팅 기록 — 왼쪽 인물 자리에 같은 그림 */
+.hs-history .chh-figure {
+  left: 279px;
+  top: 225.5px;
+  width: 628.5px;
+  height: 858px;
+}
+
+/* 2024 카메라 뒤 — 회색 톤 (반하리_카메라뒤.md: 대화 UI 회색, 장식 없음) */
+.hs-screen.is-tone-backstage .hp-floor {
+  background: linear-gradient(179.99deg, rgba(20, 20, 26, 0.08) 38.21%, rgba(10, 10, 14, 0.42) 65.119%);
+}
+
+.hs-screen.is-tone-backstage .hp-bg img {
+  filter: saturate(0.45) brightness(0.8);
+}
+
+.hs-screen.is-tone-backstage .hp-badge {
+  background: linear-gradient(180deg, #d9d9de 0%, #9a9aa3 45%, #6e6e78 70%, #b8b8c0 100%);
+}
+
+.hs-screen.is-tone-backstage .hp-title {
+  background: linear-gradient(180deg, #c9c9d0 0%, #8d8d97 45%, #5d5d68 70%, #a6a6b0 100%);
+}
+
+.hr-screen.hs-screen.is-tone-backstage .hp-choice {
+  background: linear-gradient(180deg, #e4e4e8 0%, #b5b5bd 42%, #93939d 72%, #c8c8cf 100%);
+}
+
+.hs-screen.is-tone-backstage .hp-line {
+  font-weight: 500;
+}

@@ -1,0 +1,522 @@
+/* =========================================================================
+   챕터 채팅 — 위쪽 네비게이션 · 채팅 기록 (Figma 1462:3252 / 1462:3362 / 1462:3560)
+   좌표는 Figma 1920×1080 아트보드 기준.
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
+/* 1462:3366 — 바 뒤 위쪽 그늘 (위가 진하고 아래로 옅어진다) */
+.chn-shade {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 581px;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 12, 12, 0.6) 20%,
+    rgba(118, 115, 115, 0.35) 67%,
+    rgba(217, 217, 217, 0) 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.chn-shade.is-shown {
+  opacity: 1;
+}
+
+/* ---- 연도 배너 · 제목 · 멈춤 · 나가기 — 바가 내려오면 감춘다 ------------- */
+
+.chn-chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.chn-chrome > * {
+  pointer-events: auto;
+}
+
+.chn-chrome.is-hidden {
+  opacity: 0;
+}
+
+.chn-chrome.is-hidden > * {
+  pointer-events: none;
+}
+
+/* 화면 맨 위 가장자리 — 마우스가 닿으면 바가 내려온다 */
+.chn-edge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 36px;
+}
+
+/* ---- 1462:4099 — go to main 바 (1920×116, 위로 23 올라가 있다) ------------ */
+
+.chn {
+  position: absolute;
+  left: 0;
+  top: -23px;
+  width: 1920px;
+  height: 116px;
+  transform: translateY(-100%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.chn.is-shown {
+  transform: none;
+}
+
+.chn-bar {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Figma GLASS 효과 — 바 모양대로 뒤를 흐리게 + 테두리 빛 */
+.chn-bar::before,
+.chn-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.chn-bar::before {
+  clip-path: path('M1912.02 0C1916.43 0 1920 3.98626 1920 8.90347V17.2917C1920 17.5993 1919.78 17.8462 1919.5 17.8462C1904.89 17.8462 1890.99 21.2554 1878.42 27.3999C1823.66 54.1483 1773.59 116 1713.81 116H206.187C146.412 116 96.3365 54.1483 41.584 27.3999C29.0065 21.2554 15.1102 17.8462 0.5 17.8462C0.224243 17.8462 5.24257e-06 17.5993 0 17.2917V8.90347C0 3.98626 3.57389 0 7.98242 0H1912.02Z');
+  -webkit-backdrop-filter: blur(15px) saturate(1.1);
+  backdrop-filter: blur(15px) saturate(1.1);
+  background: rgba(28, 26, 31, 0.18);
+}
+
+.chn-bar::after {
+  background: url('../../assets/chapter/nav-bar.svg') 0 0 / 1920px 116px no-repeat;
+}
+
+.chn-group {
+  position: absolute;
+  top: 48px;
+  display: flex;
+}
+
+.chn-group--left {
+  left: 229px;
+  gap: 24px;
+}
+
+.chn-group--right {
+  left: 1348px;
+  gap: 25px;
+}
+
+.chn-pill {
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 40px;
+  background: rgba(79, 79, 79, 0.2);
+  /* Figma GLASS 4 — 뒤를 살짝 흐리고 가장자리에 얇은 빛 */
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.28),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  font-family: 'Victor Mono', ui-monospace, monospace;
+  /* Figma 는 SemiBold 지정이지만 피그마 렌더가 더 가늘게 보여, 웹에선 500 이 같은 굵기로 보인다 */
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #939393;
+}
+
+button.chn-pill {
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+button.chn-pill:hover,
+button.chn-pill:focus-visible {
+  background: rgba(150, 150, 150, 0.28);
+  color: #fff;
+}
+
+button.chn-pill:focus-visible {
+  outline: 2px solid #f0e6d2;
+  outline-offset: 2px;
+}
+
+.chn-pill.is-on {
+  color: #fff;
+}
+
+.chn-pill--now {
+  width: 124px;
+}
+
+/* 시대 · 연도 알약 — 과거 · 현재 · 미래 글자 길이가 달라 폭은 글자에 맞추고 양옆 여백을 20 으로 통일
+   (PAST | 1914 는 Figma 184 폭과 거의 같다) */
+.chn-pill--past {
+  width: auto;
+  padding: 0 20px;
+}
+
+.chn-pill--main {
+  position: absolute;
+  left: 823px;
+  top: 48px;
+  width: 274px;
+}
+
+.chn-pill--history {
+  width: 194px;
+}
+
+.chn-pill--history.is-on {
+  padding: 0 10px;
+  gap: 8px;
+}
+
+.chn-pill--stop {
+  width: 124px;
+}
+
+.chn-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.chn-dot--green {
+  background: #47ed00;
+  filter: blur(1.5px);
+}
+
+.chn-dot--orange {
+  background: #ff760e;
+  filter: blur(1.5px);
+}
+
+/* ---- 1462:3560 — 채팅 기록 ---------------------------------------------- */
+
+.chh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #151313;
+  animation: chh-fade 0.3s ease-out both;
+}
+
+/* 1920-1927_혜석 3 1 — 534×934 */
+.chh-backdrop {
+  position: absolute;
+  inset: 0;
+  filter: blur(8px);
+}
+
+.chh-figure {
+  position: absolute;
+  left: 242px;
+  top: 145px;
+  width: 534px;
+  height: 934px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.chh-figure img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+/* 판 — 980×731 */
+.chh-panel {
+  position: absolute;
+  left: 860px;
+  top: 246px;
+  width: 980px;
+  height: 731px;
+  box-sizing: border-box;
+  border: 0.7px solid #c2c2c2;
+  border-radius: 8px;
+  background: rgba(56, 56, 56, 0.2);
+  overflow: hidden;
+}
+
+.chh-head {
+  position: absolute;
+  left: 31.4px;
+  top: 23.4px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: #fff;
+  line-height: 1;
+}
+
+.chh-head__title {
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.chh-head__year {
+  font-family: 'Victor Mono', ui-monospace, monospace;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.chh-log {
+  position: absolute;
+  left: 0;
+  top: 66px;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  padding: 26px 70.6px 40px 44.4px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chh-log::-webkit-scrollbar {
+  display: none;
+}
+
+.chh-log:focus-visible {
+  outline: none;
+}
+
+.chh-empty {
+  margin: 200px 0 0;
+  text-align: center;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+  font-size: 18px;
+  color: #bdbdbd;
+}
+
+.chh-her {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+}
+
+/* 아바타 — 120 원 (Ellipse 6 #585858 위에 초상) */
+.chh-avatar {
+  flex: none;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #625838;
+  box-shadow: 0 0 0 1px #585858;
+  isolation: isolate;
+}
+
+.chh-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(1) contrast(1.05);
+  mix-blend-mode: luminosity;
+}
+
+.chh-bubbles {
+  padding-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chh-you {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.chh-bubble {
+  width: 490px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 24px 16px;
+  border-radius: 16px;
+  background: #cbcbcb;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: -0.36px;
+  color: #292929;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.chh-bubble--you {
+  background: #5a5a5a;
+  color: #939393;
+}
+
+/* 스크롤 손잡이 — 17×85 */
+.chh-thumb {
+  position: absolute;
+  left: 944.4px;
+  width: 17px;
+  border-radius: 22px;
+  background: #d9d9d9;
+  cursor: grab;
+  touch-action: none;
+}
+
+/* BACK — 가운데 1800.5, 178 */
+.chh-back {
+  position: absolute;
+  left: 1800.5px;
+  top: 178px;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 40px;
+  background: rgba(129, 63, 63, 0.6);
+  font-family: 'Victor Mono', ui-monospace, monospace;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #ff5f5f;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.chh-back:hover,
+.chh-back:focus-visible {
+  background: rgba(160, 70, 70, 0.75);
+}
+
+@keyframes chh-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- 1462:3273 — 메인으로 나가기 확인 ----------------------------------- */
+
+.chf {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  animation: chh-fade 0.25s ease-out both;
+}
+
+/* 모달이 떠 있는 동안 바는 어둠 위에 그대로 */
+.chn.is-pinned {
+  z-index: 4;
+}
+
+/* 1462:3287 */
+.chf-wash {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 12, 12, 0.7);
+  -webkit-backdrop-filter: blur(5.95px);
+  backdrop-filter: blur(5.95px);
+}
+
+/* 1468:12897 — 600×400 */
+.chf-box {
+  position: absolute;
+  left: 660px;
+  top: 340px;
+  width: 600px;
+  height: 400px;
+  box-sizing: border-box;
+  padding: 64px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 42px;
+  border-radius: 32px;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(9.5px);
+  backdrop-filter: blur(9.5px);
+  box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
+}
+
+.chf-title {
+  margin: 0;
+  font-family: 'Victor Mono', ui-monospace, monospace;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 47px;
+  letter-spacing: -0.64px;
+  text-align: center;
+  color: #fff;
+}
+
+.chf-actions {
+  width: 517px;
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.chf-btn {
+  width: 100%;
+  padding: 5.8px 19px 12.4px;
+  border: 0;
+  border-radius: 166px;
+  background: rgba(79, 79, 79, 0.2);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.28),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  font-family: 'Victor Mono', ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 39.77px;
+  letter-spacing: -0.48px;
+  text-transform: uppercase;
+  color: #939393;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.chf-btn:hover,
+.chf-btn:focus-visible {
+  background: rgba(150, 150, 150, 0.28);
+  color: #fff;
+  outline: none;
+}

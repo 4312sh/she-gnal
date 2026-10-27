@@ -48,11 +48,6 @@
   100% { transform: rotate(0deg); }
 }
 
-.time-ready__bar {
-  justify-content: flex-start;
-  padding: 0 14px;
-  background: rgba(252, 252, 252, 0.2);
-}
 
 .time-ready__status {
   position: absolute;

@@ -119,7 +119,9 @@
   top: 862px;
   transform: translateX(-50%);
   margin: 0;
-  max-width: 1500px;
+  /* left:50% 인 절대 배치는 폭이 화면 절반으로 줄어 긴 줄이 일찍 꺾인다 */
+  width: max-content;
+  max-width: 1600px;
   font-family: var(--pr-font-myungjo);
   font-size: 32px;
   line-height: 48px;
@@ -146,6 +148,77 @@
 .ch1-chatlog {
   top: 250px;
   height: 612px;
+  /* 위로 올려 지난 대화를 볼 수 있게 — 프롤로그 로그는 클릭이 통과하지만 여기선 스크롤을 받는다 */
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  padding-right: 18px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(233, 220, 195, 0.35) transparent;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 100%);
+}
+
+.ch1-chatlog:focus-visible {
+  outline: none;
+}
+
+.ch1-chatlog::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ch1-chatlog::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: rgba(233, 220, 195, 0.35);
+}
+
+.ch1-chatlog::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 말이 적을 땐 바닥에 붙고, 넘치면 위로 쌓인다 */
+.ch1-chatlog__list {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 24px;
+  padding-top: 56px;
+  box-sizing: border-box;
+}
+
+/* 위로 올려 읽는 중일 때 — 입력창 바로 위 */
+.ch1-chatlog__jump {
+  position: absolute;
+  left: 50%;
+  top: 872px;
+  transform: translateX(-50%);
+  padding: 8px 18px;
+  border: 2px solid #786d60;
+  border-radius: 999px;
+  background: rgba(25, 25, 25, 0.85);
+  font-family: var(--pr-font-myungjo);
+  font-size: 16px;
+  color: #e9dcc3;
+  cursor: pointer;
+  animation: ch-fade 0.25s ease-out both;
+}
+
+.ch1-chatlog__jump:hover,
+.ch1-chatlog__jump:focus-visible {
+  background: rgba(60, 55, 48, 0.92);
+  outline: none;
+}
+
+@keyframes ch-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .ch1-bubble {
@@ -213,4 +286,10 @@
   .ch1-toast {
     animation-duration: 0.01ms !important;
   }
+}
+
+/* ---- 3차 디자인 — 1914 상반신 (past-1913.webp 900×2090 을 챕터 2 와 같은 배율 0.532 로) ---- */
+.ch2-motion.ch1-motion,
+.ch2-motion.ch1-motion img {
+  height: 1112px;
 }

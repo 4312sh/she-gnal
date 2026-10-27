@@ -1,0 +1,422 @@
+/* =========================================================================
+   반하리 · Chapter 0 프롤로그 「공연장 뒷편의 대기실」 (3차 디자인)
+   Figma 1373:41149 · 1359:39625 · 1359:39635 · 1359:39645 · 1484:14471
+         1463:4915 · 1508:14710 · 1380:41280 · 1259:31389 · 1359:39807
+   좌표는 전부 Figma 1920×1080 아트보드 기준.
+   글꼴 · 리셋 · 유리 버튼은 hari.css, 입력란 · GO · 멈춤 · 나가기 확인은 chat/hari-chat.css 를 같이 쓴다.
+   ========================================================================= */
+
+/* ---- 배경 -------------------------------------------------------------- */
+
+/* image 23 (도시 야경, blur 1.5) · 배경 디자인 1 (무대, blur 8) — 흐림은 그림에 들어가 있다 */
+.hp-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.hp-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 공간이동 — 무대 배경이 서서히 올라온다 */
+.hp-bg--stage {
+  opacity: 0;
+  transition: opacity 1.1s ease-in-out;
+}
+
+.hp-bg--stage.is-on {
+  opacity: 1;
+}
+
+/* 여러 공간 (2023 · 2024 이야기) — 지금 공간만 서서히 올라온다 */
+.hp-bg--room {
+  opacity: 0;
+  transition: opacity 1.1s ease-in-out;
+}
+
+.hp-bg--room.is-on {
+  opacity: 1;
+}
+
+/* 1373:41151 — rgba(93,93,93,.4) difference 막 */
+.hp-diff {
+  position: absolute;
+  left: -138px;
+  top: 0;
+  width: 2296px;
+  height: 1080px;
+  background: rgba(93, 93, 93, 0.4);
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+/* 1508:14712 — 무대에서는 2296×1106, 가운데에서 위로 13 */
+.hp-diff--stage {
+  left: -188px;
+  top: -26px;
+  height: 1106px;
+}
+
+/* 1359:39643 — 아래쪽 붉은 그라데이션 (524 높이, 뒤를 1.5 흐림) */
+.hp-floor {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 524px;
+  background: linear-gradient(179.99deg, rgba(90, 5, 55, 0.06) 38.21%, rgba(195, 0, 3, 0.2) 65.119%);
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
+  pointer-events: none;
+}
+
+/* 1553:20492 — 무대에서는 위쪽이 투명에서 시작 */
+.is-room-stage .hp-floor {
+  background: linear-gradient(179.99deg, rgba(255, 255, 255, 0) 8.7982%, rgba(195, 0, 3, 0.2) 65.119%);
+}
+
+/* ---- 하리 -------------------------------------------------------------- */
+
+/*
+ * 1484:14467 — 원본 캔버스 1370×1041 (가운데, 위 145) 중 몸이 있는 부분만 잘라 쓴다.
+ * 자르기 2860~6530 × 470~5480 (원본 px) × 0.17125 → 왼쪽 764.8 · 위 225.5 · 628.5×858
+ */
+.hp-figure {
+  position: absolute;
+  left: 764.8px;
+  top: 225.5px;
+  width: 628.5px;
+  height: 858px;
+  pointer-events: none;
+  transition: opacity 0.9s ease-in-out;
+}
+
+/* 1484:14471 — 공간이동 중 흐려진다 */
+.hp-figure.is-fading {
+  opacity: 0;
+}
+
+.hp-figure__img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hp-figure__img.is-on {
+  animation: hp-in 0.18s ease-out both;
+}
+
+.hp-figure__img.is-leaving {
+  animation: hp-out 0.18s ease-in both;
+}
+
+@keyframes hp-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hp-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---- 하리의 말 · 생각중 · 질문 (1359:39644 / 1508:14732) ---------------- */
+
+/* Pretendard SemiBold 32 · 흰색 · 그림자 0 4 4 · 위 818 (한 줄 기준) — 여러 줄이면 아랫선에 맞춰 위로 쌓인다 */
+.hp-line {
+  position: absolute;
+  left: 960.5px;
+  bottom: 224px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 1500px;
+  margin: 0;
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.64px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+.hp-line--narr {
+  font-size: 26px;
+  font-weight: 400;
+  color: #ffe0f2;
+}
+
+.hp-line--thinking {
+  animation: hp-breathe 1.8s ease-in-out infinite;
+}
+
+.hp-dots i {
+  font-style: normal;
+  animation: hp-dot 1.4s infinite both;
+}
+
+.hp-dots i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.hp-dots i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.hp-dots i:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes hp-dot {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes hp-breathe {
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* 1359:39634 — 방금 보낸 말 (Pretendard Regular 24 · #4e4e4e · 위 911) */
+.hp-echo {
+  position: absolute;
+  left: 960.5px;
+  top: 911px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 1200px;
+  margin: 0;
+  font-family: var(--hr-font-ko);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  text-align: center;
+  color: #4e4e4e;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+  word-break: keep-all;
+}
+
+/* 1373:41158 — 입력란 436 + GO 80, 사이 15, 가운데 · 위 928 */
+.hp-inputrow {
+  position: absolute;
+  left: 960.5px;
+  top: 928px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0;
+}
+
+/* 1508:14730 / 14731 — Frame 207 (421×106, 위 903) 질감 근사 */
+.hr-screen .hp-choice {
+  position: absolute;
+  top: 903px;
+  width: 421px;
+  height: 106px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 10px;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 160px;
+  background: linear-gradient(180deg, #ffe6f2 0%, #f7a9d2 42%, #ee86c0 72%, #f8bcdc 100%);
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
+  white-space: nowrap;
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+  animation: hp-pop 0.4s ease-out;
+}
+
+.hp-choice--1 {
+  left: 527px;
+}
+
+.hp-choice--2 {
+  left: 974px;
+}
+
+.hr-screen .hp-choice:hover,
+.hr-screen .hp-choice:focus-visible {
+  transform: translateY(-4px);
+  filter: brightness(1.05);
+}
+
+@keyframes hp-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---- 위쪽 — Prologue · 제목 · 멈춤 · 나가기 (1484:14474) ------------------ */
+
+.hp-chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hp-chrome > * {
+  pointer-events: auto;
+}
+
+/* 1345:37701 — Prologue (240×64, Variant6 질감 근사) */
+.hp-badge {
+  position: absolute;
+  left: 80px;
+  top: 34px;
+  width: 240px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 72px;
+  background: linear-gradient(180deg, #ffd29c 0%, #ff9a3c 45%, #ff6d14 70%, #ffb46e 100%);
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+  font-family: var(--hr-font-head);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* 1465:9753 — 제목 알약 (868×64, Variant7 질감 근사) */
+.hp-title {
+  position: absolute;
+  left: 526.5px;
+  top: 34px;
+  width: 868px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 72px;
+  background: linear-gradient(180deg, #ffc3e6 0%, #ff63c0 45%, #ff1aa4 70%, #ff8ad2 100%);
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.48px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* 1484:14475 — ▶ · ✕ (64×64, 사이 20, 왼쪽 1691). 유리 버튼(70)을 64 로 줄여 쓴다 */
+.hp-tools {
+  position: absolute;
+  left: 1691px;
+  top: 34px;
+  display: flex;
+  gap: 20px;
+}
+
+.hp-tools > .hr-glassbtn {
+  transform: scale(0.9143);
+  transform-origin: 0 0;
+  margin: 0 -6px -6px 0;
+}
+
+.hr-screen .hp-tools > .hr-glassbtn:hover {
+  transform: scale(0.96);
+}
+
+/* 위쪽 바 시대 알약 폭은 chapter-nav.css 에서 글자에 맞춘다 */
+
+/* ---- 채팅 기록 (1259:31389) — 나혜석 기록 화면과 같은 판, 인물 · 아바타만 하리 ---- */
+
+.chh--hari {
+  background: #1b1622;
+}
+
+.chh--hari .chh-backdrop {
+  filter: none;
+}
+
+/* 1259:31393 — 아래 310 그라데이션, 뒤를 6 흐림 */
+.chh--hari .chh-backdrop::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 310px;
+  background: linear-gradient(179.99deg, rgba(90, 5, 55, 0.06) 38.21%, rgba(195, 0, 3, 0.2) 65.119%);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.chh--hari .ch1-vignette {
+  display: none;
+}
+
+/* 1380:41685 — 왼쪽의 하리 (몸 가운데 x ≈ 474, 본 화면과 같은 배율) */
+.chh--hari .chh-figure {
+  left: 279px;
+  top: 225.5px;
+  width: 628.5px;
+  height: 858px;
+}
+
+/* 1465:11634 — 분홍 원 위에 하리 */
+.chh--hari .chh-avatar {
+  background: #ff94dd;
+  box-shadow: none;
+}
+
+.chh--hari .chh-avatar img {
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-figure,
+  .hp-bg--stage {
+    transition-duration: 0.2s;
+  }
+  .hp-line--thinking,
+  .hp-dots i {
+    animation: none;
+  }
+}

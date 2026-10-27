@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import planet from '../../assets/connect/planet.svg'
 import { TypeWriter } from '../../components/TypeWriter'
 import type { Era } from '../../game/eras'
+import { useSfxOnMount, useSfxWhen } from '../../game/useSfx'
 import './Signal.css'
 
 type ScreenProps = { onNext?: () => void }
@@ -70,6 +71,9 @@ function SignalFrame({
 /** Figma: 접속중 화면 1 (743:22994) */
 export function Signal1({ onNext }: ScreenProps) {
   const seq = useSequence(1, 900, onNext)
+  // 멀리서 울리는 소나 → 다 읽으면 잠김
+  useSfxOnMount('scan', 300)
+  useSfxWhen(seq.stage >= 1 || seq.skipped, 'lock')
   return (
     <SignalFrame nodeId="743:22994" label="시그널 접속 중 — 클릭하면 건너뛰기" onClick={seq.onClick}>
       <TypeWriter
@@ -101,6 +105,10 @@ const TUNNEL = [
 export function Signal2({ onNext }: ScreenProps) {
   const seq = useSequence(3, 1200, onNext)
   const { stage, skipped } = seq
+  // 터널로 빨려 들어감 → 신호 끊김 → 다시 잡힘
+  useSfxOnMount('warp', 150)
+  useSfxWhen(stage >= 1 && !skipped, 'glitch', 700)
+  useSfxWhen(stage >= 3 || skipped, 'lock')
   return (
     <SignalFrame nodeId="743:22598" label="시그널 탐색 중 — 클릭하면 건너뛰기" onClick={seq.onClick}>
       {TUNNEL.map(([x, y, w, h, sw], i) => (
@@ -151,7 +159,8 @@ export function Signal2({ onNext }: ScreenProps) {
 const WAVE = '▁▂▃▄▅▆▇█▇▆▅▄▃▂▁▂▃▄▅▆▇█▇▆▅▄▃▂▁'
 
 /** Figma: 접속중 화면 3 (743:23377) — destination follows the entered era */
-export function Signal3({ era, onNext }: ScreenProps & { era: Era }) {
+export function Signal3({ era, year, onNext }: ScreenProps & { era: Era; year?: number }) {
+  const shownYear = year ?? era.anchorYear
   const seq = useSequence(2, 2600, onNext)
   const { stage, skipped } = seq
   const [shift, setShift] = useState(0)
@@ -162,14 +171,17 @@ export function Signal3({ era, onNext }: ScreenProps & { era: Era }) {
     return () => window.clearInterval(t)
   }, [live])
   const wave = WAVE.slice(shift) + WAVE.slice(1, shift + 1)
+  // 도착하는 쿵 → 그녀의 신호가 심장처럼 뛴다
+  useSfxOnMount('arrive', 250)
+  useSfxWhen(live, 'receive', 200)
 
   return (
-    <SignalFrame nodeId="743:23377" label={`${era.anchorYear} ${era.city} 접속 — 클릭하면 계속`} onClick={seq.onClick}>
+    <SignalFrame nodeId="743:23377" label={`${shownYear} ${era.city} 접속 — 클릭하면 계속`} onClick={seq.onClick}>
       <img className="planet" src={planet} alt="" />
       <TypeWriter
         className="sig-destination"
         lines={[
-          `DESTINATION ── ${era.anchorYear} · ${era.city}`,
+          `DESTINATION ── ${shownYear} · ${era.city}`,
           `COORDINATES ── ${era.coordinates}`,
           'STATUS ─────── LOCKED ✓',
         ]}

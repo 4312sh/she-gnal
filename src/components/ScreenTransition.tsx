@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { AsciiBurst } from './AsciiBurst'
 import './ScreenTransition.css'
 
@@ -11,6 +11,9 @@ type Props<K extends string> = {
   kind?: TransitionKind
   /** ms — keep in sync with ScreenTransition.css */
   duration?: number
+  /** 'slide' only: how far the camera moves (px). Default 1080 — set it so lines that
+      run across two Figma frames line up (e.g. title → enter name = 1036). */
+  distance?: number
 }
 
 /**
@@ -19,16 +22,17 @@ type Props<K extends string> = {
  * 'crt' powers the old screen off like a monitor and boots the next one on black;
  * 'ascii' swaps screens under a burst of flickering terminal glyphs.
  */
-export function ScreenTransition<K extends string>({ screen, render, kind = 'slide', duration = 1300 }: Props<K>) {
-  const [shown, setShown] = useState<{ keys: K[]; kind: TransitionKind }>({
+export function ScreenTransition<K extends string>({ screen, render, kind = 'slide', duration = 1300, distance = 1080 }: Props<K>) {
+  const [shown, setShown] = useState<{ keys: K[]; kind: TransitionKind; distance: number }>({
     keys: [screen],
     kind,
+    distance,
   })
 
   // Derive layers during render when the screen changes (no effect loop).
   const current = shown.keys[shown.keys.length - 1]
   if (current !== screen) {
-    setShown({ keys: [current, screen], kind })
+    setShown({ keys: [current, screen], kind, distance })
   }
 
   useEffect(() => {
@@ -49,6 +53,7 @@ export function ScreenTransition<K extends string>({ screen, render, kind = 'sli
               key={key}
               className={`screen screen--${state} screen--${shown.kind}`}
               aria-hidden={state === 'leaving' || undefined}
+              style={{ '--slide': `${shown.distance}px` } as CSSProperties}
             >
               <div className="screen__inner">{render(key)}</div>
             </div>

@@ -160,8 +160,19 @@ button.dash-pill:focus-visible { background: rgba(79, 79, 79, 0.45); color: #fff
   border-radius: 8px;
   transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.level--pink .level__fill { background: rgba(220, 37, 110, 0.28); }
-.level--blue .level__fill { background: rgba(0, 95, 211, 0.3); }
+/* Figma 1259:30763 (설정) / 1259:30282 (세팅 준비 — strong) */
+.level--pink .level__fill { background: rgba(90, 5, 55, 0.3); }
+.level--blue .level__fill { background: rgba(0, 95, 211, 0.2); }
+.level--pink.level--strong .level__fill { background: rgba(90, 5, 55, 0.7); }
+.level--blue.level--strong .level__fill { background: rgba(0, 95, 211, 0.6); }
+
+.gauge-label {
+  position: absolute;
+  color: #cbcbcb;
+  font-size: 16px;
+  line-height: 23px;
+  white-space: nowrap;
+}
 .level--grey .level__fill { background: rgba(252, 252, 252, 0.2); }
 
 /* readouts inside the top console */
@@ -193,6 +204,112 @@ button.dash-pill:focus-visible { background: rgba(79, 79, 79, 0.45); color: #fff
   animation: planet-pulse 4s ease-in-out infinite;
   transform-origin: 958px 333px;
 }
+/* filter(brightness) 애니메이션은 Safari 에서 큰 화면일 때 SVG 안의 필터(링 · 행성)를
+   통째로 안 그리는 문제가 있어 opacity 로 바꿨다 */
 @keyframes planet-pulse {
-  50% { filter: brightness(1.25); }
+  0%, 100% { opacity: 0.82; }
+  50% { opacity: 1; }
+}
+
+/* ---- 위 콘솔 움직임 (ConsoleMotion) — 투명도 · 위치만 움직인다 (GPU 합성) ---- */
+
+.console-top .ct-layer {
+  position: absolute;
+  max-width: none;
+  display: block;
+}
+
+/* 궤도 — 안쪽부터 바깥으로 빛이 번져 나간다 */
+.console-top .ct-ring {
+  opacity: 0.5;
+  will-change: opacity;
+  animation: ct-ring 5s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.2s);
+}
+.console-top.is-active .ct-ring {
+  animation-duration: 3.2s;
+  animation-delay: calc(var(--i) * 0.13s);
+}
+@keyframes ct-ring {
+  0%, 60%, 100% { opacity: 0.5; }
+  18% { opacity: 1; }
+}
+
+/* 궤도를 도는 빛 */
+.console-top .ct-orbit {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.console-top .ct-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: #cffff5;
+  box-shadow: 0 0 6px 1px rgba(207, 255, 245, 0.7);
+  offset-rotate: 0deg;
+  offset-anchor: center;
+  animation: ct-orbit linear infinite;
+  will-change: offset-distance;
+}
+@keyframes ct-orbit {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+/* 행성 — 떠오르고 가라앉는다 */
+.console-top .ct-planet {
+  will-change: transform;
+  animation: ct-float 6s ease-in-out infinite;
+}
+@keyframes ct-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* 행성 표면에서 퍼지는 둥근 파동 */
+.console-top .ct-wave {
+  position: absolute;
+  width: 222px;
+  height: 222px;
+  border-radius: 50%;
+  border: 0.6px solid rgba(207, 255, 245, 0.9);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: ct-wave 4s ease-out infinite;
+}
+.console-top .ct-wave--2 {
+  animation-delay: 2s;
+}
+.console-top.is-active .ct-wave {
+  animation-duration: 2.4s;
+}
+.console-top.is-active .ct-wave--2 {
+  animation-delay: 1.2s;
+}
+@keyframes ct-wave {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.55); }
+}
+
+/* DISTANCE 선 그래프 */
+.distance-wave-box {
+  position: absolute;
+  width: 401px;
+  height: 63px;
+  pointer-events: none;
+}
+.distance-wave {
+  display: block;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .console-top .ct-ring,
+  .console-top .ct-dot,
+  .console-top .ct-planet,
+  .console-top .ct-wave {
+    animation: none;
+  }
 }

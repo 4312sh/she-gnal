@@ -4,6 +4,7 @@ import expand from '../assets/name/expand.svg'
 import sphere from '../assets/name/sphere.svg'
 import sphereLarge from '../assets/name/sphere-large.svg'
 import './EnterName.css'
+import { playSfx } from '../game/sfx'
 
 type Props = {
   initialName?: string
@@ -13,7 +14,7 @@ type Props = {
 
 const EXPAND_MS = 1000
 
-/** Figma: "enter name" (743:31130) → "enter name - 2" (743:31769) */
+/** Figma: "enter name" (1463:4932) → "enter name - 2" (1463:8915) */
 export function EnterName({ initialName = '', initialAge, onSubmit }: Props) {
   const [name, setName] = useState(initialName)
   const [age, setAge] = useState(initialAge ? String(initialAge) : '')
@@ -33,50 +34,64 @@ export function EnterName({ initialName = '', initialAge, onSubmit }: Props) {
     e?.preventDefault()
     if (!valid || submitted) return
     setSubmitted(true)
-    window.setTimeout(() => onSubmit(name.trim(), ageNum), EXPAND_MS)
+    playSfx('confirm')
+    window.setTimeout(() => {
+      playSfx('descend')
+      onSubmit(name.trim(), ageNum)
+    }, EXPAND_MS)
   }
 
   return (
-    <form className={`enter-name${submitted ? ' is-submitted' : ''}`} onSubmit={handleSubmit} data-node-id="743:31130">
+    <form
+      className={`enter-name${submitted ? ' is-submitted' : ''}`}
+      onSubmit={handleSubmit}
+ data-node-id="1463:4932">
       <img className="layer enter-name__lines" src={lines} alt="" />
       <img className="layer enter-name__expand" src={expand} alt="" />
 
-      <div className="panel enter-name__panel" />
-      <h1 className="enter-name__heading">
-        Enter
-        <br />
-        your name &amp; age
-      </h1>
-
-      <input
-        className="pill enter-name__field enter-name__field--name"
-        type="text"
-        placeholder="name"
-        aria-label="이름"
-        autoComplete="off"
-        maxLength={16}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        disabled={submitted}
-        ref={nameRef}
-      />
-      <input
-        className="pill enter-name__field enter-name__field--age"
-        type="text"
-        inputMode="numeric"
-        placeholder="Age"
-        aria-label="나이"
-        autoComplete="off"
-        maxLength={3}
-        value={age}
-        onChange={(e) => setAge(e.target.value.replace(/\D/g, ''))}
-        disabled={submitted}
-      />
+      {/* Figma "Component 46" (1468:12849 → 1468:12840): 600×400 glass panel, content centred */}
+      <div className="panel enter-name__panel">
+        <h1 className="enter-name__heading">Enter your name &amp; age</h1>
+        <div className="enter-name__fields">
+          <input
+            className="enter-name__field"
+            type="text"
+            placeholder="name"
+            aria-label="이름"
+            autoComplete="off"
+            maxLength={16}
+            value={name}
+            onChange={(e) => {
+              playSfx(e.target.value.length < name.length ? 'erase' : 'key')
+              setName(e.target.value)
+            }}
+            disabled={submitted}
+            ref={nameRef}
+          />
+          <input
+            className="enter-name__field"
+            type="text"
+            inputMode="numeric"
+            placeholder="Age"
+            aria-label="나이"
+            autoComplete="off"
+            maxLength={3}
+            value={age}
+            onChange={(e) => {
+              const v = e.target.value.replace(/\D/g, '')
+              if (v !== age) playSfx(v.length < age.length ? 'erase' : 'key', { pitch: 4 })
+              setAge(v)
+            }}
+            disabled={submitted}
+          />
+        </div>
+      </div>
 
       <button
         type="submit"
         className="enter-name__sphere"
         disabled={!valid}
+        onPointerEnter={() => valid && !submitted && playSfx('hover')}
         aria-label="입력 완료"
         title={valid ? '다음으로' : '이름과 나이를 입력해 주세요'}
       >

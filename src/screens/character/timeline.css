@@ -1,0 +1,445 @@
+/* timeline assets: src/assets/character/timeline */
+/* =========================================================================
+   과거 · 캐릭터 타임라인 — Figma 1200:12962 / 1200:13016 / 1134:2246 / 1134:2308
+   좌표는 Figma 1920×1080 아트보드 기준. 배경 · 배너 · 탭 · 나가기는 character.css 를 같이 쓴다.
+   ========================================================================= */
+
+.tl-root {
+  position: absolute;
+  inset: 0;
+  /* 배너 · 탭 · 나가기 위에 깔리므로 빈 곳은 클릭을 통과시킨다 */
+  pointer-events: none;
+}
+
+.tl-root > :not(.tl-shade-top, .tl-shade-bottom, .tl-line, .tl-connector) {
+  pointer-events: auto;
+}
+
+.tl-root > div > .tl-era {
+  pointer-events: auto;
+}
+
+/* ---- 그늘 — 위는 아래로 갈수록 옅게, 아래는 위로 갈수록 옅게 -------------- */
+
+.tl-shade-top,
+.tl-shade-bottom {
+  position: absolute;
+  left: 0;
+  width: 1920px;
+  pointer-events: none;
+}
+
+.tl-shade-top {
+  top: 0;
+  height: 441px;
+  background: linear-gradient(
+    to top,
+    rgba(217, 217, 217, 0) 0.21%,
+    rgba(118, 115, 115, 0.35) 24.94%,
+    rgba(18, 12, 12, 0.7) 75.85%
+  );
+}
+
+.tl-shade-bottom {
+  bottom: 0;
+  height: 955px;
+  background: linear-gradient(
+    179.88deg,
+    rgba(217, 217, 217, 0) 0.21%,
+    rgba(118, 115, 115, 0.35) 23.48%,
+    rgba(18, 12, 12, 0.7) 59.49%
+  );
+}
+
+/* 1200:12965 / 12966 — 시간대 목록은 위 그늘이 조금 더 올라가 있고 아래 그늘이 길다 */
+.tl-root--list .tl-shade-top {
+  top: -49px;
+}
+
+.tl-root--list .tl-shade-bottom {
+  height: 1439px;
+  background: linear-gradient(
+    179.82deg,
+    rgba(217, 217, 217, 0) 0.21%,
+    rgba(118, 115, 115, 0.35) 23.48%,
+    rgba(18, 12, 12, 0.7) 59.49%
+  );
+}
+
+/* ---- 1200:12975 — 가로선 (1920×8) --------------------------------------- */
+
+.tl-line {
+  position: absolute;
+  left: 0;
+  top: 603px;
+  width: 1920px;
+  height: 8px;
+  background: url('../../assets/character/timeline/timeline-line.svg') 0 0 / 1920px 8px no-repeat;
+  pointer-events: none;
+}
+
+/* 1200:12976 ~ 12979 — 선 위 점 + 동그라미까지 잇는 줄 (21×73) */
+.tl-connector {
+  position: absolute;
+  width: 21px;
+  height: 73px;
+  pointer-events: none;
+  background: 0 0 / 21px 73px no-repeat;
+}
+
+.tl-connector--down {
+  top: 596.55px;
+  background-image: url('../../assets/character/timeline/connector-down.svg');
+}
+
+.tl-connector--up {
+  top: 545.04px;
+  background-image: url('../../assets/character/timeline/connector-up.svg');
+}
+
+/* ---- 1136:3631 — 시간대 동그라미 (Ellipse 1 / 2 · 217×218) ---------------- */
+
+.tl-era {
+  position: absolute;
+  width: 213.552px;
+  height: 213.552px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  transition: transform 0.25s ease;
+}
+
+.tl-era::before {
+  content: '';
+  position: absolute;
+  left: -1.66px;
+  top: -1.73px;
+  width: 217px;
+  height: 218px;
+  z-index: -1;
+  background: url('../../assets/character/timeline/era-circle.svg') 0 0 / 217px 218px no-repeat;
+}
+
+.tl-era span {
+  font-family: var(--cp-en);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 40px;
+  text-align: center;
+  color: #cdc6ba;
+}
+
+/* 1200:13016 — 가리킨 시간대는 밝은 동그라미 + 어두운 글자 */
+.tl-era:hover::before,
+.tl-era:focus-visible::before {
+  background-image: url('../../assets/character/timeline/era-circle-light.svg');
+}
+
+.tl-era:hover span,
+.tl-era:focus-visible span {
+  color: #292929;
+}
+
+.tl-era:hover {
+  transform: scale(1.03);
+}
+
+.tl-root .tl-era:focus-visible {
+  outline: none;
+}
+
+/* ---- 1134:2270 — 시간대 상세: 왼쪽 큰 반원 (290×782) ---------------------- */
+
+.tl-era-big {
+  position: absolute;
+  left: 0;
+  top: 203.6px;
+  width: 290px;
+  height: 782px;
+  background: url('../../assets/character/timeline/era-big.svg') 0 0 / 290px 782px no-repeat;
+  clip-path: ellipse(290px 391px at 0 50%);
+  transition: filter 0.2s ease;
+}
+
+.tl-era-big:hover {
+  filter: brightness(1.15);
+}
+
+/* 1134:2271 — 세로로 눕힌 연도 (가운데 115, 576) */
+.tl-era-big span {
+  position: absolute;
+  left: 115px;
+  top: 372.4px;
+  transform: translate(-50%, -50%) rotate(90deg);
+  font-family: var(--cp-en);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ---- 1134:2252 — 사건 동그라미 (Ellipse 3 · 289×289) ---------------------- */
+
+.tl-event {
+  position: absolute;
+  top: 442px;
+  width: 285.617px;
+  height: 285.617px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  transition: transform 0.25s ease;
+  animation: tl-rise 0.45s ease both;
+}
+
+.tl-event:nth-of-type(3) {
+  animation-delay: 0.06s;
+}
+
+.tl-event:nth-of-type(4) {
+  animation-delay: 0.12s;
+}
+
+.tl-event::before {
+  content: '';
+  position: absolute;
+  left: -1.31px;
+  top: -1.37px;
+  width: 289px;
+  height: 289px;
+  z-index: -1;
+  border-radius: 50%;
+  background: url('../../assets/character/timeline/event-circle.svg') 0 0 / 289px 289px no-repeat;
+  transition: background-color 0.2s ease;
+}
+
+.tl-event span {
+  font-family: var(--cp-ko);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 38px;
+  text-align: center;
+  color: #fff;
+  white-space: pre;
+}
+
+.tl-event:not(:disabled):hover {
+  transform: scale(1.03);
+}
+
+.tl-event:not(:disabled):hover::before {
+  background-color: rgba(205, 198, 186, 0.18);
+}
+
+.tl-event.is-sealed {
+  opacity: 0.4;
+}
+
+@keyframes tl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---- 1134:2308 — 사건 상세 ---------------------------------------------- */
+
+/* 1134:2314 — 판 */
+.tl-detail {
+  position: absolute;
+  left: 919px;
+  top: 346px;
+  width: 831px;
+  height: 532px;
+  box-sizing: border-box;
+  border: 4px solid var(--cp-frame);
+  border-radius: 11px;
+  background: #494949;
+  animation: tl-fade 0.3s ease;
+}
+
+.tl-detail__plate {
+  position: absolute;
+  left: 20px;
+  top: 26px;
+  width: 787px;
+  height: 475px;
+  border-radius: 8px;
+  background: #90897d;
+}
+
+/* 1134:2323 */
+.tl-detail__header {
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  min-width: 230px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 0 9px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--cp-rule);
+  border-radius: 4px;
+  background: var(--cp-tan);
+  filter: drop-shadow(0 4px 1px rgba(0, 0, 0, 0.5));
+  font-family: var(--cp-ko);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  color: #1f1e1e;
+  white-space: nowrap;
+}
+
+/* 1135:3360 */
+.tl-detail__row {
+  position: absolute;
+  left: 17px;
+  top: 79px;
+  width: 753px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* 1134:2315 */
+.tl-detail__body {
+  width: 531px;
+  max-height: 379px;
+  box-sizing: border-box;
+  padding: 36px 50px;
+  overflow-y: auto;
+  border: 2px solid var(--cp-rule);
+  border-radius: 4px;
+  background: var(--cp-paper);
+  filter: drop-shadow(0 4px 1px rgba(0, 0, 0, 0.5));
+}
+
+.tl-detail__row.is-wide .tl-detail__body {
+  width: 753px;
+}
+
+.tl-detail__body p {
+  width: 391px;
+  margin: 0 auto;
+  font-family: var(--cp-ko);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 40px;
+  color: #1f1e1e;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  animation: tl-fade 0.35s ease;
+}
+
+.tl-detail__row.is-wide .tl-detail__body p {
+  width: 613px;
+}
+
+/* 1135:3359 */
+.tl-detail__tags {
+  width: 199px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tl-detail__tag {
+  width: 199px;
+  height: 74px;
+  padding: 0 9px 0 12px;
+  border: 2px solid var(--cp-rule);
+  border-radius: 4px;
+  background: var(--cp-tan);
+  filter: drop-shadow(0 4px 1px rgba(0, 0, 0, 0.5));
+  font-family: var(--cp-ko);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  color: #030303;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.tl-detail__tag:hover {
+  transform: translateY(-2px);
+  background: #dccfb6;
+}
+
+.tl-detail__tag.is-active {
+  transform: translateY(2px);
+  background: #b9aa8f;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+/* 1193:11988 — ‹ › (39×39, 오른쪽을 본 그림 · 왼쪽은 뒤집는다) */
+.tl-arrow {
+  position: absolute;
+  top: 594px;
+  width: 36px;
+  height: 36px;
+}
+
+.tl-arrow::before {
+  content: '';
+  position: absolute;
+  left: -0.72px;
+  top: -1.75px;
+  width: 39px;
+  height: 39px;
+  background: url('../../assets/character/timeline/arrow.svg') 0 0 / 39px 39px no-repeat;
+}
+
+.tl-arrow--prev {
+  left: 823px;
+  transform: scaleX(-1);
+}
+
+.tl-arrow--next {
+  left: 1803px;
+}
+
+.tl-arrow:not(:disabled):hover::before {
+  filter: brightness(1.25);
+}
+
+.tl-arrow:disabled {
+  opacity: 0.3;
+}
+
+/* 1134:2325 — 그녀의 한마디 */
+.tl-quote {
+  position: absolute;
+  left: 121px;
+  top: 921px;
+  height: 63px;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 9px 0 12px;
+  display: flex;
+  align-items: center;
+  border: 4px solid var(--cp-rule);
+  border-radius: 4px;
+  background: #191919;
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-family: var(--cp-ko);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  animation: tl-fade 0.5s ease 0.15s both;
+}
+
+@keyframes tl-fade {
+  from {
+    opacity: 0;
+  }
+}

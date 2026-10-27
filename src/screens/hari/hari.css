@@ -1,0 +1,1064 @@
+/* =========================================================================
+   캐릭터 · About her — 반하리 (현재)  Figma 1167:8447
+   좌표는 전부 Figma 1920×1080 아트보드 기준
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Stack Sans Headline';
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  src: url('../../assets/fonts/stack-sans-headline-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Stack Sans Headline';
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+  src: url('../../assets/fonts/stack-sans-headline-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: block;
+  src: url('../../assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
+.hr-screen,
+.hr-screen *,
+.hr-screen *::before,
+.hr-screen *::after {
+  box-sizing: border-box;
+}
+
+.hr-screen {
+  --hr-font-head: 'Stack Sans Headline', 'Pretendard Variable', sans-serif;
+  --hr-font-ko: 'Pretendard Variable', 'Pretendard', sans-serif;
+  --hr-font-mono: 'Victor Mono', ui-monospace, monospace;
+
+  --hr-panel: rgba(240, 214, 233, 0.75);
+  --hr-card-border: #b0a1cb;
+  --hr-pill-border: #a9a9a9;
+  --hr-label: #696969;
+  --hr-tab-border: #1a005d;
+
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  user-select: none;
+  /* 1167:8447 — 프레임 채움: 흰 바탕 위 rgba(44,36,44,.4) */
+  background:
+    linear-gradient(rgba(44, 36, 44, 0.4), rgba(44, 36, 44, 0.4)),
+    #fff;
+  color: #000;
+  font-family: var(--hr-font-head);
+}
+
+/* 리셋은 :where() 로 감싸 우선순위 0 — 아래 컴포넌트 스타일을 덮지 않게 */
+:where(.hr-screen) button {
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+:where(.hr-screen) button:disabled {
+  cursor: default;
+}
+
+:where(.hr-screen) :where(p, h2, dl, dd, ul, ol) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- 1167:8448 / 8449 — 배경 ------------------------------------------ */
+
+.hr-bg {
+  position: absolute;
+  left: -364px;
+  top: 0;
+  width: 2669px;
+  height: 1117px;
+  pointer-events: none;
+}
+
+.hr-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 일러스트가 오기 전: 대기실 조명이 번진 느낌만 */
+.hr-bg.is-placeholder {
+  background:
+    radial-gradient(ellipse 22% 30% at 30% 18%, rgba(255, 214, 236, 0.85), transparent 70%),
+    radial-gradient(ellipse 18% 26% at 62% 22%, rgba(255, 200, 230, 0.7), transparent 70%),
+    radial-gradient(ellipse 30% 35% at 48% 70%, rgba(130, 40, 90, 0.8), transparent 75%),
+    radial-gradient(ellipse 25% 40% at 80% 60%, rgba(70, 20, 60, 0.85), transparent 75%),
+    linear-gradient(180deg, #c48aa6 0%, #8a4a6e 45%, #3e1838 100%);
+}
+
+.hr-veil {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 1117px;
+  background: rgba(92, 8, 93, 0.4);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  pointer-events: none;
+}
+
+/* ---- 1168:9114 — 상단 바 ---------------------------------------------- */
+
+.hr-topbar {
+  position: absolute;
+  left: 35px;
+  top: 34px;
+  width: 1851px;
+  height: 123px;
+  padding: 17px 45px;
+  border-radius: 56px;
+  /* Rectangle 19 PNG 질감 근사: 위는 흰 분홍, 아래로 진한 분홍 → 살구 */
+  background: linear-gradient(
+    180deg,
+    #ffe3f1 0%,
+    #fbb7d8 32%,
+    #f68fc0 62%,
+    #f6a4b8 82%,
+    #fbc79e 100%
+  );
+  box-shadow:
+    0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    inset -8px 0 13px 1px rgba(255, 255, 255, 0.45),
+    inset 8px 0 13px 1px rgba(255, 255, 255, 0.45),
+    inset 0 4px 4px 0 rgba(255, 255, 255, 0.28);
+}
+
+.hr-topbar__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1760px;
+  height: 88px;
+}
+
+.hr-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 253px;
+}
+
+.hr-tabs {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* 공통: 유리알 탭 (Component 2 ~ 4) */
+.hr-badge,
+.hr-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 241px;
+  height: 88px;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 72px;
+  font-family: var(--hr-font-head);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  color: #fff;
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+}
+
+/* 1168:9084 — Charactor (주황 유리알) */
+.hr-badge {
+  height: 70px;
+  background: linear-gradient(180deg, #ffd29c 0%, #ff9a3c 45%, #ff6d14 70%, #ffb46e 100%);
+}
+
+/* 1168:9077 / 9109 — 고르지 않은 탭 (질감 위에 회색 막) */
+.hr-screen .hr-tab {
+  width: 242px;
+  border: 1px solid var(--hr-tab-border);
+  color: #b2b2b2;
+  background:
+    linear-gradient(rgba(51, 51, 51, 0.44), rgba(51, 51, 51, 0.44)),
+    linear-gradient(180deg, #e7a9cc 0%, #c2659b 50%, #a3477e 75%, #d48ab3 100%);
+}
+
+/* 1168:9078 / 9207 — 지금 탭 (분홍 유리알) */
+.hr-screen .hr-tab.is-active {
+  width: 241px;
+  color: #fff;
+  background: linear-gradient(180deg, #ffc3e6 0%, #ff63c0 45%, #ff1aa4 70%, #ff8ad2 100%);
+}
+
+.hr-screen .hr-tab:not(:disabled):not(.is-active):hover {
+  color: #d6d6d6;
+}
+
+.hr-screen .hr-glassbtn {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 70px;
+  height: 70px;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 24px;
+  /* close.svg 의 판 그라데이션 (끝점이 76.8 이라 % 로 환산) */
+  background: linear-gradient(180deg, #fff 0%, #e968b8 62.3%, #e585b3 75.4%);
+  /* close.svg 의 안쪽 그림자 4개 */
+  box-shadow:
+    inset 0 4px 14px 0 #fff,
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset -4px 0 20px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.hr-glassbtn svg {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  display: block;
+}
+
+.hr-glassbtn:hover {
+  transform: scale(1.05);
+}
+
+/* ---- 1167:8476 / 8477 — 왼쪽 기기 패널 -------------------------------- */
+
+.hr-device {
+  position: absolute;
+  left: 163px;
+  top: 224px;
+  width: 409px;
+  height: 764px;
+  border: 1px solid #c1c1c1;
+  border-radius: 64px;
+  background: #d0d0d0;
+  box-shadow: inset 3px 3px 4px 0 rgba(255, 255, 255, 0.77);
+}
+
+.hr-device__inner {
+  position: absolute;
+  left: 178px;
+  top: 241px;
+  width: 379px;
+  height: 730px;
+  border: 2px solid #848484;
+  border-radius: 40px;
+  background: linear-gradient(180deg, #adadad, #f0f0f0);
+  box-shadow: inset 6px 7px 7.3px 0 rgba(152, 152, 152, 0.46);
+}
+
+/* 1167:8487 / 8489 / 8491 — Locked 칩 (가운데 x 기준) */
+.hr-lock {
+  position: absolute;
+  top: 288px;
+  transform: translateX(-50%);
+  padding: 5.8px 12px;
+  border: 1px solid #959595;
+  border-radius: 165.714px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(228, 228, 228, 0.8));
+  font-family: var(--hr-font-head);
+  font-size: 16px;
+  line-height: normal;
+  color: #959595;
+  white-space: nowrap;
+}
+
+.hr-lock--1 {
+  left: 266.5px;
+}
+.hr-lock--2 {
+  left: 367.5px;
+}
+.hr-lock--3 {
+  left: 468.5px;
+}
+
+/* 1167:8480 — 초상 */
+.hr-portrait {
+  position: absolute;
+  left: 237.5px;
+  top: 376px;
+  width: 259px;
+  height: 259px;
+}
+
+/* 1167:8781 — Summary · Chat History 에서는 22px 아래 */
+.hr-about.is-summary .hr-portrait,
+.hr-about.is-history .hr-portrait {
+  top: 398px;
+}
+
+.hr-portrait__ring {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.hr-portrait__art {
+  position: absolute;
+  left: 7.2px;
+  top: 3px;
+  width: 244.567px;
+  height: 253px;
+  border-radius: 127.207px;
+  overflow: hidden;
+}
+
+.hr-portrait__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* 일러스트가 오기 전: 실루엣 자리 */
+.hr-portrait__art.is-placeholder::before,
+.hr-portrait__art.is-placeholder::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(165, 165, 165, 0.35);
+}
+
+.hr-portrait__art.is-placeholder::before {
+  top: 52px;
+  width: 92px;
+  height: 108px;
+  border-radius: 46px 46px 40px 40px;
+}
+
+.hr-portrait__art.is-placeholder::after {
+  top: 166px;
+  width: 180px;
+  height: 110px;
+  border-radius: 90px 90px 0 0;
+}
+
+/* 1167:8511 — 2020 대화 시 해금 */
+.hr-screen .hr-unlock {
+  position: absolute;
+  left: 218px;
+  top: 696px;
+  padding: 12px;
+  border: 1px solid #a6bcbf;
+  border-radius: 64px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(71, 219, 239, 0.8) 51.923%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  box-shadow: inset 0 -4px 4px 0 rgba(70, 110, 115, 0.61);
+  font-family: var(--hr-font-ko);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #323232;
+  white-space: nowrap;
+}
+
+.hr-screen .hr-unlock:not(:disabled):hover {
+  filter: brightness(1.06);
+}
+
+/* 1167:8478 — CHAT HISTORY */
+.hr-screen .hr-history {
+  position: absolute;
+  left: 374px;
+  top: 696px;
+  width: 144px;
+  padding: 13px 10px;
+  border: 1px solid #9d9d9d;
+  border-radius: 48px;
+  background: #fefefe;
+  box-shadow: inset 0 -4px 9.7px 0 rgba(37, 37, 37, 0.25);
+  font-family: var(--hr-font-head);
+  font-size: 16px;
+  line-height: normal;
+  color: #000;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* 1167:8483 — 접속 정보 */
+.hr-tuning {
+  font-size: 16px;
+}
+
+.hr-tuning__title {
+  position: absolute;
+  left: 364.5px;
+  top: 803px;
+  transform: translateX(-50%);
+  font-family: var(--hr-font-mono);
+  font-weight: 600;
+  line-height: normal;
+  color: #634343;
+  white-space: nowrap;
+}
+
+.hr-tuning__keys,
+.hr-tuning__values {
+  position: absolute;
+  top: 840px;
+  font-family: var(--hr-font-mono);
+  line-height: 1.5;
+}
+
+.hr-tuning__keys p,
+.hr-tuning__values p {
+  white-space: pre;
+}
+
+.hr-tuning__keys {
+  left: 220px;
+  font-weight: 700;
+  color: #e5a3d0;
+}
+
+.hr-tuning__values {
+  right: calc(1920px - 515px);
+  font-weight: 300;
+  color: #634343;
+  text-align: right;
+}
+
+/* ---- 1168:9422 — 대시보드 창 ------------------------------------------ */
+
+.hr-window--dash {
+  position: absolute;
+  left: 674px;
+  top: 249px;
+  width: 720px;
+  height: 704px;
+  border: 1px solid #636363;
+  border-top: 0;
+  border-radius: 40px;
+  background: var(--hr-panel);
+  /* Figma 에서는 좌우 뒤집힌 판이라 inset 그림자 x 가 반대 */
+  box-shadow:
+    11px 45px 21.4px 7px rgba(0, 0, 0, 0.36),
+    inset -10px 20px 24px -10px #f4f4f4;
+}
+
+/* 1167:8563 — Chat History: 스토리 창 자리까지 한 장으로 */
+.hr-window--dash.is-wide {
+  width: 1166px;
+}
+
+/* 1171:11086 — 접힘: 머리만 남김 */
+.hr-window--dash.is-folded {
+  height: 95px;
+}
+
+.hr-dash__line {
+  position: absolute;
+  left: 675px;
+  top: 335px;
+  display: block;
+}
+
+.hr-dash__line.is-wide {
+  width: 1164px;
+  height: 1px;
+  background: #fff;
+}
+
+/* 창 머리 알약 (Dashboard / story) — 가운데 x 기준 */
+.hr-head {
+  position: absolute;
+  top: 275px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  border: 1px solid #717171;
+  border-radius: 165.714px;
+  background: linear-gradient(180deg, #fff, #ccc);
+  font-family: var(--hr-font-head);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.hr-head--dash {
+  left: 811px;
+  width: 216px;
+  padding: 5.8px 20px;
+}
+
+/* Summary 1167:8708 / Chat History 1167:8546 — 1~3px 오른쪽 · 1px 아래 */
+.is-summary .hr-head--dash {
+  left: 813px;
+  top: 276px;
+}
+
+.hr-head--dash.is-history {
+  left: 814px;
+  top: 276px;
+}
+
+.hr-head--story {
+  left: 1508px;
+  width: 132px;
+  padding: 5px 20px;
+}
+
+.hr-minus {
+  position: absolute;
+  top: 278px;
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+
+.hr-minus img {
+  display: block;
+}
+
+.hr-minus--dash {
+  left: 1335px;
+}
+
+.hr-minus--dash.is-wide {
+  left: 1771px;
+}
+
+.hr-minus--story {
+  left: 1780px;
+}
+
+/* 1167:8452 / 8469 — 안쪽 카드 */
+.hr-card {
+  position: absolute;
+  left: 703px;
+  width: 666px;
+  border: 1px solid var(--hr-card-border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f4dae7 0%, #fff 61.058%);
+  box-shadow: inset 0 5px 9px 0 rgba(0, 0, 0, 0.25);
+}
+
+.hr-card--profile {
+  top: 363px;
+  height: 263px;
+}
+
+.hr-card--record {
+  top: 642px;
+  height: 187px;
+}
+
+/* 회색 알약 라벨 (Component 10 · Frame 109) */
+.hr-label {
+  position: absolute;
+  left: 39px;
+  width: 128px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5.8px 19.057px;
+  border: 1px solid var(--hr-pill-border);
+  border-radius: 165.714px;
+  background: linear-gradient(180deg, #fff 29.327%, #dfdfdf 93.75%);
+  font-family: var(--hr-font-head);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--hr-label);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* 값 칩 (Component 10 · Frame 108 / 110 / 113) */
+.hr-chip {
+  position: absolute;
+  left: 241px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 1px solid;
+  border-radius: 16px;
+  font-family: var(--hr-font-ko);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.hr-chip--wide {
+  width: 388px;
+}
+
+.hr-chip--pink {
+  border-color: #98005d;
+  background: linear-gradient(180deg, #fff 0%, #ffade1 48.077%, #fff 100%);
+  box-shadow: inset 0 -4px 4px 0 rgba(203, 92, 168, 0.78);
+  color: #750050;
+}
+
+.hr-chip--cyan {
+  border-color: #a6bcbf;
+  background: linear-gradient(180deg, #fff 0%, #c7f8ff 48.077%, #fff 100%);
+  box-shadow: inset 0 -4px 4px 0 rgba(70, 110, 115, 0.61);
+  color: #323232;
+}
+
+/* 오른쪽 정렬 기록 (Prologue · … / 2026.9.30) */
+.hr-record {
+  position: absolute;
+  right: 37px;
+  font-family: var(--hr-font-ko);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--hr-label);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---- 1167:8513 — 스토리 창 -------------------------------------------- */
+
+/* Union 벡터와 같은 판 (테두리 · 그림자 동일). 접히면 높이만 바뀌어서 CSS 로 */
+.hr-window--story {
+  position: absolute;
+  left: 1418px;
+  top: 250px;
+  width: 422px;
+  height: 632px;
+  border: 1px solid #636363;
+  border-radius: 40px;
+  background: var(--hr-panel);
+  box-shadow:
+    11px 45px 21.4px 7px rgba(0, 0, 0, 0.36),
+    inset 10px 20px 24px -10px #f4f4f4;
+}
+
+/* 1171:11090 */
+.hr-window--story.is-folded {
+  height: 94px;
+}
+
+.hr-story__line {
+  position: absolute;
+  left: 1419px;
+  top: 335px;
+  display: block;
+  transform: scaleY(-1);
+}
+
+.hr-stories {
+  position: absolute;
+  left: 1442px;
+  top: 363px;
+  width: 372px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Component 11 ~ 14 — 스토리 카드
+   Safari 는 <button> 안 flex 자식을 늘려 주지 않아서, 버튼은 block 으로 두고
+   안쪽 두 칸에 폭을 직접 준다 */
+.hr-screen .hr-story {
+  display: block;
+  width: 372px;
+  overflow: hidden;
+  border: 1px solid var(--hr-card-border);
+  border-radius: 16px;
+  background: var(--hr-panel);
+  text-align: left;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.hr-story__label {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, #ffbbda, #f2dde8);
+  box-shadow: inset 0 2px 9px 0 rgba(0, 0, 0, 0.25);
+  font-family: var(--hr-font-head);
+  font-size: 16px;
+  line-height: 1.5;
+  color: #b54c8c;
+}
+
+.hr-story__title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 69px;
+  padding-bottom: 3px;
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(180deg, #e1e1e1 0%, #fff 46.635%);
+  box-shadow: inset 0 2px 10px 0 rgba(137, 115, 128, 0.56);
+  font-family: var(--hr-font-ko);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #181818;
+  white-space: nowrap;
+}
+
+/* 잠긴 카드 (Component 12 / 13) */
+.hr-screen .hr-story.is-locked {
+  background: none;
+}
+
+.hr-story.is-locked .hr-story__label {
+  background: rgba(0, 0, 0, 0.25);
+  color: #c1a1af;
+}
+
+.hr-story.is-locked .hr-story__title {
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+  color: #927c8e;
+}
+
+/* 선택 표시 — Figma 에 없는 상태라 아주 약하게 */
+.hr-screen .hr-story:not(:disabled):hover {
+  filter: brightness(1.03);
+}
+
+.hr-screen .hr-story.is-selected {
+  border-color: #b54c8c;
+}
+
+/* ---- 1167:8721 / 8570 — 대화 카드 (Summary · Chat History) ------------- */
+
+.hr-talk {
+  position: absolute;
+  top: 370px;
+  height: 503px;
+  border: 1px solid var(--hr-card-border);
+  border-radius: 10px;
+  box-shadow: inset 0 4px 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.hr-talk--summary {
+  left: 705px;
+  width: 532px;
+  background: linear-gradient(180deg, #d9fed3, #fff);
+}
+
+.hr-talk--history {
+  left: 846px;
+  width: 951px;
+  background: linear-gradient(180deg, #dbfed5, #fff);
+}
+
+/* 카드 제목 줄 (1167:8727 / 8584) */
+.hr-talk__title {
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5.8px 19px;
+  font-family: var(--hr-font-ko);
+  font-weight: 500;
+  line-height: normal;
+  color: #000;
+  white-space: nowrap;
+}
+
+.hr-talk--summary .hr-talk__title {
+  top: -1px;
+  border-bottom: 1px solid #a395bb;
+  font-size: 18px;
+  letter-spacing: -0.36px;
+}
+
+.hr-talk--history .hr-talk__title {
+  top: 4px;
+  border-bottom: 1px solid #000;
+  font-size: 16px;
+}
+
+.hr-talk__lines {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hr-talk--summary .hr-talk__lines {
+  top: 103px;
+  gap: 16px;
+}
+
+.hr-talk--history .hr-talk__lines {
+  top: 102px;
+}
+
+/* 하리 말 — 말풍선 (Component 15) */
+.hr-line--hari {
+  position: relative;
+}
+
+.hr-talk--summary .hr-line--hari {
+  padding-left: 89px;
+}
+
+.hr-talk--history .hr-line--hari {
+  padding-left: 111px;
+}
+
+.hr-bubble {
+  display: block;
+  padding: 12px 24px;
+  border: solid #a08181;
+  border-width: 1px 2px 2px 1px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #ffe7f3 0%, #fff 74.038%);
+  font-family: var(--hr-font-ko);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.4px;
+  color: #656565;
+  white-space: nowrap;
+}
+
+/* Summary 말풍선은 문장이 길면 줄을 넘긴다 (카드 안쪽 끝까지) */
+.hr-talk--summary .hr-bubble {
+  max-width: 420px;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+/* 사용자 말 — 오른쪽 회색 글자 (1167:8586) */
+.hr-line--user {
+  align-self: flex-end;
+  margin-right: 72px;
+  font-family: var(--hr-font-ko);
+  font-size: 20px;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  color: #a3a3a3;
+  white-space: nowrap;
+}
+
+/* Chat History — 접속별 기록을 위아래로 스크롤해서 본다 */
+.hr-talk__scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64px;
+  bottom: 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(181, 76, 140, 0.4) transparent;
+}
+
+.hr-talk--history .hr-talk__scroll .hr-talk__lines {
+  position: static;
+  padding-bottom: 8px;
+}
+
+.hr-session + .hr-session {
+  margin-top: 24px;
+  border-top: 1px dashed rgba(163, 149, 187, 0.8);
+}
+
+/* 접속 날짜 — 첫 말풍선이 Figma 의 103 자리에 오도록 위 여백 */
+.hr-session__date {
+  padding: 22px 0 16px;
+  font-family: var(--hr-font-ko);
+  font-size: 14px;
+  color: #a3a3a3;
+  text-align: center;
+}
+
+/* 기록 속 긴 말 — 줄을 넘긴다 */
+.hr-talk--history .hr-bubble {
+  max-width: 560px;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.hr-talk--history .hr-line--user {
+  max-width: 420px;
+  white-space: normal;
+  word-break: keep-all;
+  text-align: right;
+}
+
+.hr-talk__empty {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 220px;
+  font-family: var(--hr-font-ko);
+  font-size: 20px;
+  line-height: 1.6;
+  color: #a3a3a3;
+  text-align: center;
+}
+
+/* 기록이 없는 스토리 칩 — 흐리게 */
+.hr-screen .hr-pick.is-empty {
+  opacity: 0.55;
+}
+
+/* Chat History 줄 간격 — Figma: 하리→사용자 24, 사용자→하리 14 */
+.hr-talk--history .hr-line--user {
+  margin-top: 24px;
+}
+
+.hr-talk--history .hr-line--user + .hr-line--hari {
+  margin-top: 14px;
+}
+
+/* 아바타 (1167:8729 / 8571) */
+.hr-avatar {
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.hr-talk--summary .hr-avatar {
+  left: 24px;
+  top: 0;
+  width: 50.5px;
+  height: 50.5px;
+  border: 0.54px solid #a5a5a5;
+  background: #fff;
+}
+
+.hr-talk--history .hr-avatar {
+  left: 27px;
+  top: 8px;
+  width: 47px;
+  height: 47px;
+  background: #c8c8c8;
+}
+
+.hr-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.hr-avatar.is-placeholder::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  width: 40%;
+  height: 46%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(130, 130, 130, 0.35);
+}
+
+/* 1167:8714 — 해시태그 */
+.hr-tags {
+  position: absolute;
+  left: 1259px;
+  top: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.hr-tag {
+  padding: 10px;
+  border: 1px solid #9f9f9f;
+  border-radius: 8px;
+  background: #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.4px;
+  color: #000;
+  white-space: nowrap;
+}
+
+/* 1169:9496 — Chat History 스토리 고르기 */
+.hr-picks {
+  position: absolute;
+  left: 706px;
+  top: 369px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hr-screen .hr-pick {
+  display: flex;
+  align-items: center;
+  width: 100px;
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffbbda, #f2dde8);
+  box-shadow: inset 0 -2px 9px 0 rgba(0, 0, 0, 0.25);
+  font-family: var(--hr-font-head);
+  font-size: 16px;
+  line-height: 1.5;
+  color: #b54c8c;
+  white-space: nowrap;
+}
+
+/* 고른 칸 — Figma 에 없는 상태라 테두리만 */
+.hr-screen .hr-pick.is-selected {
+  outline: 1px solid #b54c8c;
+  outline-offset: -1px;
+}
+
+.hr-screen .hr-pick:hover {
+  filter: brightness(1.04);
+}
+
+/* CHAT HISTORY 를 연 상태 — Figma 에 없는 상태라 아주 약하게 */
+.hr-screen .hr-history.is-active {
+  border-color: #b54c8c;
+}

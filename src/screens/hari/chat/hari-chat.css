@@ -1,0 +1,587 @@
+/* =========================================================================
+   반하리 스토리 대화 — 챕터 공용 (HariStoryChat)
+   2020 「독기 충만 연습생」 Figma 1200:13671 / 13761 / 13801 을 기준으로,
+   2023 「데뷔하면 제일 먼저」 는 같은 배치에 색(.is-tone-debut) · 인물 크기만 바꾼다.
+   좌표는 전부 Figma 1920×1080 아트보드 기준.
+   글꼴 · 리셋 · 상단 바 · 유리 버튼은 hari.css 를 같이 쓴다.
+   ========================================================================= */
+
+/* ---- 배경 -------------------------------------------------------------- */
+
+/* 일러스트가 오기 전: 거울 조명이 번진 연습실 */
+.hr-bg.ht-bg--placeholder {
+  background:
+    radial-gradient(ellipse 9% 14% at 22% 26%, rgba(255, 236, 214, 0.9), transparent 70%),
+    radial-gradient(ellipse 9% 14% at 38% 26%, rgba(255, 230, 205, 0.85), transparent 70%),
+    radial-gradient(ellipse 9% 14% at 62% 26%, rgba(255, 228, 214, 0.85), transparent 70%),
+    radial-gradient(ellipse 12% 30% at 86% 40%, rgba(255, 70, 200, 0.55), transparent 75%),
+    radial-gradient(ellipse 30% 30% at 45% 82%, rgba(90, 40, 60, 0.65), transparent 75%),
+    linear-gradient(180deg, #d9a37c 0%, #b8744f 45%, #6d3a35 100%);
+}
+
+/* 2023 — 방송국 대기실 자리 (배경 사진이 오기 전) */
+.is-tone-debut .hr-bg.ht-bg--placeholder {
+  background:
+    radial-gradient(circle 46px at 14% 18%, rgba(255, 250, 235, 0.95), transparent 70%),
+    radial-gradient(circle 46px at 14% 34%, rgba(255, 250, 235, 0.9), transparent 70%),
+    radial-gradient(circle 46px at 14% 50%, rgba(255, 250, 235, 0.85), transparent 70%),
+    radial-gradient(ellipse 16% 30% at 14% 34%, rgba(255, 240, 220, 0.45), transparent 75%),
+    radial-gradient(ellipse 14% 34% at 84% 38%, rgba(160, 120, 255, 0.5), transparent 75%),
+    radial-gradient(ellipse 34% 26% at 52% 86%, rgba(70, 30, 70, 0.6), transparent 75%),
+    linear-gradient(180deg, #e8b8cf 0%, #c27aa3 48%, #5e2f52 100%);
+}
+
+/* 1200:13675 — 주황 블러 막 (2023 은 분홍) */
+.ht-veil {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 1117px;
+  background: rgba(255, 140, 82, 0.27);
+  backdrop-filter: blur(9.9px);
+  -webkit-backdrop-filter: blur(9.9px);
+  pointer-events: none;
+}
+
+.is-tone-debut .ht-veil {
+  background: rgba(255, 79, 170, 0.2);
+}
+
+/* 1200:13711 / 13766 — 전신. 크기 · 자리는 챕터 대본(script.figure)이 CSS 변수로 넘긴다.
+   기본값은 2020 Figma 값 (492 × 1530, 화면 아래로 넘침) */
+.ht-figure {
+  position: absolute;
+  left: var(--ht-fig-left, 124px);
+  top: var(--ht-fig-top, 116px);
+  width: var(--ht-fig-w, 492px);
+  height: var(--ht-fig-h, 1530px);
+  pointer-events: none;
+  transition: left 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.ht-figure.is-center {
+  left: var(--ht-fig-left-center, 714px);
+}
+
+.ht-figure img,
+.ht-figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 정지 그림 + 눈 깜빡임 조각. 조각 자리는 그림 크기에 대한 % 라서 그림 크기를 바꿔도 따라간다 */
+.ht-figure__art {
+  position: relative;
+}
+
+.ht-blink {
+  position: absolute;
+  opacity: 0;
+  animation: 4.3s infinite step-end;
+}
+
+/* 한 주기 4.3s 중 70% 지점에서 깜빡 — 130ms 반쯤 감음 · 260ms 감음 · 130ms 반쯤 감음 (원본 GIF 프레임 길이)
+   두 번째 깜빡임(88%)은 짧게 한 번 더 — 사람처럼 가끔 연달아 깜빡이게 */
+.ht-blink--half {
+  animation-name: ht-blink-half;
+}
+.ht-blink--closed {
+  animation-name: ht-blink-closed;
+}
+
+@keyframes ht-blink-half {
+  0% { opacity: 0; }
+  70% { opacity: 1; }
+  73% { opacity: 0; }
+  79% { opacity: 1; }
+  82% { opacity: 0; }
+  88% { opacity: 1; }
+  91% { opacity: 0; }
+}
+
+@keyframes ht-blink-closed {
+  0% { opacity: 0; }
+  73% { opacity: 1; }
+  79% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ht-blink {
+    animation: none;
+  }
+}
+
+/* 일러스트가 오기 전: 실루엣 자리 */
+.ht-figure.is-placeholder::before,
+.ht-figure.is-placeholder::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.ht-figure.is-placeholder::before {
+  top: 20px;
+  width: 170px;
+  height: 210px;
+  border-radius: 85px 85px 70px 70px;
+}
+
+.ht-figure.is-placeholder::after {
+  top: 250px;
+  width: 400px;
+  height: 900px;
+  border-radius: 180px 180px 0 0;
+}
+
+/* 1200:13751 — 바닥 그라데이션 */
+.ht-floor {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 458px;
+  background: linear-gradient(179.98deg, rgba(217, 217, 217, 0) 0%, rgba(41, 0, 15, 0.3) 75.536%);
+  pointer-events: none;
+}
+
+/* 자막에서 화면 아무 데나 눌러 넘기기 */
+.hr-screen .ht-advance {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+/* ---- 1200:13726 — 상단 바 --------------------------------------------- */
+
+.ht-topbar__left {
+  gap: 205px;
+}
+
+/* 1200:13731 — 제목 알약 (Component 1 질감 근사) */
+.ht-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 868px;
+  height: 88px;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 72px;
+  background: linear-gradient(180deg, #ffc3e6 0%, #ff63c0 45%, #ff1aa4 70%, #ff8ad2 100%);
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* 1200:13732 — 멈춤 · 나가기 */
+.ht-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hr-screen .hr-glassbtn.is-on {
+  filter: brightness(0.92);
+}
+
+/* ---- 1200:13759 — 가운데 자막 ----------------------------------------- */
+
+.ht-subtitle {
+  position: absolute;
+  left: 960.5px;
+  top: 903px;
+  width: max-content;
+  max-width: 1400px;
+  transform: translateX(-50%);
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.64px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(41, 0, 15, 0.45);
+  pointer-events: none;
+}
+
+.ht-subtitle.is-narr {
+  font-weight: 400;
+  font-size: 28px;
+  opacity: 0.85;
+}
+
+/* ---- 1200:13761 — 말풍선 ---------------------------------------------- */
+
+/* 하리 말풍선 왼쪽 끝 732, 사용자 말풍선 오른쪽 끝 1696. 첫 줄 294 */
+.ht-log {
+  position: absolute;
+  left: 732px;
+  top: 294px;
+  width: 964px;
+  height: 572px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  outline: none;
+  /* 위로 넘친 말풍선은 흐리게 */
+  mask-image: linear-gradient(180deg, transparent 0, #000 40px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 40px);
+}
+
+.ht-log::-webkit-scrollbar {
+  display: none;
+}
+
+.ht-log__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 56px;
+  margin: 0;
+  padding: 0 0 8px;
+  list-style: none;
+}
+
+/* Component 6 — 말풍선 (Frame 151 하리 / Frame 152 사용자) */
+.ht-bubble {
+  width: 507px;
+  padding: 12px 24px;
+  border: solid #000;
+  border-width: 1px 3px 3px 1px;
+  /* Figma 는 165.7 (한 줄 기준 알약). 여러 줄이 되어도 모양이 무너지지 않게 한 줄 높이의 절반으로 */
+  border-radius: 38px;
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.5;
+  /* Figma 1200:13790 ~ 13793 — 말풍선 안 글자는 왼쪽 정렬 */
+  text-align: left;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  animation: ht-pop 0.28s ease-out;
+}
+
+.ht-bubble--her {
+  background: linear-gradient(180deg, #ffdbed 0%, #fff 74.038%);
+  color: #444;
+}
+
+.ht-bubble--you {
+  align-self: flex-end;
+  background: #eef5fc;
+  color: #a3a3a3;
+}
+
+/* 말하는 중 — 점 세 개 */
+.ht-bubble--thinking {
+  width: 140px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ht-bubble--thinking i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #b36a91;
+  animation: ht-dot 1s infinite ease-in-out;
+}
+
+.ht-bubble--thinking i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.ht-bubble--thinking i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes ht-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes ht-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- 1200:13787 — 입력창 · GO (가운데 1188.5) ------------------------- */
+
+.ht-inputrow {
+  position: absolute;
+  left: 923px;
+  top: 899px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0;
+}
+
+/* Component 5 · Frame 135 */
+.hr-screen .ht-input {
+  width: 436px;
+  height: 51px;
+  padding: 0 24px;
+  border: solid #000;
+  border-width: 2px 1px 1px 2px;
+  border-radius: 165.714px;
+  background: #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 24px;
+  line-height: 48px;
+  letter-spacing: -0.48px;
+  color: #333;
+  text-align: center;
+  outline: none;
+}
+
+.ht-input::placeholder {
+  color: #555;
+}
+
+.ht-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 26, 164, 0.25);
+}
+
+.ht-input:disabled {
+  background: #f7f2f5;
+}
+
+/* Component 5 · Frame 136 — GO (질감 근사) */
+.hr-screen .ht-go {
+  width: 80px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff3f9 0%, #f8c7e1 50%, #f2a9d0 75%, #fbd6ea 100%);
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+  font-family: var(--hr-font-head);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: normal;
+  color: #771a5a;
+}
+
+.hr-screen .ht-go:disabled {
+  opacity: 0.55;
+}
+
+.hr-screen .ht-go:not(:disabled):hover {
+  filter: brightness(1.05);
+}
+
+/* ---- 1200:13801 — 선택지 ---------------------------------------------- */
+
+.ht-question {
+  position: absolute;
+  left: 1253.5px;
+  top: 421px;
+  transform: translateX(-50%);
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.64px;
+  color: #fff;
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(41, 0, 15, 0.45);
+  animation: ht-pop 0.4s ease-out;
+}
+
+/* 1200:13840 / 13841 — Frame 207 질감 근사 */
+.hr-screen .ht-choice {
+  position: absolute;
+  top: 521px;
+  width: 421px;
+  height: 206px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 10px;
+  border: 1px solid var(--hr-tab-border);
+  border-radius: 160px;
+  background: linear-gradient(180deg, #ffe6f2 0%, #f7a9d2 42%, #ee86c0 72%, #f8bcdc 100%);
+  box-shadow:
+    inset -4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 4px 0 20px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -4px 14px 0 #fff7fc,
+    inset 0 4px 14px 0 #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
+  white-space: nowrap;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  animation: ht-pop 0.4s ease-out;
+}
+
+.ht-choice--1 {
+  left: 823px;
+}
+.ht-choice--2 {
+  left: 1270px;
+}
+
+.hr-screen .ht-choice:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.05);
+}
+
+/* ---- 도움 안내 · 디버그 ----------------------------------------------- */
+
+.ht-help {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: rgba(41, 0, 15, 0.6);
+  font-family: var(--hr-font-ko);
+  font-size: 18px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.ht-debug {
+  position: absolute;
+  left: 24px;
+  bottom: 16px;
+  font-family: var(--hr-font-mono);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+
+/* ---- 멈춤 · 나가기 확인 ----------------------------------------------- */
+
+.ht-pause,
+.ht-modal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(41, 0, 15, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: ht-fade 0.25s ease-out;
+}
+
+.ht-pause {
+  cursor: pointer;
+  gap: 16px;
+}
+
+.ht-pause__title {
+  font-family: var(--hr-font-ko);
+  font-size: 48px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ht-pause__hint {
+  font-family: var(--hr-font-ko);
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 대시보드 창과 같은 판 */
+.ht-modal__card {
+  width: 720px;
+  padding: 64px 48px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  border: 1px solid #636363;
+  border-radius: 40px;
+  background: rgba(255, 240, 248, 0.92);
+  box-shadow:
+    11px 45px 21.4px 7px rgba(0, 0, 0, 0.36),
+    inset 10px 20px 24px -10px #f4f4f4;
+}
+
+.ht-modal__question {
+  font-family: var(--hr-font-ko);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.64px;
+  color: #444;
+}
+
+.ht-modal__actions {
+  display: flex;
+  gap: 20px;
+}
+
+.hr-screen .ht-modal__btn {
+  min-width: 240px;
+  height: 72px;
+  padding: 0 32px;
+  border: solid #000;
+  border-width: 1px 3px 3px 1px;
+  border-radius: 40px;
+  background: #fff;
+  font-family: var(--hr-font-ko);
+  font-size: 24px;
+  color: #444;
+}
+
+.hr-screen .ht-modal__btn.is-primary {
+  background: linear-gradient(180deg, #ffdbed 0%, #fff 74.038%);
+}
+
+.hr-screen .ht-modal__btn:hover {
+  filter: brightness(0.97);
+}
+
+@keyframes ht-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* 2023 — 인물 그림이 자막 뒤로 지나가서 글자에 그림자를 깐다 */
+.is-tone-debut .ht-subtitle {
+  text-shadow:
+    0 0 14px rgba(94, 47, 82, 0.95),
+    0 0 4px rgba(94, 47, 82, 0.8),
+    0 2px 3px rgba(0, 0, 0, 0.35);
+}

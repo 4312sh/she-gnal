@@ -1,4 +1,4 @@
-/* All coordinates are Figma px on the 1920×1080 stage (Figma 743:26273). */
+/* All coordinates are Figma px on the 1920×1080 stage (Figma 1259:28142). */
 .opening-title {
   position: absolute;
   inset: 0;
@@ -65,16 +65,16 @@
   top: 916px;
   left: 50%;
   translate: -50% 0;
-  padding: 5.8px 19.057px 12.429px;
-  border-radius: 165.714px;
+  padding: 12px 20px;
+  border-radius: 40px;
   background: var(--color-pill-bg);
   box-shadow: var(--shadow-glass);
   color: var(--color-text-muted);
   font-family: var(--font-mono);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 500;
   line-height: normal;
-  letter-spacing: -0.64px;
+  letter-spacing: -0.48px;
   text-transform: uppercase;
   white-space: nowrap;
   transition: color 0.2s ease, background-color 0.2s ease;
@@ -112,4 +112,54 @@
 }
 .is-intro-done .opening-title__prompt {
   animation: prompt-breathe 2.8s ease-in-out 0.8s infinite;
+}
+
+/* ── 4. Exit (Figma 1463:4932): brackets regroup into the line that leads down to "enter name" ── */
+.opening-title__exit {
+  opacity: 0;
+}
+.opening-title__exit--tl { left: 19.9px;  top: 19.8px;  width: 97px;  height: 89px; }
+.opening-title__exit--tr { left: 1798.9px; top: 19.8px; width: 98px;  height: 89px; }
+.opening-title__exit--bl { left: 19.9px;  top: 979.8px; width: 945px; height: 89px; }
+.opening-title__exit--br { left: 953.9px; top: 979.8px; width: 943px; height: 89px; }
+.opening-title__exit--stem { left: 953.2px; top: 1063px; width: 12px; height: 298px; }
+
+.is-leaving .opening-title__corner {
+  transition: opacity 0.35s ease, transform 0.5s var(--ease-camera);
+  opacity: 0;
+}
+.is-leaving .opening-title__corner--tl { transform: translate(-50px, -36px) scale(0.6); }
+.is-leaving .opening-title__corner--tr { transform: translate(50px, -36px) scale(0.6); }
+.is-leaving .opening-title__corner--bl { transform: translate(-50px, 40px); }
+.is-leaving .opening-title__corner--br { transform: translate(50px, 40px); }
+
+.is-leaving .opening-title__exit--tl,
+.is-leaving .opening-title__exit--tr {
+  animation: exit-fade 0.4s ease-out 0.15s both;
+}
+/* bottom brackets: legs appear at the screen edges, the base line runs in to the centre */
+.is-leaving .opening-title__exit--bl { animation: exit-draw-right 0.55s var(--ease-camera) 0.15s both; }
+.is-leaving .opening-title__exit--br { animation: exit-draw-left 0.55s var(--ease-camera) 0.15s both; }
+.is-leaving .opening-title__exit--stem { animation: exit-draw-down 0.3s ease-in 0.65s both; }
+
+@keyframes exit-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes exit-draw-right {
+  from { opacity: 1; clip-path: inset(0 100% 0 0); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes exit-draw-left {
+  from { opacity: 1; clip-path: inset(0 0 0 100%); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes exit-draw-down {
+  from { opacity: 1; clip-path: inset(0 0 100% 0); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+.is-leaving .opening-title__prompt {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }

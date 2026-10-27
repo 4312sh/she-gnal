@@ -25,18 +25,21 @@
   clip-path: inset(0 0 0 0);
 }
 
+/* Figma 1463:4932 ("enter name") — 화면 기준 y = 보드 y − 1036 */
 .enter-name__panel {
   left: 660px;
-  top: 388px;
+  top: 394px;
   width: 600px;
   height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 64px 40px;
 }
 
 .enter-name__heading {
-  position: absolute;
-  top: 451px;
-  left: 50%;
-  transform: translateX(-50%);
   margin: 0;
   font-family: var(--font-mono);
   font-size: 32px;
@@ -47,14 +50,29 @@
   white-space: nowrap;
 }
 
-.enter-name__field {
-  position: absolute;
-  left: 700px;
+.enter-name__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   width: 517px;
-  height: 58.229px;
+}
+
+.enter-name__field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 40px;
   outline: none;
+  background: var(--color-pill-bg);
+  box-shadow: var(--shadow-glass);
   color: var(--color-line);
-  text-transform: none;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  text-align: center;
+  transition: background-color 0.2s ease;
 }
 .enter-name__field::placeholder {
   color: var(--color-text-muted);
@@ -64,13 +82,11 @@
 .enter-name__field:focus {
   background: var(--color-pill-bg-hover);
 }
-.enter-name__field--name { top: 587px; }
-.enter-name__field--age  { top: 664px; }
 
 .enter-name__sphere {
   position: absolute;
   left: 884.09px;
-  top: 878px;
+  top: 907px;
   width: 151.813px;
   height: 152px;
   padding: 0;
@@ -92,10 +108,10 @@
   height: 100%;
   animation: sphere-spin 24s linear infinite;
 }
-/* 273.7px sphere centred where Figma places it (823.5, 889.6) */
+/* 273.7px sphere centred where Figma places it (823.5, 889.6) — Figma 1463:9299 */
 .enter-name__sphere-large {
   left: -60.64px;
-  top: 11.64px;
+  top: -17.36px;
   width: 274px;
   height: 274px;
   opacity: 0;
@@ -119,14 +135,10 @@
   to { transform: rotate(360deg); }
 }
 
-/* "enter name - 2": the form settles 31px lower inside the bracket frame */
-.enter-name__panel,
-.enter-name__heading,
-.enter-name__field {
-  transition: translate 0.9s var(--ease-camera), background-color 0.2s ease;
+/* "enter name - 2" (1463:8915): the panel settles 13px lower inside the capsule frame (394 → 407) */
+.enter-name__panel {
+  transition: translate 0.9s var(--ease-camera);
 }
-.is-submitted .enter-name__panel,
-.is-submitted .enter-name__heading,
-.is-submitted .enter-name__field {
-  translate: 0 31px;
+.is-submitted .enter-name__panel {
+  translate: 0 13px;
 }

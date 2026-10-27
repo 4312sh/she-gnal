@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { useRecordHistory } from '../../game/chatHistory';
+
 import { askHerWith, type Turn } from '../../game/her/herChat';
 import {
   RE_OPEN,
@@ -11,18 +13,22 @@ import {
   type Ch1Context,
 } from '../../game/her/chapter1Persona';
 import type { Chapter1Save } from '../../game/types';
-import { AdvanceLayer, ChapterBadge, NoticeFrame } from '../prologue/PrologueParts';
-import { ParlorChrome, useTypewriter } from '../prologue/ParlorParts';
-import { Ch1Backdrop, Ch1Figure } from './Ch1Scene';
+import { AdvanceLayer } from '../prologue/PrologueParts';
+import { ExitModal, PauseOverlay, type ChatMsg } from '../chapter/ChapterParts';
+import { today } from '../../game/date';
+import { useTypewriter } from '../prologue/ParlorParts';
+import { Ch1Backdrop } from './Ch1Scene';
+import { ChapterTop, ChatHistoryView, FinishModal } from '../chapter/ChapterNav';
+import her1914Motion from '../../assets/view-character/figures/past-1913.webp';
+import '../chapter2/chapter2.css';
+import her1914Avatar from '../../assets/chapter1/her-1914-avatar.png';
 import {
   CH1_AFTER_NARRATION,
   CH1_BADGE,
   CH1_CHOICES,
   CH1_EARLY_OPEN_PHASES,
-  CH1_EXIT,
   CH1_FADE,
   CH1_FAREWELL,
-  CH1_HEADER,
   CH1_NAME_ASK,
   CH1_OPENING,
   CH1_SEED_TURNS,
@@ -54,10 +60,16 @@ import {
  *   나가기는 어느 단계에서든 우상단 버튼 → 856:537 모달
  */
 
+/** 방금 보낸 말이 보이는 시간 (챕터 2 와 같다) */
+const ECHO_MS = 1300;
+/** 생각중이 최소한 보이는 시간 */
+const THINK_MIN_MS = 1800;
+const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
+
 export type Ch1Start = 'opening' | 'chat' | 'choice' | 'after';
 
 type Line = { kind: 'her' | 'narr'; text: string };
-type Msg = { id: string; from: 'her' | 'you'; text: string; live?: boolean };
+type Msg = ChatMsg;
 type Stage = 'pre' | 'nameAsk' | 'after' | 'leaving';
 type Mode = 'subtitle' | 'chat' | 'choice';
 
@@ -66,15 +78,12 @@ type Props = {
   save?: Chapter1Save;
   onSave: (next: Chapter1Save) => void;
   onExit: () => void;
+  /** 위쪽 바의 GO TO MAIN */
+  onMain: () => void;
   startAt?: Ch1Start;
 };
 
-function today(): string {
-  const d = new Date();
-  return `${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}`;
-}
-
-export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt = 'opening' }: Props) {
+export default function Chapter1Chat({ playerName, save, onSave, onExit, onMain, startAt = 'opening' }: Props) {
   /* ---------------- 상태 ---------------- */
 
   const [mode, setMode] = useState<Mode>('subtitle');
@@ -82,17 +91,28 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
   const [queue, setQueue] = useState<Line[]>([]);
   const [qi, setQi] = useState(0);
   const [log, setLog] = useState<Msg[]>([]);
+  useRecordHistory('ch1', log);
   const [draft, setDraft] = useState('');
   const [thinking, setThinking] = useState(false);
+  const [echo, setEcho] = useState<string | null>(null);
   const [turn, setTurn] = useState(0);
   const [afterTurns, setAfterTurns] = useState(0);
   const [question, setQuestion] = useState('');
   const [exitOpen, setExitOpen] = useState(false);
+  /** 멈춤 버튼 — 화면을 덮어 두고 아무 데나 누르면 이어진다 */
+  const [paused, setPaused] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  /** 메인으로 나가기 확인 (1462:3273) */
+  const [mainOpen, setMainOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [debug, setDebug] = useState<{ phase: string; live: boolean | null; reason?: string }>({
     phase: 'opening',
     live: null,
   });
+
+  /** 이번 접속에서 나눈 이름 · 고른 답 — 프롬프트에 들어간다 (지난 접속 기록과 섞지 않는다) */
+  const [sharedName, setSharedName] = useState<string | undefined>(undefined);
+  const [choiceId, setChoiceId] = useState<Ch1ChoiceId | undefined>(undefined);
 
   /** 이 접속에서 알게 된 것 · 선택 · 이름. 저장은 onSave 로 넘긴다 */
   const progress = useRef<Chapter1Save>({
@@ -109,15 +129,14 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
   const holdLast = useRef(false);
   const aborter = useRef<AbortController | null>(null);
 
-  const name = progress.current.sharedName ?? (playerName.trim() || '손님');
+  const name = sharedName ?? (playerName.trim() || '손님');
   const ctx = useMemo<Ch1Context>(
     () => ({
       name,
-      nameShared: progress.current.nameShared,
-      choiceLabel: progress.current.choice ? CH1_CHOICES[progress.current.choice].label : undefined,
+      nameShared: Boolean(sharedName),
+      choiceLabel: choiceId ? CH1_CHOICES[choiceId].label : undefined,
     }),
-    // progress 는 ref 라 stage 가 바뀔 때마다 다시 읽는다
-    [name, stage],
+    [name, sharedName, choiceId],
   );
 
   /* ---------------- 공통 도우미 ---------------- */
@@ -184,10 +203,11 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
     if (mode !== 'subtitle' || !holdLast.current || !current) return;
     if (qi !== queue.length - 1 || !typer.done) return;
     holdLast.current = false;
+    if (current.kind === 'her') push('her', current.text);
     const done = onQueueDone.current;
     onQueueDone.current = null;
     done?.();
-  }, [mode, qi, queue.length, typer.done, current]);
+  }, [mode, qi, queue.length, typer.done, current, push]);
 
   /* ---------------- 흐름 ---------------- */
 
@@ -197,7 +217,7 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
   }, []);
 
   const startTelegram = useCallback(() => {
-    const lines = telegramLines(progress.current.nameShared ? `${name} 씨` : '당신');
+    const lines = telegramLines(sharedName ? `${name} 씨` : '당신');
     play(
       [
         { kind: 'narr', text: CH1_TELEGRAM_NARRATION },
@@ -211,7 +231,7 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
       },
       { holdLast: true },
     );
-  }, [play, name]);
+  }, [play, name, sharedName]);
 
   const startAfter = useCallback(() => {
     play([{ kind: 'narr', text: CH1_AFTER_NARRATION }], () => {
@@ -221,19 +241,18 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
   }, [play, toChat]);
 
   const askName = useCallback(() => {
-    push('her', CH1_NAME_ASK);
     history.current = [...history.current, { role: 'assistant', content: CH1_NAME_ASK }];
-    toChat('nameAsk');
     setDebug((d) => ({ ...d, phase: 'names' }));
-  }, [push, toChat]);
+    play([{ kind: 'her', text: CH1_NAME_ASK }], () => toChat('nameAsk'), { holdLast: true });
+  }, [play, toChat]);
 
   const pick = useCallback(
     (id: Ch1ChoiceId) => {
       const c = CH1_CHOICES[id];
-      push('her', question);
       push('you', c.label);
       history.current = [...history.current, { role: 'user', content: c.label }];
       commit({ choice: id });
+      setChoiceId(id);
       const lines: Line[] = [
         ...(c.narration ? [{ kind: 'narr' as const, text: c.narration }] : []),
         ...c.lines.map((text) => ({ kind: 'her' as const, text })),
@@ -245,7 +264,7 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
       });
       setDebug((d) => ({ ...d, phase: `reaction ${id}` }));
     },
-    [push, question, commit, play, unlock, askName],
+    [push, commit, play, unlock, askName],
   );
 
   /* ---------------- 입력 ---------------- */
@@ -258,9 +277,13 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
     // 이름 나누기 — LLM 을 부르지 않는다
     if (stage === 'nameAsk') {
       push('you', text);
+      setEcho(text);
+      window.setTimeout(() => setEcho(null), ECHO_MS);
+      await wait(ECHO_MS);
       const n = extractName(text, playerName);
       history.current = [...history.current, { role: 'user', content: text }];
       commit({ nameShared: true, sharedName: n, done: true });
+      setSharedName(n);
       const story = nameStory(n);
       play(
         story.map((t) => ({ kind: 'her' as const, text: t })),
@@ -287,33 +310,47 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
 
     push('you', text);
     history.current = [...history.current, { role: 'user', content: text }];
+    setEcho(text);
+    window.setTimeout(() => setEcho(null), ECHO_MS);
     setThinking(true);
 
     const callCtx: Ch1Context = { ...ctx, seed };
     aborter.current = new AbortController();
-    const res = await askHerWith({
-      system: buildCh1Prompt(phase, callCtx),
-      history: history.current,
-      fallback: ch1Fallback(phase, text, callCtx),
-      clean: cleanCh1Reply,
-      validate: (t) => validateCh1Reply(t, callCtx),
-      signal: aborter.current.signal,
-    });
+    const [res] = await Promise.all([
+      askHerWith({
+        system: buildCh1Prompt(phase, callCtx),
+        history: history.current,
+        fallback: ch1Fallback(phase, text, callCtx),
+        clean: cleanCh1Reply,
+        validate: (t) => validateCh1Reply(t, callCtx),
+        signal: aborter.current.signal,
+      }),
+      // 생각중이 한 번은 보이게
+      wait(ECHO_MS + THINK_MIN_MS),
+    ]);
     aborter.current = null;
     if (res.reason === 'cancelled') return;
 
     history.current = [...history.current, { role: 'assistant', content: res.text }];
-    push('her', res.text, res.live);
     setThinking(false);
     setDebug({ phase: stage === 'after' ? `afterglow ${afterTurns + 1}` : phase, live: res.live, reason: res.reason });
-    if (res.text.includes('수원')) unlock(CH1_UNLOCK.hometown);
 
-    if (phase === 'resolve' || phase === 'resolveEarly') {
-      window.setTimeout(startTelegram, 900);
-    } else if (stage === 'pre') {
-      setTurn((n) => n + 1);
-    }
-  }, [draft, thinking, mode, stage, push, playerName, commit, play, unlock, startAfter, afterTurns, turn, ctx, startTelegram]);
+    // 그녀의 답 — 한 줄로 타이핑되고, 다 나오면 입력창이 돌아온다
+    const replyStage = stage;
+    play(
+      [{ kind: 'her', text: res.text }],
+      () => {
+        if (res.text.includes('수원')) unlock(CH1_UNLOCK.hometown);
+        if (phase === 'resolve' || phase === 'resolveEarly') {
+          window.setTimeout(startTelegram, 1400);
+          return;
+        }
+        toChat(replyStage);
+        if (replyStage === 'pre') setTurn((n) => n + 1);
+      },
+      { holdLast: true },
+    );
+  }, [draft, thinking, mode, stage, push, playerName, commit, play, unlock, startAfter, afterTurns, turn, ctx, startTelegram, toChat]);
 
   /* ---------------- 시작 지점 ---------------- */
 
@@ -323,14 +360,15 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
     started.current = true;
     const opening = CH1_OPENING.join('\n');
     if (startAt === 'opening') {
-      play([{ kind: 'her', text: opening }], () => toChat('pre'));
+      play([{ kind: 'her', text: opening }], () => toChat('pre'), { holdLast: true });
       return;
     }
     push('her', opening);
     if (startAt === 'chat') toChat('pre');
     else if (startAt === 'choice') startTelegram();
     else if (startAt === 'after') {
-      progress.current = { ...progress.current, nameShared: true, sharedName: playerName.trim() || '손님', choice: 'B' };
+      setSharedName(playerName.trim() || '손님');
+      setChoiceId('B');
       toChat('after');
     }
   }, [startAt, play, toChat, push, startTelegram, playerName]);
@@ -341,6 +379,7 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
     setExitOpen(false);
     aborter.current?.abort();
     setThinking(false);
+    setEcho(null);
     setStage('leaving');
     commit({});
     // 작별 인사는 클릭으로 넘기고, "신호가 흐려진다." 는 다 찍히면 저절로 나간다
@@ -358,6 +397,7 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (paused || historyOpen || mainOpen) return;
       if (exitOpen) {
         if (e.key === 'Escape') setExitOpen(false);
         return;
@@ -380,78 +420,40 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [advance, submit, exitOpen, stage]);
+  }, [advance, submit, exitOpen, stage, paused, historyOpen, mainOpen]);
 
   /* ---------------- 렌더 ---------------- */
 
-  const header =
-    stage === 'after' || stage === 'nameAsk'
-      ? CH1_HEADER.after
-      : mode === 'choice' || question
-        ? CH1_HEADER.telegram
-        : log.length === 0
-          ? CH1_HEADER.door
-          : CH1_HEADER.chat;
 
   const nodeId = mode === 'choice' ? '930:5450' : mode === 'chat' ? '929:5290' : '929:5255';
   const inputReady = mode === 'chat' && !thinking && stage !== 'leaving';
+  const lastHer = [...log].reverse().find((m) => m.from === 'her')?.text ?? '';
   const placeholder = stage === 'nameAsk' ? '당신의 이름을 알려 주세요' : '';
 
   return (
-    <div className="pr-screen ch1-scene" data-node-id={nodeId}>
+    <div className="pr-screen ch1-scene ch-chat ch2-chat ch1-chat" data-node-id={nodeId}>
       <Ch1Backdrop />
-      <Ch1Figure entering={startAt === 'opening' && log.length === 0} />
+      {/* 1914 — 눈 깜빡이는 상반신 (챕터 2 와 같은 자리 · 같은 배율) */}
+      <div className={`ch2-motion ch1-motion${startAt === 'opening' && log.length === 0 ? ' ch1-figure--enter' : ''}`} aria-hidden>
+        <img className="is-on" src={her1914Motion} alt="" />
+      </div>
       <div className="ch1-vignette" aria-hidden />
 
       {mode === 'subtitle' && <AdvanceLayer onAdvance={advance} label="다음 대사" />}
 
-      <ParlorChrome
-        header={header}
-        badge={CH1_BADGE}
-        tool1Label="기록 (준비 중)"
-        tool2Label="나가기"
-        onTool2={() => stage !== 'leaving' && setExitOpen(true)}
-      />
 
-      {/* 929:5284 — 가운데 자막 */}
+      {/* 그녀의 말 · 생각중 · 질문 — 아랫선에 맞춰 위로 쌓인다 (챕터 2 와 같은 한 줄) */}
       {mode === 'subtitle' && current && (
-        <p
-          className={`ch1-subtitle${current.kind === 'narr' ? ' ch1-subtitle--narr' : ''}`}
-          data-node-id="929:5284"
-        >
-          {typer.typed}
-        </p>
+        <p className={`ch2-line${current.kind === 'narr' ? ' ch2-line--narr' : ''}`}>{typer.typed}</p>
       )}
 
-      {/* 929:5322 ~ 5326 — 채팅 로그 */}
-      {mode === 'chat' && log.length > 0 && (
-        <div className="pr-chatlog ch1-chatlog">
-          {log.map((m) =>
-            m.from === 'her' ? (
-              <div key={m.id} className="pr-chatlog__row pr-chatlog__row--her">
-                <span className="pr-bubble ch1-bubble">{m.text}</span>
-              </div>
-            ) : (
-              <div key={m.id} className="pr-chatlog__row pr-chatlog__row--you">
-                <p className="pr-reply ch1-reply">{m.text}</p>
-              </div>
-            ),
-          )}
-          {thinking && (
-            <div className="pr-chatlog__row pr-chatlog__row--her">
-              <span className="pr-bubble pr-bubble--thinking">
-                <i />
-                <i />
-                <i />
-              </span>
-            </div>
-          )}
-        </div>
-      )}
+      {mode === 'chat' && echo && <p className="ch2-echo">{echo}</p>}
 
-      {/* 929:5318 ~ 5321 — 입력창 */}
-      {mode === 'chat' && (
+      {mode === 'chat' && !echo && thinking && <p className="ch2-line ch2-line--thinking">(잠시 생각중......)</p>}
+
+      {mode === 'chat' && !thinking && (
         <>
+          {lastHer && <p className="ch2-line">{lastHer}</p>}
           <input
             className="pr-input"
             value={draft}
@@ -476,7 +478,7 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
       {/* 930:5486 ~ 5493 — 전보 선택지 */}
       {mode === 'choice' && (
         <>
-          <p className="pr-parlor__subtitle" data-node-id="930:5493">
+          <p className="ch2-line" data-node-id="930:5493">
             {question}
           </p>
           {(['A', 'B'] as const).map((id, i) => (
@@ -505,33 +507,45 @@ export default function Chapter1Chat({ playerName, save, onSave, onExit, startAt
         </p>
       )}
 
+      {historyOpen && (
+        <ChatHistoryView
+          chapter="ch1"
+          title="도쿄 유학길"
+          year="1914"
+          backdrop={<Ch1Backdrop />}
+          figure={her1914Motion}
+          avatar={her1914Avatar}
+          onBack={() => setHistoryOpen(false)}
+        />
+      )}
+
+      {/* 1462:3362 — 맨 위에 마우스를 올리면 내려오는 바 */}
+      <ChapterTop
+        year="1914"
+        title="도쿄 유학길"
+        paused={paused}
+        history={historyOpen}
+        pinned={mainOpen}
+        onPause={() => setPaused((p) => !p)}
+        onExit={() => stage !== 'leaving' && setExitOpen(true)}
+        onMain={() => stage !== 'leaving' && setMainOpen(true)}
+        onHistory={setHistoryOpen}
+      />
+
+      {paused && <PauseOverlay onResume={() => setPaused(false)} />}
+
       {/* 856:537 — 채팅 중단 확인 */}
-      {exitOpen && (
-        <div className="ch1-exit" role="dialog" aria-modal="true" aria-label={CH1_EXIT.question}>
-          <div className="pr-ending__wash" />
-          <ChapterBadge className="pr-ending__badge pr-ending__reveal" label={CH1_BADGE} width={704.992} />
-          <NoticeFrame className="pr-ending__frame pr-ending__reveal" style={{ animationDelay: '120ms' }} />
-          <p className="pr-ending__line ch1-exit__line pr-ending__reveal" style={{ animationDelay: '240ms' }}>
-            {CH1_EXIT.question}
-          </p>
-          <button
-            type="button"
-            className="pr-btn pr-ending__btn pr-ending__btn--primary pr-ending__reveal"
-            style={{ animationDelay: '320ms' }}
-            onClick={() => setExitOpen(false)}
-            autoFocus
-          >
-            {CH1_EXIT.stay}
-          </button>
-          <button
-            type="button"
-            className="pr-btn pr-ending__btn pr-ending__btn--secondary pr-ending__reveal"
-            style={{ animationDelay: '380ms' }}
-            onClick={leave}
-          >
-            {CH1_EXIT.leave}
-          </button>
-        </div>
+      {exitOpen && <ExitModal badge={CH1_BADGE} onStay={() => setExitOpen(false)} onLeave={leave} />}
+
+      {/* 1462:3273 — GO TO MAIN: 메인으로 나가기 */}
+      {mainOpen && (
+        <FinishModal
+          onHome={() => {
+            aborter.current?.abort();
+            onMain();
+          }}
+          onContinue={() => setMainOpen(false)}
+        />
       )}
     </div>
   );

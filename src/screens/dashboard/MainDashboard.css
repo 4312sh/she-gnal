@@ -1,7 +1,109 @@
-.main-dash__name {
+/* Figma 1343:36835 — glass pills (Component 21 / 22 / 23 / 25 / 20 / 26) */
+.main-dash__pill,
+.main-dash__tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 40px;
+  background: rgba(79, 79, 79, 0.2);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(4px);
+  color: #939393;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.48px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.main-dash__tag {
+  font-size: 20px;
+  letter-spacing: -0.4px;
+}
+button.main-dash__pill,
+button.main-dash__tag {
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+button.main-dash__pill:hover,
+button.main-dash__pill:focus-visible,
+button.main-dash__tag:hover,
+button.main-dash__tag:focus-visible {
+  outline: none;
+  background: rgba(79, 79, 79, 0.45);
   color: #fff;
-  font-weight: 600;
+}
+
+.main-dash__top-right {
+  position: absolute;
+  top: 67px;
+  right: 80px;
+  display: flex;
+  gap: 24px;
+}
+.main-dash__top-right .main-dash__pill {
+  position: static;
+  height: 54px;
+}
+
+.main-dash__user {
+  min-width: 340px;
+  height: 54px;
+  gap: 40px;
+  padding: 10px 20px;
+  justify-content: flex-start;
+}
+.main-dash__name {
+  color: #b0b0b0;
+  font-weight: 500;
   letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Rectangle 10 / 12 / 13 */
+.main-dash__box {
+  position: absolute;
+  padding: 0;
+  border: 0.5px solid #c2c2c2;
+  border-radius: 8px;
+  background: rgba(82, 81, 81, 0.2);
+}
+
+.main-dash__value {
+  position: absolute;
+  margin: 0;
+  color: #cacaca;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  white-space: pre;
+}
+
+/* VIEW CHARACTOR 상자 — 가운데 구체 130.84×131 (1640, 364) */
+.main-dash__character {
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+.main-dash__character img {
+  position: absolute;
+  left: 72.5px;
+  top: 44.5px;
+  width: 130.84px;
+  height: 131px;
+  animation: main-dash-sphere 24s linear infinite;
+}
+.main-dash__character:hover,
+.main-dash__character:focus-visible {
+  outline: none;
+  background: rgba(82, 81, 81, 0.4);
+}
+@keyframes main-dash-sphere {
+  to { transform: rotate(360deg); }
 }
 
 /* invisible hit area over the dome (Figma Vector 697:10120) with a breathing glow */
@@ -14,7 +116,7 @@
   padding: 0;
   border: 0;
   border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
-  background: radial-gradient(ellipse at 50% 70%, rgba(255, 90, 110, 0.18), transparent 65%);
+  background: radial-gradient(ellipse at 50% 70%, rgba(150, 180, 160, 0.14), transparent 65%);
   cursor: pointer;
   animation: dome-breathe 3.2s ease-in-out infinite;
   transition: filter 0.3s;
@@ -23,8 +125,157 @@
 .main-dash__dome:focus-visible {
   outline: none;
   filter: brightness(1.8);
-  background: radial-gradient(ellipse at 50% 70%, rgba(255, 90, 110, 0.32), transparent 68%);
+  background: radial-gradient(ellipse at 50% 70%, rgba(150, 180, 160, 0.26), transparent 68%);
 }
 @keyframes dome-breathe {
   50% { opacity: 0.45; }
+}
+
+/* 가운데 자이로 심볼 — 타이틀 심볼(GyroSymbol, 950.748×577)을 Figma 크기 372.4×226 로 줄여 (774, 30) 에 둔다 */
+.gyro.main-dash__gyro {
+  left: 774px;
+  top: 30px;
+  transform: scale(0.39168);
+  transform-origin: 0 0;
+  animation: main-dash-gyro-in 1.2s ease-out both;
+}
+
+@keyframes main-dash-gyro-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gyro.main-dash__gyro,
+  .main-dash__character img {
+    animation: none;
+  }
+}
+
+/* ---- SETTINGS — 유저 이름 바꾸기 ------------------------------------------ */
+.dash-settings {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 8, 10, 0.62);
+  backdrop-filter: blur(3px);
+  animation: dash-settings-in 0.25s ease-out both;
+}
+.dash-settings__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 760px;
+  padding: 52px 56px 44px;
+  border: 1px solid #c2c2c2;
+  border-radius: 24px;
+  background: rgba(20, 20, 22, 0.88);
+  box-shadow: var(--shadow-panel);
+  font-family: var(--font-mono);
+}
+.dash-settings__title {
+  margin: 0;
+  color: #cacaca;
+  font-size: 28px;
+  letter-spacing: 0.16em;
+}
+.dash-settings__row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+.dash-settings__label {
+  flex: none;
+  padding: 10px 18px;
+  border-radius: 40px;
+  background: rgba(79, 79, 79, 0.2);
+  box-shadow: var(--shadow-glass);
+  color: #939393;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+.dash-settings__input {
+  flex: 1;
+  min-width: 0;
+  height: 60px;
+  padding: 0 22px;
+  border: 1px solid #8e8e8e;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dash-settings__input:focus {
+  border-color: #e6e6e6;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
+}
+.dash-settings__hint {
+  align-self: flex-end;
+  margin: -16px 0 0;
+  color: #6f6f6f;
+  font-size: 16px;
+}
+.dash-settings__actions {
+  display: flex;
+  gap: 20px;
+}
+.dash-settings .dash-settings__btn {
+  position: static;
+  height: 56px;
+  padding: 10px 28px;
+  text-transform: uppercase;
+}
+.dash-settings .dash-settings__btn--save:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+.dash-settings .dash-settings__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+/* 효과음 ON / OFF */
+.dash-settings__toggle {
+  display: flex;
+  gap: 12px;
+}
+.dash-settings__opt {
+  width: 96px;
+  height: 52px;
+  border: 1px solid #5a5a5a;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #6f6f6f;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.dash-settings__opt:hover,
+.dash-settings__opt:focus-visible {
+  outline: none;
+  border-color: #c2c2c2;
+  color: #cacaca;
+}
+.dash-settings__opt.is-on {
+  border-color: #e6e6e6;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+@keyframes dash-settings-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

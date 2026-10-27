@@ -1,0 +1,360 @@
+/* =========================================================================
+   챕터 채팅 2차 디자인 — Figma 1200:13167 ~ 13577 (1914 · 1920 공통)
+     진입 1200:13381 / 13469 · 시작 13167 / 13436 · 채팅 13195 / 13536 · 선택지 13332 / 13577
+   프롤로그 부품(.pr-*)과 1차 챕터 부품(.ch1-*)을 그대로 쓰고,
+   바뀐 값은 장면 뿌리에 붙인 .ch-chat 아래에서만 덮어쓴다 (프롤로그는 그대로).
+   좌표는 Figma 1920×1080 아트보드 기준.
+   ========================================================================= */
+
+.ch-chat,
+.chc-entry {
+  --chc-ko: 'BookkMyungjo', var(--pr-font-myungjo);
+  --chc-en: 'Besley', 'Times New Roman', serif;
+}
+
+/* ---- 1200:13270 — 연도 배너 (Group 17 · 391×171) ------------------------ */
+
+.chc-banner {
+  position: absolute;
+  left: 80px;
+  top: 30.4px;
+  width: 391px;
+  height: 171px;
+  background: url('../../assets/character/past/banner.svg') 0 0 / 391px 171px no-repeat;
+  pointer-events: none;
+}
+
+.chc-banner span {
+  position: absolute;
+  left: 195.5px;
+  top: 63.6px;
+  transform: translateX(-50%);
+  font-family: var(--chc-en);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: normal;
+  color: #fff;
+}
+
+/* ---- 1200:13271 — 챕터 제목 바 (Rectangle 12 · 1021×69) ----------------- */
+
+.chc-title {
+  position: absolute;
+  left: 526px;
+  top: 82px;
+  width: 1017px;
+  height: 64px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--chc-ko);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.48px;
+  color: #fff;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.chc-title::before,
+.chc-entry__title::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2.5px;
+  width: 1021px;
+  height: 69px;
+  z-index: -1;
+  background: url('../../assets/chapter/title-bar.svg') 0 0 / 1021px 69px no-repeat;
+}
+
+/* ---- 멈춤 · 나가기 (Rectangle 13 · 67×69) -------------------------------- */
+
+.chc-tool {
+  position: absolute;
+  top: 84px;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.chc-tool::before {
+  content: '';
+  position: absolute;
+  left: -1.41px;
+  top: -1.68px;
+  width: 67px;
+  height: 69px;
+  z-index: -1;
+  background: url('../../assets/character/past/exit.svg') 0 0 / 67px 69px no-repeat;
+  transition: filter 0.15s ease;
+}
+
+.chc-tool:hover::before,
+.chc-tool:focus-visible::before,
+.chc-tool.is-on::before {
+  filter: brightness(1.35);
+}
+
+.chc-tool:focus-visible {
+  outline: 2px solid #f0e6d2;
+  outline-offset: 3px;
+}
+
+.chc-tool svg {
+  position: absolute;
+  display: block;
+}
+
+/* 1136:3504 — ▶ */
+.chc-tool--pause {
+  left: 1687px;
+}
+
+.chc-tool--pause svg {
+  left: 19px;
+  top: 14px;
+  width: 30px;
+  height: 36px;
+  fill: #d9d9d9;
+}
+
+/* 1136:3509 / 3510 — × */
+.chc-tool--exit {
+  left: 1775px;
+}
+
+.chc-tool--exit svg {
+  inset: 0;
+  width: 64px;
+  height: 64px;
+  fill: none;
+  stroke: #d9d9d9;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* ---- 1200:13268 / 13467 — 가운데 자막 (32px · 행간 1.5) ------------------ */
+
+.ch-chat .ch1-subtitle {
+  top: 833px;
+  font-family: var(--chc-ko);
+  font-weight: 300;
+  line-height: 48px;
+  letter-spacing: 0;
+  color: #fff;
+}
+
+.ch-chat .ch1-subtitle--narr {
+  font-size: 26px;
+  color: #cfcac1;
+}
+
+/* 네 가지 조건 첫인사 — 3줄은 그대로, 4줄이면 한 줄만큼 올린다 */
+.ch-chat .ch2-subtitle {
+  top: 833px;
+}
+
+.ch-chat .ch2-subtitle--long {
+  top: 785px;
+}
+
+/* ---- 1200:13195 / 13536 — 채팅 ------------------------------------------
+   그녀 말 (229, 671 / 806) · 유저 답 (오른쪽 끝 1667, 759) · 입력 (574, 917)   */
+
+.ch-chat .ch1-chatlog {
+  top: 250px;
+  height: 628px;
+}
+
+.ch-chat .ch1-chatlog__jump {
+  top: 884px;
+}
+
+.ch-chat .pr-bubble {
+  /* 대사 한 줄(약 20자)이 통째로 들어가는 폭. 인물 팔에 조금 걸치는 정도까지 */
+  max-width: 680px;
+  padding: 12px 24px;
+  font-family: var(--chc-ko);
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
+  letter-spacing: 0;
+  color: #fff;
+  /* 글자 단위가 아니라 어절 단위로 꺾고, 마지막 줄에 한두 글자만 남지 않게 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.ch-chat .pr-reply {
+  max-width: 620px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+  padding-right: 44px;
+  font-family: var(--chc-ko);
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
+  letter-spacing: 0;
+  color: #bfbfbf;
+}
+
+/* 1136:3592 — 입력란 */
+.ch-chat .pr-input {
+  top: 917px;
+  font-family: var(--chc-ko);
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: 0;
+}
+
+/* 1136:3590 — 답변하기 */
+.ch-chat .pr-btn--submit {
+  left: 1141px;
+  top: 917px;
+  transform: none;
+}
+
+.ch-chat .pr-btn {
+  font-family: var(--chc-ko);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0;
+  color: #c3c3c3;
+}
+
+/* ---- 1200:13332 / 13577 — 선택지 ----------------------------------------
+   질문 (가운데, 796) · 대답 630×106 두 칸, 사이 16px (322.5 / 968.5, 891)      */
+
+.ch-chat .pr-parlor__subtitle {
+  top: 796px;
+  font-family: var(--chc-ko);
+  font-weight: 300;
+  line-height: 48px;
+  letter-spacing: 0;
+  color: #fff;
+  white-space: pre-line;
+  width: max-content;
+}
+
+.ch-chat .pr-btn--choice {
+  top: 891px;
+  width: 630px;
+  height: 106px;
+  padding: 0 36px;
+  transform: none;
+  line-height: 1.35;
+  white-space: normal;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.ch-chat .pr-btn--choice-1 {
+  left: 322.5px;
+}
+
+.ch-chat .pr-btn--choice-2 {
+  left: 968.5px;
+}
+
+/* ---- 1200:13381 / 13469 — 진입 ------------------------------------------ */
+
+/* 1200:13422 — 장면 위에 갈색 multiply 한 겹 */
+.chc-entry__multiply {
+  position: absolute;
+  left: -4px;
+  top: -65px;
+  width: 1927px;
+  height: 1363px;
+  background: #4e4835;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* 1200:13423 — 큰 연도 배너 (704.8×306) */
+.chc-entry__banner {
+  position: absolute;
+  left: 608px;
+  top: 331px;
+  width: 704.812px;
+  height: 306px;
+  background: url('../../assets/character/past/banner.svg') 0 0 / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.chc-entry__banner span {
+  position: absolute;
+  left: 50%;
+  top: 116.85px;
+  transform: translateX(-50%);
+  font-family: var(--chc-en);
+  font-weight: 600;
+  font-size: 40px;
+  line-height: normal;
+  color: #fff;
+}
+
+/* 1200:13424 — 챕터 제목 바 */
+.chc-entry__title {
+  position: absolute;
+  left: 452px;
+  top: 685px;
+  width: 1017px;
+  height: 64px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--chc-ko);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.48px;
+  color: #fff;
+  isolation: isolate;
+}
+
+/* ---- 멈춤 화면 ----------------------------------------------------------- */
+
+.chc-pause {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: rgba(18, 16, 14, 0.62);
+  cursor: pointer;
+  animation: chc-fade 0.25s ease-out both;
+}
+
+.chc-pause__title {
+  margin: 0;
+  font-family: var(--chc-ko, var(--pr-font-myungjo));
+  font-weight: 700;
+  font-size: 40px;
+  color: #fff;
+}
+
+.chc-pause__hint {
+  margin: 0;
+  font-family: var(--chc-ko, var(--pr-font-myungjo));
+  font-weight: 300;
+  font-size: 20px;
+  color: #cfcac1;
+}
+
+@keyframes chc-fade {
+  from {
+    opacity: 0;
+  }
+}
